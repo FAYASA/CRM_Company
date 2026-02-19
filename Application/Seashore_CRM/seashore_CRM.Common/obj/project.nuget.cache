@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "A4KKHEiZlP0=",
+  "dgSpecHash": "T2ib0Etwim4=",
   "success": true,
-  "projectFilePath": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj",
+  "projectFilePath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Fayas\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Fayas\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

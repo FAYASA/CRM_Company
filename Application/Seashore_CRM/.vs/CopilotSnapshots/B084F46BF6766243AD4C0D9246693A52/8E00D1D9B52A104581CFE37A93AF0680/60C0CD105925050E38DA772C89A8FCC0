@@ -1,0 +1,49 @@
+﻿@page
+@model Seashore_CRM.Pages.Leads.CreateModel
+@{
+    ViewData["Title"] = "Create Lead";
+}
+
+<h1>Create Lead</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Lead.LeadType" class="form-label"></label>
+        <input asp-for="Lead.LeadType" class="form-control" />
+        <span asp-validation-for="Lead.LeadType" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Lead.CompanyId" class="form-label"></label>
+        <select asp-for="Lead.CompanyId" class="form-control" asp-items="Model.CompanyList">
+            <option value="">-- Select Company --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Lead.ContactId" class="form-label"></label>
+        <select asp-for="Lead.ContactId" class="form-control" asp-items="Model.ContactList">
+            <option value="">-- Select Contact --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Lead.Priority" class="form-label"></label>
+        <input asp-for="Lead.Priority" class="form-control" />
+        <span asp-validation-for="Lead.Priority" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Lead.AssignedUserId" class="form-label"></label>
+        <select asp-for="Lead.AssignedUserId" class="form-control" asp-items="Model.UserList">
+            <option value="">-- Select User --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -2271,11 +2271,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj",
+      "projectUniqueName": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj",
       "projectName": "seashore_CRM.Common",
-      "projectPath": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj",
+      "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj",
       "packagesPath": "C:\\Users\\Fayas\\.nuget\\packages\\",
-      "outputPath": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Common\\obj\\",
+      "outputPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
