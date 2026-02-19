@@ -1,0 +1,35 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using seashore_CRM.BLL.Services;
+using seashore_CRM.Models.DTOs;
+using System.Threading.Tasks;
+
+namespace Seashore_CRM.Pages.Leads
+{
+    public class DeleteModel : PageModel
+    {
+        private readonly ILeadService _leadService;
+
+        public DeleteModel(ILeadService leadService)
+        {
+            _leadService = leadService;
+        }
+
+        [BindProperty]
+        public LeadDto Lead { get; set; } = new LeadDto();
+
+        public async Task<IActionResult> OnGetAsync(int id)
+        {
+            var lead = await _leadService.GetLeadByIdAsync(id);
+            if (lead == null) return RedirectToPage("Index");
+            Lead = lead;
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            await _leadService.DeleteLeadAsync(Lead.Id);
+            return RedirectToPage("Index");
+        }
+    }
+}

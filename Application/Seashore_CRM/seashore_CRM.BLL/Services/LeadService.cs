@@ -4,6 +4,7 @@ using seashore_CRM.Models.DTOs;
 using seashore_CRM.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using System;
 
 namespace seashore_CRM.BLL.Services
@@ -36,14 +37,45 @@ namespace seashore_CRM.BLL.Services
 
         public async Task<IEnumerable<LeadDto>> GetAllLeadsAsync()
         {
-            var leads = await _uow.Leads.GetAllAsync();
-            return _mapper.Map<IEnumerable<LeadDto>>(leads);
+            var leads = (await _uow.Leads.GetAllAsync()).ToList();
+
+            var dtos = new List<LeadDto>();
+            foreach (var l in leads)
+            {
+                var dto = _mapper.Map<LeadDto>(l);
+                // populate names via repositories
+                if (l.StatusId.HasValue)
+                {
+                    var status = await _uow.LeadStatuses.GetByIdAsync(l.StatusId.Value);
+                    dto.StatusName = status?.StatusName;
+                }
+                if (l.AssignedUserId.HasValue)
+                {
+                    var user = await _uow.Users.GetByIdAsync(l.AssignedUserId.Value);
+                    dto.AssignedUserName = user?.FullName;
+                }
+                dtos.Add(dto);
+            }
+
+            return dtos;
         }
 
         public async Task<LeadDto?> GetLeadByIdAsync(int id)
         {
             var lead = await _uow.Leads.GetByIdAsync(id);
-            return lead == null ? null : _mapper.Map<LeadDto>(lead);
+            if (lead == null) return null;
+            var dto = _mapper.Map<LeadDto>(lead);
+            if (lead.StatusId.HasValue)
+            {
+                var status = await _uow.LeadStatuses.GetByIdAsync(lead.StatusId.Value);
+                dto.StatusName = status?.StatusName;
+            }
+            if (lead.AssignedUserId.HasValue)
+            {
+                var user = await _uow.Users.GetByIdAsync(lead.AssignedUserId.Value);
+                dto.AssignedUserName = user?.FullName;
+            }
+            return dto;
         }
 
         public async Task UpdateLeadAsync(LeadDto leadDto)

@@ -1,0 +1,43 @@
+@model seashore_CRM.Models.DTOs.LeadDto
+
+@{
+    ViewData["Title"] = "Lead Details";
+}
+
+<h1>Lead Details</h1>
+
+<div>
+    <h4>@Model.LeadType</h4>
+    <dl class="row">
+        <dt class="col-sm-2">Company</dt>
+        <dd class="col-sm-10">@Model.CompanyId</dd>
+
+        <dt class="col-sm-2">Contact</dt>
+        <dd class="col-sm-10">@Model.ContactId</dd>
+
+        <dt class="col-sm-2">Source</dt>
+        <dd class="col-sm-10">@Model.SourceId</dd>
+
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-10">@Model.StatusName</dd>
+
+        <dt class="col-sm-2">Priority</dt>
+        <dd class="col-sm-10">@Model.Priority</dd>
+
+        <dt class="col-sm-2">Assigned To</dt>
+        <dd class="col-sm-10">@Model.AssignedUserName</dd>
+
+        <dt class="col-sm-2">Qualified</dt>
+        <dd class="col-sm-10">@(Model.IsQualified ? "Yes" : "No")</dd>
+    </dl>
+
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Qualify" asp-route-id="@Model.Id" class="btn btn-secondary">Qualify</a>
+
+    <form asp-action="Convert" method="post" class="d-inline">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-success">Convert to Opportunity</button>
+    </form>
+
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

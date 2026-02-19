@@ -1,0 +1,33 @@
+﻿@page
+@model Seashore_CRM.Pages.Opportunities.CreateModel
+@{
+    ViewData["Title"] = "Create Opportunity";
+}
+
+<h1>Create Opportunity</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Opportunity.LeadId" class="form-label"></label>
+        <input asp-for="Opportunity.LeadId" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Opportunity.Stage" class="form-label"></label>
+        <input asp-for="Opportunity.Stage" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Opportunity.EstimatedValue" class="form-label"></label>
+        <input asp-for="Opportunity.EstimatedValue" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Opportunity.Probability" class="form-label"></label>
+        <input asp-for="Opportunity.Probability" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Opportunity.ExpectedCloseDate" class="form-label"></label>
+        <input asp-for="Opportunity.ExpectedCloseDate" class="form-control" type="date" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -563,6 +563,10 @@ namespace seashore_CRM.DAL.Migrations
                     b.Property<int?>("AssignedUserId")
                         .HasColumnType("int");
 
+                    b.Property<decimal?>("Budget")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
@@ -576,6 +580,9 @@ namespace seashore_CRM.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<DateTime?>("DecisionDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("ExpectedClosureDate")
                         .HasColumnType("datetime2");
@@ -591,12 +598,27 @@ namespace seashore_CRM.DAL.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<bool>("IsQualified")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LeadType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Priority")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Probability")
+                        .HasColumnType("int");
+
+                    b.Property<string>("QualificationNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("QualifiedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("QualifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

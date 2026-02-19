@@ -1,0 +1,91 @@
+﻿using AutoMapper;
+using seashore_CRM.DAL.Repositories;
+using seashore_CRM.Models.DTOs;
+using seashore_CRM.Models.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
+
+namespace seashore_CRM.BLL.Services
+{
+    public class LeadService : ILeadService
+    {
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
+
+        public LeadService(IUnitOfWork uow, IMapper mapper)
+        {
+            _uow = uow;
+            _mapper = mapper;
+        }
+
+        public async Task AddLeadAsync(LeadDto leadDto)
+        {
+            var entity = _mapper.Map<Lead>(leadDto);
+            await _uow.Leads.AddAsync(entity);
+            await _uow.CommitAsync();
+        }
+
+        public async Task DeleteLeadAsync(int id)
+        {
+            var lead = await _uow.Leads.GetByIdAsync(id);
+            if (lead == null) return;
+            _uow.Leads.Remove(lead);
+            await _uow.CommitAsync();
+        }
+
+        public async Task<IEnumerable<LeadDto>> GetAllLeadsAsync()
+        {
+            var leads = await _uow.Leads.GetAllAsync();
+            return _mapper.Map<IEnumerable<LeadDto>>(leads);
+        }
+
+        public async Task<LeadDto?> GetLeadByIdAsync(int id)
+        {
+            var lead = await _uow.Leads.GetByIdAsync(id);
+            return lead == null ? null : _mapper.Map<LeadDto>(lead);
+        }
+
+        public async Task UpdateLeadAsync(LeadDto leadDto)
+        {
+            var entity = _mapper.Map<Lead>(leadDto);
+            _uow.Leads.Update(entity);
+            await _uow.CommitAsync();
+        }
+
+        public async Task QualifyLeadAsync(LeadDto dto)
+        {
+            var lead = await _uow.Leads.GetByIdAsync(dto.Id);
+            if (lead == null) return;
+
+            lead.IsQualified = dto.IsQualified;
+            lead.QualifiedOn = dto.QualifiedOn ?? DateTime.UtcNow;
+            lead.QualifiedById = dto.QualifiedById;
+            lead.QualificationNotes = dto.QualificationNotes;
+
+            lead.Budget = dto.Budget;
+            lead.DecisionDate = dto.DecisionDate;
+            lead.Probability = dto.Probability;
+
+            _uow.Leads.Update(lead);
+            await _uow.CommitAsync();
+        }
+
+        public async Task<int?> ConvertToOpportunityAsync(int leadId)
+        {
+            var lead = await _uow.Leads.GetByIdAsync(leadId);
+            if (lead == null) return null;
+
+            // mark converted
+            lead.IsConverted = true;
+            _uow.Leads.Update(lead);
+
+            var opp = _mapper.Map<Opportunity>(lead);
+            opp.LeadId = lead.Id; // ensure relation
+            await _uow.Opportunities.AddAsync(opp);
+            await _uow.CommitAsync();
+
+            return opp.Id;
+        }
+    }
+}

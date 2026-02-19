@@ -1,0 +1,59 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using seashore_CRM.BLL.Services;
+using seashore_CRM.DAL.Repositories;
+using seashore_CRM.Models.DTOs;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+namespace Seashore_CRM.Pages.Leads
+{
+    public class EditModel : PageModel
+    {
+        private readonly ILeadService _leadService;
+        private readonly IUnitOfWork _uow;
+
+        public EditModel(ILeadService leadService, IUnitOfWork uow)
+        {
+            _leadService = leadService;
+            _uow = uow;
+        }
+
+        [BindProperty]
+        public LeadDto Lead { get; set; } = new LeadDto();
+
+        public IEnumerable<SelectListItem> CompanyList { get; set; } = new List<SelectListItem>();
+
+        public async Task<IActionResult> OnGetAsync(int id)
+        {
+            var lead = await _leadService.GetLeadByIdAsync(id);
+            if (lead == null) return RedirectToPage("Index");
+
+            Lead = lead;
+            CompanyList = await GetCompanies();
+            return Page();
+        }
+
+        private async Task<IEnumerable<SelectListItem>> GetCompanies()
+        {
+            var list = await _uow.Companies.GetAllAsync();
+            var items = new List<SelectListItem>();
+            foreach (var c in list)
+                items.Add(new SelectListItem(c.CompanyName, c.Id.ToString()));
+            return items;
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                CompanyList = await GetCompanies();
+                return Page();
+            }
+
+            await _leadService.UpdateLeadAsync(Lead);
+            return RedirectToPage("Index");
+        }
+    }
+}

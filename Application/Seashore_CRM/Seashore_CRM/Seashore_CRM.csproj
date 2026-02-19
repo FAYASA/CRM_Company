@@ -22,10 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\Leads\" />
     <Folder Include="Seashore_CRM\Pages\Contacts\" />
     <Folder Include="Seashore_CRM\Pages\Leads\" />
     <Folder Include="Seashore_CRM\Pages\Products\" />
-    <Folder Include="Views\Leads\" />
   </ItemGroup>
 
 </Project>

@@ -44,6 +44,30 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVhZHNcUXVhbGlmeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[F:/CRM/Application/Seashore_CRM/Seashore_CRM/Pages/Opportunities/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3Bwb3J0dW5pdGllc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/Application/Seashore_CRM/Seashore_CRM/Pages/Opportunities/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3Bwb3J0dW5pdGllc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/Application/Seashore_CRM/Seashore_CRM/Pages/Opportunities/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3Bwb3J0dW5pdGllc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/Application/Seashore_CRM/Seashore_CRM/Pages/Opportunities/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3Bwb3J0dW5pdGllc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/Application/Seashore_CRM/Seashore_CRM/Pages/Opportunities/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3Bwb3J0dW5pdGllc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/Application/Seashore_CRM/Seashore_CRM/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [F:/CRM/Application/Seashore_CRM/Seashore_CRM/Seashore_CRM/Pages/Companies/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = U2Vhc2hvcmVfQ1JNXFBhZ2VzXENvbXBhbmllc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -110,6 +134,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [F:/CRM/Application/Seashore_CRM/Seashore_CRM/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/Application/Seashore_CRM/Seashore_CRM/Views/Leads/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVhZHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/Application/Seashore_CRM/Seashore_CRM/Views/Leads/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVhZHNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/Application/Seashore_CRM/Seashore_CRM/Views/Leads/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVhZHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/Application/Seashore_CRM/Seashore_CRM/Views/Leads/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVhZHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/Application/Seashore_CRM/Seashore_CRM/Views/Leads/Qualify.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVhZHNcUXVhbGlmeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/CRM/Application/Seashore_CRM/Seashore_CRM/Views/Opportunities/Details.cshtml]
