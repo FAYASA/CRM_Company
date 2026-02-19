@@ -1,0 +1,24 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using seashore_CRM.DAL.Repositories;
+using seashore_CRM.Models.Entities;
+using System.Threading.Tasks;
+
+namespace Seashore_CRM.Controllers
+{
+    public class OpportunitiesController : Controller
+    {
+        private readonly IUnitOfWork _uow;
+
+        public OpportunitiesController(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var opp = await _uow.Opportunities.GetByIdAsync(id);
+            if (opp == null) return NotFound();
+            return View(opp);
+        }
+    }
+}

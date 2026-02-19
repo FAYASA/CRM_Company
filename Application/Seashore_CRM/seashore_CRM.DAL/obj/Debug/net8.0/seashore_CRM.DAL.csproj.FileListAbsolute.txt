@@ -1,0 +1,17 @@
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\seashore_CRM.DAL.GeneratedMSBuildEditorConfig.editorconfig
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\seashore_CRM.DAL.AssemblyInfoInputs.cache
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\seashore_CRM.DAL.AssemblyInfo.cs
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\seashore_CRM.DAL.csproj.CoreCompileInputs.cache
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\bin\Debug\net8.0\seashore_CRM.DAL.deps.json
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\bin\Debug\net8.0\seashore_CRM.DAL.dll
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\bin\Debug\net8.0\seashore_CRM.DAL.pdb
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\bin\Debug\net8.0\seashore_CRM.Models.dll
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\bin\Debug\net8.0\seashore_CRM.Models.pdb
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\seashore_CRM.DAL.csproj.AssemblyReference.cache
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\seashore.6A7ADFDA.Up2Date
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\seashore_CRM.DAL.dll
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\refint\seashore_CRM.DAL.dll
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\seashore_CRM.DAL.pdb
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\ref\seashore_CRM.DAL.dll
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\bin\Debug\net8.0\seashore_CRM.DAL.runtimeconfig.json
+F:\CRM\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\seashore_CRM.DAL.genruntimeconfig.cache

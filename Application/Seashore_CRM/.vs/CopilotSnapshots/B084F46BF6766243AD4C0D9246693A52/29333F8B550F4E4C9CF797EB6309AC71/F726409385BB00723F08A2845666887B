@@ -1,0 +1,20 @@
+﻿using AutoMapper;
+using seashore_CRM.Models.Entities;
+using seashore_CRM.Models.DTOs;
+
+namespace seashore_CRM.BLL.Mapping
+{
+    public class AutoMapperProfile : Profile
+    {
+        public AutoMapperProfile()
+        {
+            CreateMap<Lead, LeadDto>()
+                .ForMember(dest => dest.StatusName, opt => opt.MapFrom(src => src.Status != null ? src.Status.StatusName : null))
+                .ForMember(dest => dest.AssignedUserName, opt => opt.MapFrom(src => src.AssignedUser != null ? src.AssignedUser.FullName : null));
+
+            CreateMap<LeadDto, Lead>()
+                .ForMember(dest => dest.Status, opt => opt.Ignore())
+                .ForMember(dest => dest.AssignedUser, opt => opt.Ignore());
+        }
+    }
+}

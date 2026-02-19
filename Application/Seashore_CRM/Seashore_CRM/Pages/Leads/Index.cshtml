@@ -1,0 +1,41 @@
+@page
+@model Seashore_CRM.Pages.Leads.IndexModel
+@{
+    ViewData["Title"] = "Leads";
+}
+
+<h1>Leads</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Create New Lead</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Lead Type</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Assigned User</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var lead in Model.Leads)
+    {
+        <tr>
+            <td>@lead.Id</td>
+            <td>@lead.LeadType</td>
+            <td>@lead.Priority</td>
+            <td>@lead.StatusName</td>
+            <td>@lead.AssignedUserName</td>
+            <td>
+                <a asp-page="Details" asp-route-id="@lead.Id">Details</a> |
+                <a asp-page="Edit" asp-route-id="@lead.Id">Edit</a> |
+                <a asp-page="Delete" asp-route-id="@lead.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

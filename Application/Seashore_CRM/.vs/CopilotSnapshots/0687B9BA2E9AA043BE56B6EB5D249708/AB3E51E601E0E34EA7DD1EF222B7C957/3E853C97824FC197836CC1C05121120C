@@ -1,0 +1,12 @@
+﻿{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost\\SQLEXpress;Database=SeashoreCRM_DB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;"
+  }
+}

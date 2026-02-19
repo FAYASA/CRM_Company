@@ -1,0 +1,8 @@
+﻿@page
+@model Microsoft.AspNetCore.Mvc.RazorPages.PageModel
+@{
+    ViewData["Title"] = "Privacy";
+}
+
+<h1>Privacy</h1>
+<p>Privacy policy placeholder.</p>

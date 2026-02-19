@@ -1,0 +1,40 @@
+using System;
+
+namespace seashore_CRM.Models.Entities
+{
+    public class Lead : BaseEntity
+    {
+        public string LeadType { get; set; } = null!; // Corporate / Individual
+
+        public int? CompanyId { get; set; }
+        public int? ContactId { get; set; }
+
+        public int? SourceId { get; set; }
+        public int? StatusId { get; set; }
+
+        public string? Priority { get; set; }
+        public int? AssignedUserId { get; set; }
+
+        public DateTime? ExpectedClosureDate { get; set; }
+        public DateTime? FollowUpDate { get; set; }
+
+        public bool IsConverted { get; set; } = false;
+
+        // Qualification fields
+        public bool IsQualified { get; set; } = false;
+        public DateTime? QualifiedOn { get; set; }
+        public int? QualifiedById { get; set; }
+        public string? QualificationNotes { get; set; }
+
+        // Business/Opportunity related
+        public decimal? Budget { get; set; }
+        public DateTime? DecisionDate { get; set; }
+        public int? Probability { get; set; }
+
+        public Company? Company { get; set; }
+        public Contact? Contact { get; set; }
+        public LeadSource? Source { get; set; }
+        public LeadStatus? Status { get; set; }
+        public User? AssignedUser { get; set; }
+    }
+}

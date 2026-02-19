@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36930.0 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seashore_CRM", "Seashore_CRM\Seashore_CRM.csproj", "{7E2ACA94-0802-42F0-9A90-43113FAE4330}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seashore_CRM.BLL", "seashore_CRM.BLL\seashore_CRM.BLL.csproj", "{BA4B5D76-1D60-461C-B256-C7A5062739D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seashore_CRM.DAL", "seashore_CRM.DAL\seashore_CRM.DAL.csproj", "{CA6A19B3-FF69-4D43-8823-AC85BE873E66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seashore_CRM.Models", "seashore_CRM.Models\seashore_CRM.Models.csproj", "{B1581374-EC7D-4D23-86B3-7939D09B06BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seashore_CRM.Common", "seashore_CRM.Common\seashore_CRM.Common.csproj", "{92104553-0D59-4032-8D89-8C7F3EB3E9D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E2ACA94-0802-42F0-9A90-43113FAE4330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E2ACA94-0802-42F0-9A90-43113FAE4330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E2ACA94-0802-42F0-9A90-43113FAE4330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E2ACA94-0802-42F0-9A90-43113FAE4330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA4B5D76-1D60-461C-B256-C7A5062739D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA4B5D76-1D60-461C-B256-C7A5062739D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA4B5D76-1D60-461C-B256-C7A5062739D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA4B5D76-1D60-461C-B256-C7A5062739D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA6A19B3-FF69-4D43-8823-AC85BE873E66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA6A19B3-FF69-4D43-8823-AC85BE873E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA6A19B3-FF69-4D43-8823-AC85BE873E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA6A19B3-FF69-4D43-8823-AC85BE873E66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1581374-EC7D-4D23-86B3-7939D09B06BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1581374-EC7D-4D23-86B3-7939D09B06BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1581374-EC7D-4D23-86B3-7939D09B06BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1581374-EC7D-4D23-86B3-7939D09B06BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92104553-0D59-4032-8D89-8C7F3EB3E9D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92104553-0D59-4032-8D89-8C7F3EB3E9D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92104553-0D59-4032-8D89-8C7F3EB3E9D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92104553-0D59-4032-8D89-8C7F3EB3E9D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B4781C26-D994-4257-BF7E-BE4D39C19A89}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,37 @@
+@model IEnumerable<seashore_CRM.Models.Entities.Opportunity>
+
+@{
+    ViewData["Title"] = "Opportunities";
+}
+
+<h1>Opportunities</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>LeadId</th>
+            <th>Stage</th>
+            <th>Estimated Value</th>
+            <th>Probability</th>
+            <th>Expected Close</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var o in Model)
+    {
+        <tr>
+            <td>@o.Id</td>
+            <td>@o.LeadId</td>
+            <td>@o.Stage</td>
+            <td>@o.EstimatedValue</td>
+            <td>@o.Probability</td>
+            <td>@o.ExpectedCloseDate</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@o.Id">Details</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

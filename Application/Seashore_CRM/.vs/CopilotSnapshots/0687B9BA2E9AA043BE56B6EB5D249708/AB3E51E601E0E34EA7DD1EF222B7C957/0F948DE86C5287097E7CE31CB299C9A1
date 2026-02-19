@@ -1,0 +1,28 @@
+﻿@page
+@model Seashore_CRM.Pages.Leads.DetailsModel
+@{
+    ViewData["Title"] = "Lead Details";
+}
+
+<h1>Lead Details</h1>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">Id</dt>
+        <dd class="col-sm-10">@Model.Lead.Id</dd>
+
+        <dt class="col-sm-2">Lead Type</dt>
+        <dd class="col-sm-10">@Model.Lead.LeadType</dd>
+
+        <dt class="col-sm-2">Priority</dt>
+        <dd class="col-sm-10">@Model.Lead.Priority</dd>
+
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-10">@Model.Lead.Status?.StatusName</dd>
+
+        <dt class="col-sm-2">Assigned User</dt>
+        <dd class="col-sm-10">@Model.Lead.AssignedUser?.FullName</dd>
+    </dl>
+</div>
+
+<a asp-page="Index" class="btn btn-secondary">Back to List</a>

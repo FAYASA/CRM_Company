@@ -1,0 +1,14 @@
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\bin\Debug\net8.0\seashore_CRM.Models.deps.json
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\bin\Debug\net8.0\seashore_CRM.Models.dll
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\bin\Debug\net8.0\seashore_CRM.Models.pdb
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\obj\Debug\net8.0\seashore_CRM.Models.GeneratedMSBuildEditorConfig.editorconfig
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\obj\Debug\net8.0\seashore_CRM.Models.AssemblyInfoInputs.cache
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\obj\Debug\net8.0\seashore_CRM.Models.AssemblyInfo.cs
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\obj\Debug\net8.0\seashore_CRM.Models.csproj.CoreCompileInputs.cache
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\obj\Debug\net8.0\seashore_CRM.Models.dll
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\obj\Debug\net8.0\refint\seashore_CRM.Models.dll
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\obj\Debug\net8.0\seashore_CRM.Models.pdb
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\obj\Debug\net8.0\ref\seashore_CRM.Models.dll
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\bin\Debug\net8.0\seashore_CRM.Models.runtimeconfig.json
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\obj\Debug\net8.0\seashore_CRM.Models.csproj.AssemblyReference.cache
+F:\CRM\Application\Seashore_CRM\seashore_CRM.Models\obj\Debug\net8.0\seashore_CRM.Models.genruntimeconfig.cache

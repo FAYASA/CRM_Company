@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <PackageReference Include="Moq" Version="4.20.2" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\seashore_CRM.BLL\seashore_CRM.BLL.csproj" />
+    <ProjectReference Include="..\seashore_CRM.DAL\seashore_CRM.DAL.csproj" />
+    <ProjectReference Include="..\seashore_CRM.Models\seashore_CRM.Models.csproj" />
+  </ItemGroup>
+
+</Project>

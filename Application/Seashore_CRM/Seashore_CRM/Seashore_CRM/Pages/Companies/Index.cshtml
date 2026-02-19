@@ -1,0 +1,41 @@
+@page
+@model Seashore_CRM.Pages.Companies.IndexModel
+@{
+    ViewData["Title"] = "Companies";
+}
+
+<h1>Companies</h1>
+
+<p>
+    <a class="btn btn-primary" asp-page="Create">+ New Company</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Company Name</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var company in Model.Companies)
+    {
+        <tr>
+            <td>@company.CompanyName</td>
+            <td>@company.City</td>
+            <td>@company.Country</td>
+            <td>@company.Phone</td>
+            <td>@company.Email</td>
+            <td>
+                <a asp-page="Details" asp-route-id="@company.Id">Details</a> |
+                <a asp-page="Edit" asp-route-id="@company.Id">Edit</a> |
+                <a asp-page="Delete" asp-route-id="@company.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

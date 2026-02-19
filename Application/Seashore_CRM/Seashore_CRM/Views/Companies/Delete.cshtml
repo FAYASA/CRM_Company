@@ -1,0 +1,19 @@
+@model seashore_CRM.Models.Entities.Company
+
+@{
+    ViewData["Title"] = "Delete Company";
+}
+
+<h1>Delete Company</h1>
+
+<h3>Are you sure you want to delete this company?</h3>
+<div>
+    <h4>@Model.CompanyName</h4>
+    <p>@Model.Address</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

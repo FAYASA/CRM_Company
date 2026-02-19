@@ -1,0 +1,19 @@
+@page "{id:int}"
+@model Seashore_CRM.Pages.Companies.DeleteModel
+@{
+    ViewData["Title"] = "Delete Company";
+}
+
+<h1>Delete Company</h1>
+
+<h3>Are you sure you want to delete this company?</h3>
+<div>
+    <h4>@Model.Company.CompanyName</h4>
+    <p>@Model.Company.Address</p>
+</div>
+
+<form method="post">
+    <input type="hidden" asp-for="Company.Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>

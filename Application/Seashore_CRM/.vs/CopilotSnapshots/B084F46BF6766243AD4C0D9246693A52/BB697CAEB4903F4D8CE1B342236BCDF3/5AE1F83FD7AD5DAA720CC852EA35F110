@@ -1,0 +1,19 @@
+﻿@model seashore_CRM.Models.DTOs.LeadDto
+
+@{
+    ViewData["Title"] = "Delete Lead";
+}
+
+<h1>Delete Lead</h1>
+
+<h3>Are you sure you want to delete this lead?</h3>
+<div>
+    <h4>@Model.LeadType</h4>
+    <p>Priority: @Model.Priority</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

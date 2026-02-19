@@ -1,0 +1,59 @@
+﻿using Microsoft.EntityFrameworkCore;
+using seashore_CRM.DAL.Data;
+using seashore_CRM.DAL.Repositories;
+using seashore_CRM.BLL.Services;
+using AutoMapper;
+using FluentValidation;
+using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.Validators;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddRazorPages();
+
+// Configure DbContext (placeholder connection string)
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    var conn = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Server=(localdb)\\mssqllocaldb;Database=Seashore_CRM_Db;Trusted_Connection=True;MultipleActiveResultSets=true";
+    options.UseSqlServer(conn);
+});
+
+// Repositories/UnitOfWork
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// BLL services
+builder.Services.AddScoped<ILeadService, LeadService>();
+
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(seashore_CRM.BLL.Mapping.AutoMapperProfile));
+
+// FluentValidation
+builder.Services.AddTransient<IValidator<LeadDto>, LeadDtoValidator>();
+
+var app = builder.Build();
+
+// Initialize DB and seed data
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await DbInitializer.InitializeAsync(db);
+}
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapRazorPages();
+
+app.Run();

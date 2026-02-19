@@ -1,0 +1,55 @@
+﻿using AutoMapper;
+using seashore_CRM.DAL.Repositories;
+using seashore_CRM.Models.DTOs;
+using seashore_CRM.Models.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace seashore_CRM.BLL.Services
+{
+    public class LeadService : ILeadService
+    {
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
+
+        public LeadService(IUnitOfWork uow, IMapper mapper)
+        {
+            _uow = uow;
+            _mapper = mapper;
+        }
+
+        public async Task AddLeadAsync(LeadDto leadDto)
+        {
+            var entity = _mapper.Map<Lead>(leadDto);
+            await _uow.Leads.AddAsync(entity);
+            await _uow.CommitAsync();
+        }
+
+        public async Task DeleteLeadAsync(int id)
+        {
+            var lead = await _uow.Leads.GetByIdAsync(id);
+            if (lead == null) return;
+            _uow.Leads.Remove(lead);
+            await _uow.CommitAsync();
+        }
+
+        public async Task<IEnumerable<LeadDto>> GetAllLeadsAsync()
+        {
+            var leads = await _uow.Leads.GetAllAsync();
+            return _mapper.Map<IEnumerable<LeadDto>>(leads);
+        }
+
+        public async Task<LeadDto?> GetLeadByIdAsync(int id)
+        {
+            var lead = await _uow.Leads.GetByIdAsync(id);
+            return lead == null ? null : _mapper.Map<LeadDto>(lead);
+        }
+
+        public async Task UpdateLeadAsync(LeadDto leadDto)
+        {
+            var entity = _mapper.Map<Lead>(leadDto);
+            _uow.Leads.Update(entity);
+            await _uow.CommitAsync();
+        }
+    }
+}

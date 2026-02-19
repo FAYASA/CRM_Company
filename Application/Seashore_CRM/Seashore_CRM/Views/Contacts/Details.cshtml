@@ -1,0 +1,24 @@
+@model seashore_CRM.Models.Entities.Contact
+
+@{
+    ViewData["Title"] = "Contact Details";
+}
+
+<h1>Contact Details</h1>
+
+<div>
+    <h4>@Model.FirstName @Model.LastName</h4>
+    <dl class="row">
+        <dt class="col-sm-2">Company</dt>
+        <dd class="col-sm-10">@Model.Company?.CompanyName</dd>
+
+        <dt class="col-sm-2">Phone</dt>
+        <dd class="col-sm-10">@Model.Phone</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+    </dl>
+
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

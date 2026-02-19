@@ -1,0 +1,12 @@
+﻿{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\\\MSSQLLocalDB;Database=Seashore_CRM_Db;Trusted_Connection=True;MultipleActiveResultSets=true"
+  }
+}

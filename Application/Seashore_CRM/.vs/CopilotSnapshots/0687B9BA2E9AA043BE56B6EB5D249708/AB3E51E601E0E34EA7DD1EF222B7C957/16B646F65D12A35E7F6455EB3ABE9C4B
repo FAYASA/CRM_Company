@@ -1,0 +1,36 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using seashore_CRM.BLL.Services;
+using seashore_CRM.Models.Entities;
+using System.Threading.Tasks;
+
+namespace Seashore_CRM.Pages.Leads
+{
+    public class CreateModel : PageModel
+    {
+        private readonly ILeadService _leadService;
+
+        public CreateModel(ILeadService leadService)
+        {
+            _leadService = leadService;
+        }
+
+        [BindProperty]
+        public Lead Lead { get; set; } = new Lead();
+
+        public void OnGet()
+        {
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            await _leadService.AddLeadAsync(Lead);
+            return RedirectToPage("Index");
+        }
+    }
+}

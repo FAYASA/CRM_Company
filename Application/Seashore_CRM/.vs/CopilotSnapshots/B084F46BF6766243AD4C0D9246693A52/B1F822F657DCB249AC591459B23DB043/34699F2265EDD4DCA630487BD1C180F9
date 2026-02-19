@@ -1,0 +1,58 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using seashore_CRM.BLL.Services;
+using seashore_CRM.DAL.Repositories;
+using seashore_CRM.Models.DTOs;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+namespace Seashore_CRM.Pages.Leads
+{
+    public class QualifyModel : PageModel
+    {
+        private readonly ILeadService _leadService;
+        private readonly IUnitOfWork _uow;
+
+        public QualifyModel(ILeadService leadService, IUnitOfWork uow)
+        {
+            _leadService = leadService;
+            _uow = uow;
+        }
+
+        [BindProperty]
+        public LeadDto Lead { get; set; } = new LeadDto();
+
+        public IEnumerable<SelectListItem> UserList { get; set; } = new List<SelectListItem>();
+
+        public async Task<IActionResult> OnGetAsync(int id)
+        {
+            var lead = await _leadService.GetLeadByIdAsync(id);
+            if (lead == null) return RedirectToPage("Index");
+            Lead = lead;
+            UserList = await GetUsers();
+            return Page();
+        }
+
+        private async Task<IEnumerable<SelectListItem>> GetUsers()
+        {
+            var list = await _uow.Users.GetAllAsync();
+            var items = new List<SelectListItem>();
+            foreach (var u in list)
+                items.Add(new SelectListItem(u.UserName, u.Id.ToString()));
+            return items;
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                UserList = await GetUsers();
+                return Page();
+            }
+
+            await _leadService.QualifyLeadAsync(Lead);
+            return RedirectToPage("Details", new { id = Lead.Id });
+        }
+    }
+}

@@ -1,0 +1,51 @@
+﻿@model seashore_CRM.Models.DTOs.LeadDto
+
+@{
+    ViewData["Title"] = "Qualify Lead";
+}
+
+<h1>Qualify Lead</h1>
+
+<form asp-action="Qualify" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3 form-check">
+        <input asp-for="IsQualified" class="form-check-input" />
+        <label asp-for="IsQualified" class="form-check-label">Qualified</label>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="QualifiedOn" class="form-label"></label>
+        <input asp-for="QualifiedOn" class="form-control" type="datetime-local" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="QualifiedById" class="form-label"></label>
+        <select asp-for="QualifiedById" class="form-control" asp-items="ViewBag.Users">
+            <option value="">-- Select User --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="QualificationNotes" class="form-label"></label>
+        <textarea asp-for="QualificationNotes" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Budget" class="form-label"></label>
+        <input asp-for="Budget" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DecisionDate" class="form-label"></label>
+        <input asp-for="DecisionDate" class="form-control" type="date" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Probability" class="form-label"></label>
+        <input asp-for="Probability" class="form-control" type="number" min="0" max="100" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Qualification</button>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
+</form>

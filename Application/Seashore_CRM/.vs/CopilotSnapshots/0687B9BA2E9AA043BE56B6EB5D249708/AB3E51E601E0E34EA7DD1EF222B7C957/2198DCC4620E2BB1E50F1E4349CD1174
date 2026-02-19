@@ -1,0 +1,15 @@
+﻿using seashore_CRM.Models.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace seashore_CRM.BLL.Services
+{
+    public interface ILeadService
+    {
+        Task<IEnumerable<Lead>> GetAllLeadsAsync();
+        Task<Lead?> GetLeadByIdAsync(int id);
+        Task AddLeadAsync(Lead lead);
+        Task UpdateLeadAsync(Lead lead);
+        Task DeleteLeadAsync(int id);
+    }
+}

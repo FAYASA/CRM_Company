@@ -1,0 +1,1519 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\CRM\\Application\\Seashore_CRM\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\controllers\\opportunitiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\controllers\\opportunitiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.dal\\data\\dbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|solutionrelative:seashore_crm.dal\\data\\dbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\seashore_crm\\pages\\companies\\edit.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\seashore_crm\\pages\\companies\\edit.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\seashore_crm\\pages\\companies\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\seashore_crm\\pages\\companies\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\seashore_crm\\pages\\companies\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\seashore_crm\\pages\\companies\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\seashore_crm\\pages\\companies\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\seashore_crm\\pages\\companies\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA4B5D76-1D60-461C-B256-C7A5062739D0}|seashore_CRM.BLL\\seashore_CRM.BLL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.bll\\services\\leadservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA4B5D76-1D60-461C-B256-C7A5062739D0}|seashore_CRM.BLL\\seashore_CRM.BLL.csproj|solutionrelative:seashore_crm.bll\\services\\leadservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA4B5D76-1D60-461C-B256-C7A5062739D0}|seashore_CRM.BLL\\seashore_CRM.BLL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.bll\\validators\\leaddtovalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA4B5D76-1D60-461C-B256-C7A5062739D0}|seashore_CRM.BLL\\seashore_CRM.BLL.csproj|solutionrelative:seashore_crm.bll\\validators\\leaddtovalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA4B5D76-1D60-461C-B256-C7A5062739D0}|seashore_CRM.BLL\\seashore_CRM.BLL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.bll\\mapping\\automapperprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA4B5D76-1D60-461C-B256-C7A5062739D0}|seashore_CRM.BLL\\seashore_CRM.BLL.csproj|solutionrelative:seashore_crm.bll\\mapping\\automapperprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\lead.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\lead.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\invoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\invoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\contact.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\contact.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\activity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\activity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.dal\\repositories\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|solutionrelative:seashore_crm.dal\\repositories\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.dal\\repositories\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|solutionrelative:seashore_crm.dal\\repositories\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.dal\\repositories\\iunitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|solutionrelative:seashore_crm.dal\\repositories\\iunitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.dal\\repositories\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|solutionrelative:seashore_crm.dal\\repositories\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.dal\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|solutionrelative:seashore_crm.dal\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Tests\\seashore_CRM.Tests.csproj||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:seashore_CRM.Tests\\seashore_CRM.Tests.csproj||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\dtos\\leaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\dtos\\leaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA4B5D76-1D60-461C-B256-C7A5062739D0}|seashore_CRM.BLL\\seashore_CRM.BLL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.bll\\services\\ileadservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA4B5D76-1D60-461C-B256-C7A5062739D0}|seashore_CRM.BLL\\seashore_CRM.BLL.csproj|solutionrelative:seashore_crm.bll\\services\\ileadservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\saleitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\saleitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\sale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\sale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\opportunity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\opportunity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\leadstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\leadstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.models\\entities\\leadsource.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1581374-EC7D-4D23-86B3-7939D09B06BF}|seashore_CRM.Models\\seashore_CRM.Models.csproj|solutionrelative:seashore_crm.models\\entities\\leadsource.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.dal\\seashore_crm.dal.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{CA6A19B3-FF69-4D43-8823-AC85BE873E66}|seashore_CRM.DAL\\seashore_CRM.DAL.csproj|solutionrelative:seashore_crm.dal\\seashore_crm.dal.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\seashore_crm.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\seashore_crm.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA4B5D76-1D60-461C-B256-C7A5062739D0}|seashore_CRM.BLL\\seashore_CRM.BLL.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm.bll\\seashore_crm.bll.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{BA4B5D76-1D60-461C-B256-C7A5062739D0}|seashore_CRM.BLL\\seashore_CRM.BLL.csproj|solutionrelative:seashore_crm.bll\\seashore_crm.bll.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Tests\\LeadServiceTests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:seashore_CRM.Tests\\LeadServiceTests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\seashore_crm\\pages\\companies\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\seashore_crm\\pages\\companies\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\seashore_crm\\pages\\companies\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\seashore_crm\\pages\\companies\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\seashore_crm\\pages\\companies\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\seashore_crm\\pages\\companies\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\seashore_crm\\pages\\companies\\details.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\seashore_crm\\pages\\companies\\details.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\seashore_crm\\pages\\companies\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\seashore_crm\\pages\\companies\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\seashore_crm\\pages\\companies\\delete.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\seashore_crm\\pages\\companies\\delete.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\controllers\\companiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\controllers\\companiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\companies\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\companies\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\companies\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\companies\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\companies\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\companies\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\companies\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\companies\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\companies\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\companies\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\controllers\\contactscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\controllers\\contactscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\contacts\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\contacts\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\products\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\products\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\contacts\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\contacts\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\contacts\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\contacts\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\contacts\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\contacts\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\contacts\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\contacts\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\products\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\products\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\products\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\products\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\products\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\products\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\products\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\products\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Details.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Edit.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Delete.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\opportunities\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\opportunities\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\views\\opportunities\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\views\\opportunities\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\details.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\details.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\edit.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\edit.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\delete.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\delete.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\qualify.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\qualify.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|f:\\crm\\application\\seashore_crm\\seashore_crm\\pages\\leads\\qualify.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E2ACA94-0802-42F0-9A90-43113FAE4330}|Seashore_CRM\\Seashore_CRM.csproj|solutionrelative:seashore_crm\\pages\\leads\\qualify.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 9,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 88,
+              "Title": "Delete.cshtml.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Delete.cshtml.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Delete.cshtml.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Delete.cshtml.cs",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Delete.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:48:23.176Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 87,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Delete.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Delete.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Delete.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Delete.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:48:11.484Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 86,
+              "Title": "Edit.cshtml.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Edit.cshtml.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Edit.cshtml.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Edit.cshtml.cs",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Edit.cshtml.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAABBwDoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:47:40.76Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 85,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Edit.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Edit.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:47:25.236Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 84,
+              "Title": "Details.cshtml.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Details.cshtml.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Details.cshtml.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Details.cshtml.cs",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Details.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:47:10.877Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 83,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Details.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Details.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Details.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Details.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:46:59.256Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 82,
+              "Title": "Create.cshtml.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Create.cshtml.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Create.cshtml.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Create.cshtml.cs",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Create.cshtml.cs",
+              "ViewState": "AgIAAE0AAAAAAAAAAABBwE4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:46:41.831Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 81,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Create.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Create.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Create.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:46:24.66Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 80,
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Index.cshtml.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Index.cshtml.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Index.cshtml.cs",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Index.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:46:08.253Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "OpportunitiesController.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Controllers\\OpportunitiesController.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Controllers\\OpportunitiesController.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Controllers\\OpportunitiesController.cs",
+              "RelativeToolTip": "Seashore_CRM\\Controllers\\OpportunitiesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:38:33.962Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 89,
+              "Title": "Qualify.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Qualify.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Qualify.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Qualify.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Qualify.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:48:40.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 90,
+              "Title": "Qualify.cshtml.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Qualify.cshtml.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Qualify.cshtml.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Qualify.cshtml.cs",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Qualify.cshtml.cs",
+              "ViewState": "AgIAADgAAAAAAAAAAABBwDkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:48:56.282Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 79,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Index.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Pages\\Leads\\Index.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Pages\\Leads\\Index.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Pages\\Leads\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:45:57.727Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 78,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Opportunities\\Index.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Opportunities\\Index.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Opportunities\\Index.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Opportunities\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:43:50.718Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 77,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Opportunities\\Details.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Opportunities\\Details.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Opportunities\\Details.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Opportunities\\Details.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:38:46.198Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 70,
+              "Title": "Create.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Create.cshtml.cs",
+              "ToolTip": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Create.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:17:48.19Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 69,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Create.cshtml",
+              "ToolTip": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:17:39.613Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 68,
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Index.cshtml.cs",
+              "ToolTip": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Index.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:17:32.175Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 67,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:17:23.58Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABkAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:24:17.63Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 76,
+              "Title": "Delete.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Delete.cshtml.cs",
+              "ToolTip": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Delete.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:18:41.722Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 75,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Delete.cshtml",
+              "ToolTip": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Delete.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:18:32.315Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 74,
+              "Title": "Edit.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Edit.cshtml.cs",
+              "ToolTip": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Edit.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:18:23.034Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 73,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:18:14.346Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 72,
+              "Title": "Details.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Details.cshtml.cs",
+              "ToolTip": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Details.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T08:18:06.689Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 71,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Details.cshtml",
+              "ToolTip": "C:\\Users\\Fayas\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\1088425374\\Details.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:17:56.848Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "CompaniesController.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Controllers\\CompaniesController.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Controllers\\CompaniesController.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Controllers\\CompaniesController.cs",
+              "RelativeToolTip": "Seashore_CRM\\Controllers\\CompaniesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T07:34:56.909Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Companies\\Index.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Companies\\Index.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Companies\\Index.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Companies\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:35:09.521Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Companies\\Create.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Companies\\Create.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Companies\\Create.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Companies\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:35:23.299Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Companies\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Companies\\Edit.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Companies\\Edit.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Companies\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:35:36.628Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Companies\\Details.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Companies\\Details.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Companies\\Details.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Companies\\Details.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:35:48.558Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Companies\\Delete.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Companies\\Delete.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Companies\\Delete.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Companies\\Delete.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:35:57.83Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "ContactsController.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Controllers\\ContactsController.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Controllers\\ContactsController.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Controllers\\ContactsController.cs",
+              "RelativeToolTip": "Seashore_CRM\\Controllers\\ContactsController.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAEBVwGMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T07:36:14.482Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Contacts\\Index.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Contacts\\Index.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Contacts\\Index.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Contacts\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:36:26.873Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Controllers\\HomeController.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Seashore_CRM\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwAwAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T06:44:09.206Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_ViewImports.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\_ViewImports.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\_ViewImports.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\_ViewImports.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\_ViewImports.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T08:02:18.631Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "ProductsController.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Controllers\\ProductsController.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Controllers\\ProductsController.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Controllers\\ProductsController.cs",
+              "RelativeToolTip": "Seashore_CRM\\Controllers\\ProductsController.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAEBVwGMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T07:36:43.912Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Program.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Program.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Program.cs",
+              "RelativeToolTip": "Seashore_CRM\\Program.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAgwD0AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:23:40.502Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 66,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Products\\Delete.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Products\\Delete.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Products\\Delete.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Products\\Delete.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:44:50.675Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 65,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Products\\Details.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Products\\Details.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Products\\Details.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Products\\Details.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:44:40.853Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Products\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Products\\Edit.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Products\\Edit.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Products\\Edit.cshtml",
+              "ViewState": "AgIAACQAAAAAAAAAAIBJwCYAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:44:27.868Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Products\\Create.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Products\\Create.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Products\\Create.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Products\\Create.cshtml",
+              "ViewState": "AgIAACMAAAAAAAAAAIBJwCUAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:44:13.298Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Contacts\\Delete.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Contacts\\Delete.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Contacts\\Delete.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Contacts\\Delete.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:44:00.845Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Contacts\\Details.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Contacts\\Details.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Contacts\\Details.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Contacts\\Details.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:43:51.409Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Contacts\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Contacts\\Edit.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Contacts\\Edit.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Contacts\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:43:39.143Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Contacts\\Create.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Contacts\\Create.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Contacts\\Create.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Contacts\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:43:26.829Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Products\\Index.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Views\\Products\\Index.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Views\\Products\\Index.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Views\\Products\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:36:55.678Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Index.cshtml.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Index.cshtml.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Index.cshtml.cs",
+              "RelativeToolTip": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Index.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T07:00:55.977Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Create.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Create.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Create.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:01:12.765Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Create.cshtml.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Create.cshtml.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Create.cshtml.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Create.cshtml.cs",
+              "RelativeToolTip": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Create.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T07:01:31.471Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Edit.cshtml.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Edit.cshtml.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Edit.cshtml.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Edit.cshtml.cs",
+              "RelativeToolTip": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Edit.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T07:01:54.702Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\appsettings.json",
+              "RelativeDocumentMoniker": "Seashore_CRM\\appsettings.json",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\appsettings.json",
+              "RelativeToolTip": "Seashore_CRM\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-19T07:14:17.345Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DbInitializer.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Data\\DbInitializer.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.DAL\\Data\\DbInitializer.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Data\\DbInitializer.cs",
+              "RelativeToolTip": "seashore_CRM.DAL\\Data\\DbInitializer.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAgwCsAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:31:08.963Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "LeadService.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.BLL\\Services\\LeadService.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.BLL\\Services\\LeadService.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.BLL\\Services\\LeadService.cs",
+              "RelativeToolTip": "seashore_CRM.BLL\\Services\\LeadService.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAAxwFsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:31:28.27Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Index.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Index.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Index.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:00:45.689Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Edit.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Edit.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:01:44.06Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Details.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Details.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Details.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Details.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:02:06.462Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "Details.cshtml.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Details.cshtml.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Details.cshtml.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Details.cshtml.cs",
+              "RelativeToolTip": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Details.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T07:02:16.489Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Delete.cshtml",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Delete.cshtml",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Delete.cshtml",
+              "RelativeToolTip": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Delete.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-19T07:02:26.498Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "Delete.cshtml.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Delete.cshtml.cs",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Delete.cshtml.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Delete.cshtml.cs",
+              "RelativeToolTip": "Seashore_CRM\\Seashore_CRM\\Pages\\Companies\\Delete.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T07:02:37.177Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "LeadDtoValidator.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.BLL\\Validators\\LeadDtoValidator.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.BLL\\Validators\\LeadDtoValidator.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.BLL\\Validators\\LeadDtoValidator.cs",
+              "RelativeToolTip": "seashore_CRM.BLL\\Validators\\LeadDtoValidator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:53:21.796Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AutoMapperProfile.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.BLL\\Mapping\\AutoMapperProfile.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.BLL\\Mapping\\AutoMapperProfile.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.BLL\\Mapping\\AutoMapperProfile.cs",
+              "RelativeToolTip": "seashore_CRM.BLL\\Mapping\\AutoMapperProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:50:14.207Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Lead.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Lead.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Lead.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Lead.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Lead.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAA9wA4AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:22:48.743Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Company.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Company.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Company.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Company.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Company.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:22:34.557Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Category.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Category.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Category.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Category.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Category.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:22:55.966Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Invoice.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Invoice.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Invoice.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Invoice.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Invoice.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:23:11.655Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Contact.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Contact.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Contact.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Contact.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Contact.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:22:39.095Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Comment.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Comment.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Comment.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Comment.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Comment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:23:23.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "BaseEntity.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\BaseEntity.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\BaseEntity.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\BaseEntity.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\BaseEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:22:19.747Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Activity.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Activity.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Activity.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Activity.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Activity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:23:19.866Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "UnitOfWork.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Repositories\\UnitOfWork.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.DAL\\Repositories\\UnitOfWork.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Repositories\\UnitOfWork.cs",
+              "RelativeToolTip": "seashore_CRM.DAL\\Repositories\\UnitOfWork.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAgwDAAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:31:01.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "IUnitOfWork.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Repositories\\IUnitOfWork.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.DAL\\Repositories\\IUnitOfWork.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Repositories\\IUnitOfWork.cs",
+              "RelativeToolTip": "seashore_CRM.DAL\\Repositories\\IUnitOfWork.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:30:52.659Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "LeadDto.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\DTOs\\LeadDto.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\DTOs\\LeadDto.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\DTOs\\LeadDto.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\DTOs\\LeadDto.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAEBUwCYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:50:07.779Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Repository.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Repositories\\Repository.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.DAL\\Repositories\\Repository.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Repositories\\Repository.cs",
+              "RelativeToolTip": "seashore_CRM.DAL\\Repositories\\Repository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:30:48.002Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "IRepository.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Repositories\\IRepository.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.DAL\\Repositories\\IRepository.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Repositories\\IRepository.cs",
+              "RelativeToolTip": "seashore_CRM.DAL\\Repositories\\IRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:30:41.841Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "seashore_CRM.Tests.csproj",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Tests\\seashore_CRM.Tests.csproj",
+              "RelativeDocumentMoniker": "seashore_CRM.Tests\\seashore_CRM.Tests.csproj",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Tests\\seashore_CRM.Tests.csproj",
+              "RelativeToolTip": "seashore_CRM.Tests\\seashore_CRM.Tests.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-18T09:53:43.15Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.DAL\\Data\\AppDbContext.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "seashore_CRM.DAL\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAYwBMAAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:23:34.875Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "LeadServiceTests.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Tests\\LeadServiceTests.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Tests\\LeadServiceTests.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Tests\\LeadServiceTests.cs",
+              "RelativeToolTip": "seashore_CRM.Tests\\LeadServiceTests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:53:49.361Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "ILeadService.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.BLL\\Services\\ILeadService.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.BLL\\Services\\ILeadService.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.BLL\\Services\\ILeadService.cs",
+              "RelativeToolTip": "seashore_CRM.BLL\\Services\\ILeadService.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAEBUwBIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:31:20.66Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "User.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\User.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\User.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\User.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:22:27.785Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "SaleItem.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\SaleItem.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\SaleItem.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\SaleItem.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\SaleItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:23:08.205Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Sale.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Sale.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Sale.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Sale.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Sale.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:23:04.183Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "Role.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Role.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Role.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Role.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Role.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:22:31.175Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "Product.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Product.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Product.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Product.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Product.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:22:59.585Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "Payment.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Payment.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Payment.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Payment.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Payment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:23:15.604Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "Opportunity.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Opportunity.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\Opportunity.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\Opportunity.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\Opportunity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:22:53.057Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "LeadStatus.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\LeadStatus.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\LeadStatus.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\LeadStatus.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\LeadStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:22:41.142Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "LeadSource.cs",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\LeadSource.cs",
+              "RelativeDocumentMoniker": "seashore_CRM.Models\\Entities\\LeadSource.cs",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.Models\\Entities\\LeadSource.cs",
+              "RelativeToolTip": "seashore_CRM.Models\\Entities\\LeadSource.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T09:22:43.097Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "seashore_CRM.BLL.csproj",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.BLL.csproj",
+              "RelativeDocumentMoniker": "seashore_CRM.BLL\\seashore_CRM.BLL.csproj",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.BLL.csproj",
+              "RelativeToolTip": "seashore_CRM.BLL\\seashore_CRM.BLL.csproj",
+              "ViewState": "AgIAAA4AAAAAAAAAAIBZwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-18T09:31:15.401Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "seashore_CRM.DAL.csproj",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DAL.csproj",
+              "RelativeDocumentMoniker": "seashore_CRM.DAL\\seashore_CRM.DAL.csproj",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DAL.csproj",
+              "RelativeToolTip": "seashore_CRM.DAL\\seashore_CRM.DAL.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-18T09:24:41.134Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "Seashore_CRM.csproj",
+              "DocumentMoniker": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM.csproj",
+              "RelativeDocumentMoniker": "Seashore_CRM\\Seashore_CRM.csproj",
+              "ToolTip": "F:\\CRM\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM.csproj",
+              "RelativeToolTip": "Seashore_CRM\\Seashore_CRM.csproj",
+              "ViewState": "AgIAAA4AAAAAAAAAAIBZwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-18T09:26:46.692Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

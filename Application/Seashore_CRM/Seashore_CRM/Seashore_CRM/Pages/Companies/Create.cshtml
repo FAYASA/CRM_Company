@@ -1,0 +1,32 @@
+@page
+@model Seashore_CRM.Pages.Companies.CreateModel
+@{
+    ViewData["Title"] = "Create Company";
+}
+
+<h1>Create Company</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Company.CompanyName" class="form-label"></label>
+        <input asp-for="Company.CompanyName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Company.City" class="form-label"></label>
+        <input asp-for="Company.City" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Company.Country" class="form-label"></label>
+        <input asp-for="Company.Country" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Company.Phone" class="form-label"></label>
+        <input asp-for="Company.Phone" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Company.Email" class="form-label"></label>
+        <input asp-for="Company.Email" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>
