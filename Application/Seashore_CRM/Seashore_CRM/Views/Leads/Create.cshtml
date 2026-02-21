@@ -1,72 +1,106 @@
 @model seashore_CRM.Models.DTOs.LeadDto
 
 @{
-    ViewData["Title"] = "Create Lead";
+    ViewData["Title"] = "Add Lead";
 }
 
-<h1>Create Lead</h1>
+<h1>Add Lead</h1>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
-    <div class="row">
-        <div class="col-md-6">
+<form asp-action="Create" method="post" enctype="multipart/form-data" id="leadForm">
+    @Html.AntiForgeryToken()
+
+    <div id="stepper">
+        <!-- Step 1: Lead Capture -->
+        <div class="step" data-step="0">
+            <h4>1 — Lead</h4>
             <div class="mb-3">
                 <label asp-for="LeadType" class="form-label">Lead Type</label>
-                <div>
-                    <input type="radio" asp-for="LeadType" value="Corporate" /> Corporate
-                    <input type="radio" asp-for="LeadType" value="Individual" /> Individual
-                </div>
+                <input asp-for="LeadType" class="form-control" />
             </div>
-
-            <div class="mb-3">
-                <label asp-for="CompanyId" class="form-label">Company</label>
-                <select asp-for="CompanyId" class="form-control" asp-items="ViewBag.Companies">
-                    <option value="">-- Select Company --</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="ContactId" class="form-label">Contact</label>
-                <select asp-for="ContactId" class="form-control" asp-items="ViewBag.Contacts">
-                    <option value="">-- Select Contact --</option>
-                </select>
-            </div>
-
             <div class="mb-3">
                 <label asp-for="SourceId" class="form-label">Source</label>
                 <select asp-for="SourceId" class="form-control" asp-items="ViewBag.Sources">
                     <option value="">-- Select Source --</option>
                 </select>
             </div>
-
             <div class="mb-3">
                 <label asp-for="Priority" class="form-label">Priority</label>
-                <div>
-                    <button type="button" class="btn btn-danger btn-sm priority-btn">Hot</button>
-                    <button type="button" class="btn btn-warning btn-sm priority-btn">Warm</button>
-                    <button type="button" class="btn btn-success btn-sm priority-btn">Cold</button>
-                </div>
-                <input asp-for="Priority" type="hidden" />
+                <input asp-for="Priority" class="form-control" />
             </div>
-
             <div class="mb-3">
-                <label asp-for="AssignedUserId" class="form-label">Assigned User</label>
+                <label asp-for="AssignedUserId" class="form-label">Assign To</label>
                 <select asp-for="AssignedUserId" class="form-control" asp-items="ViewBag.Users">
                     <option value="">-- Select User --</option>
                 </select>
             </div>
+        </div>
 
+        <!-- Step 2: Qualification -->
+        <div class="step d-none" data-step="1">
+            <h4>2 — Qualification</h4>
+            <div class="form-check mb-3">
+                <input asp-for="IsQualified" class="form-check-input" />
+                <label asp-for="IsQualified" class="form-check-label">Qualified</label>
+            </div>
             <div class="mb-3">
-                <label class="form-label">Attach Files</label>
-                <input type="file" name="files" multiple class="form-control" />
+                <label asp-for="QualifiedOn" class="form-label">Qualified On</label>
+                <input asp-for="QualifiedOn" class="form-control" type="datetime-local" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="QualificationNotes" class="form-label">Qualification Notes</label>
+                <textarea asp-for="QualificationNotes" class="form-control"></textarea>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <h5>Product Items</h5>
+        <!-- Step 3: Opportunity -->
+        <div class="step d-none" data-step="2">
+            <h4>3 — Opportunity</h4>
+            <div class="mb-3">
+                <label asp-for="Budget" class="form-label">Budget</label>
+                <input asp-for="Budget" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="DecisionDate" class="form-label">Decision Date</label>
+                <input asp-for="DecisionDate" class="form-control" type="date" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Probability" class="form-label">Probability (%)</label>
+                <input asp-for="Probability" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Step 4: Customer mapping -->
+        <div class="step d-none" data-step="3">
+            <h4>4 — Customer</h4>
+            <div class="mb-3">
+                <label asp-for="CompanyId" class="form-label">Company</label>
+                <select asp-for="CompanyId" class="form-control" asp-items="ViewBag.Companies">
+                    <option value="">-- Select Company --</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ContactId" class="form-label">Contact</label>
+                <select asp-for="ContactId" class="form-control" asp-items="ViewBag.Contacts">
+                    <option value="">-- Select Contact --</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="StatusId" class="form-label">Status</label>
+                <select asp-for="StatusId" class="form-control" asp-items="ViewBag.Statuses">
+                    <option value="">-- Select Status --</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Step 5: Product items (optional) -->
+        <div class="step d-none" data-step="4">
+            <h4>5 — Product Details (optional)</h4>
+
             <table class="table" id="productTable">
                 <thead>
                     <tr>
                         <th>Product</th>
+                        <th>Name (if new)</th>
                         <th>Qty</th>
                         <th>Unit Price</th>
                         <th>Tax %</th>
@@ -76,64 +110,125 @@
                 <tbody>
                     <tr>
                         <td>
-                            <select class="form-control product-select" name="ProductItems[0].ProductId">
-                                <option value="">-- Select Product --</option>
-                                @foreach (var p in ViewBag.ProductList)
+                            <select class="form-control product-select" data-index="0">
+                                <option value="">-- Select --</option>
+                                @foreach (var p in (System.Collections.Generic.List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.ProductList)
                                 {
                                     <option value="@p.Value">@p.Text</option>
                                 }
                             </select>
                         </td>
-                        <td><input class="form-control" name="ProductItems[0].Quantity" value="1" /></td>
-                        <td><input class="form-control" name="ProductItems[0].UnitPrice" value="0" /></td>
-                        <td><input class="form-control" name="ProductItems[0].TaxPercentage" value="0" /></td>
-                        <td><button type="button" class="btn btn-sm btn-danger remove-row">Remove</button></td>
+                        <td><input name="ProductItems[0].ProductName" class="form-control" /></td>
+                        <td><input name="ProductItems[0].Quantity" class="form-control" value="1" /></td>
+                        <td><input name="ProductItems[0].UnitPrice" class="form-control" value="0" /></td>
+                        <td><input name="ProductItems[0].TaxPercentage" class="form-control" value="0" /></td>
+                        <td><button type="button" class="btn btn-sm btn-danger remove-product">Remove</button></td>
                     </tr>
                 </tbody>
             </table>
-            <button type="button" id="addProduct" class="btn btn-sm btn-primary">Add Product Row</button>
-        </div>
-    </div>
+            <button type="button" id="addProduct" class="btn btn-sm btn-primary">Add Product Line</button>
 
-    <div class="mt-3">
-        <button type="submit" class="btn btn-success">Save Lead</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            <div class="mt-3">
+                <label>Attachments</label>
+                <input type="file" name="files" multiple class="form-control" />
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="mt-3">
+            <button type="button" id="prevBtn" class="btn btn-secondary d-none">Previous</button>
+            <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+            <button type="submit" id="submitBtn" class="btn btn-success d-none">Create Lead</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
     </div>
 </form>
 
-@section Scripts {
+@section Scripts{
     <script>
         (function(){
-            let idx = 1;
-            $('#addProduct').on('click', function(){
-                const row = `<tr>
-                        <td>
-                            <select class="form-control product-select" name="ProductItems[${idx}].ProductId">
-                                <option value="">-- Select Product --</option>
-                                @foreach (var p in ViewBag.ProductList)
-                                {
-                                    <text><option value="@p.Value">@p.Text</option></text>
-                                }
-                            </select>
-                        </td>
-                        <td><input class="form-control" name="ProductItems[${idx}].Quantity" value="1" /></td>
-                        <td><input class="form-control" name="ProductItems[${idx}].UnitPrice" value="0" /></td>
-                        <td><input class="form-control" name="ProductItems[${idx}].TaxPercentage" value="0" /></td>
-                        <td><button type="button" class="btn btn-sm btn-danger remove-row">Remove</button></td>
-                    </tr>`;
-                $('#productTable tbody').append(row);
-                idx++;
+            var currentStep = 0;
+            var totalSteps = document.querySelectorAll('#stepper .step').length;
+            var prevBtn = document.getElementById('prevBtn');
+            var nextBtn = document.getElementById('nextBtn');
+            var submitBtn = document.getElementById('submitBtn');
+
+            function showStep(n){
+                document.querySelectorAll('#stepper .step').forEach(function(el){ el.classList.add('d-none'); });
+                var el = document.querySelector('#stepper .step[data-step="' + n + '"]');
+                // fallback to index
+                var steps = document.querySelectorAll('#stepper .step');
+                if (steps[n]) steps[n].classList.remove('d-none');
+
+                prevBtn.classList.toggle('d-none', n === 0);
+                nextBtn.classList.toggle('d-none', n === totalSteps - 1);
+                submitBtn.classList.toggle('d-none', n !== totalSteps - 1);
+            }
+
+            showStep(currentStep);
+
+            nextBtn.addEventListener('click', function(){
+                // Basic client-side validation could go here
+                if (currentStep < totalSteps - 1) currentStep++;
+                showStep(currentStep);
             });
 
-            $(document).on('click', '.remove-row', function(){
-                $(this).closest('tr').remove();
+            prevBtn.addEventListener('click', function(){
+                if (currentStep > 0) currentStep--;
+                showStep(currentStep);
             });
 
-            $('.priority-btn').click(function(){
-                $('.priority-btn').removeClass('selected');
-                $(this).addClass('selected');
-                $('input[name="Priority"]').val($(this).text());
+            // Product rows
+            var productIdx = 1;
+            document.getElementById('addProduct').addEventListener('click', function(){
+                var tbody = document.querySelector('#productTable tbody');
+                var row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <select class="form-control product-select" data-index="${productIdx}">
+                            <option value="">-- Select --</option>
+                            @foreach (var p in (System.Collections.Generic.List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.ProductList) {
+                                <text> <option value="@p.Value">@p.Text</option> </text>
+                            }
+                        </select>
+                    </td>
+                    <td><input name="ProductItems[${productIdx}].ProductName" class="form-control" /></td>
+                    <td><input name="ProductItems[${productIdx}].Quantity" class="form-control" value="1" /></td>
+                    <td><input name="ProductItems[${productIdx}].UnitPrice" class="form-control" value="0" /></td>
+                    <td><input name="ProductItems[${productIdx}].TaxPercentage" class="form-control" value="0" /></td>
+                    <td><button type="button" class="btn btn-sm btn-danger remove-product">Remove</button></td>
+                `;
+                tbody.appendChild(row);
+                productIdx++;
             });
+
+            document.addEventListener('click', function(e){
+                if (e.target && e.target.classList.contains('remove-product')){
+                    var tr = e.target.closest('tr');
+                    if (tr) tr.remove();
+                }
+            });
+
+            // Wire product select values back to hidden inputs for ProductItems[x].ProductId
+            document.addEventListener('change', function(e){
+                if (e.target && e.target.classList.contains('product-select')){
+                    var idx = e.target.getAttribute('data-index');
+                    var val = e.target.value;
+                    // find or create hidden input
+                    var name = `ProductItems[${idx}].ProductId`;
+                    var existing = document.querySelector('input[name=\"" + name + "\"]');
+                    if (!existing){
+                        var inp = document.createElement('input');
+                        inp.type = 'hidden';
+                        inp.name = name;
+                        inp.value = val;
+                        document.getElementById('leadForm').appendChild(inp);
+                    } else {
+                        existing.value = val;
+                    }
+                }
+            });
+
         })();
     </script>
 }

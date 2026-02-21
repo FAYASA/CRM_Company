@@ -1,0 +1,53 @@
+@model seashore_CRM.Models.Entities.Sale
+
+@{
+    ViewData["Title"] = "Sale Details";
+}
+
+<h1>Sale Details</h1>
+
+<div>
+    <h4>Sale #@Model.Id</h4>
+    <dl class="row">
+        <dt class="col-sm-2">Customer</dt>
+        <dd class="col-sm-10">@Model.Customer?.CompanyName</dd>
+
+        <dt class="col-sm-2">Date</dt>
+        <dd class="col-sm-10">@Model.SaleDate</dd>
+
+        <dt class="col-sm-2">Total</dt>
+        <dd class="col-sm-10">@Model.TotalAmount</dd>
+    </dl>
+
+    <p>
+        <a asp-action="CreateFromOpportunity" asp-controller="Sales" asp-route-opportunityId="@Model.OpportunityId" class="btn btn-secondary">Create Sale from Opportunity</a>
+        <a asp-action="CreateFromSale" asp-controller="Invoices" asp-route-saleId="@Model.Id" class="btn btn-primary">Create Invoice from Sale</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </p>
+
+    <h5>Items</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Unit</th>
+                <th>Line Total</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model.Items != null)
+        {
+            foreach (var it in Model.Items)
+            {
+                <tr>
+                    <td>@it.Product?.ProductName</td>
+                    <td>@it.Quantity</td>
+                    <td>@it.UnitPrice</td>
+                    <td>@it.LineTotal</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,27 @@
+@model seashore_CRM.Models.Entities.Payment
+
+@{
+    ViewData["Title"] = "Record Payment";
+}
+
+<h1>Record Payment</h1>
+
+<form asp-action="RecordPayment" method="post">
+    <input asp-for="InvoiceId" type="hidden" />
+
+    <div class="mb-3">
+        <label asp-for="PaidAmount" class="form-label">Amount</label>
+        <input asp-for="PaidAmount" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="PaymentDate" class="form-label">Date</label>
+        <input asp-for="PaymentDate" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="PaymentMethod" class="form-label">Method</label>
+        <input asp-for="PaymentMethod" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Payment</button>
+    <a asp-action="Details" asp-route-id="@Model.InvoiceId" class="btn btn-secondary">Cancel</a>
+</form>

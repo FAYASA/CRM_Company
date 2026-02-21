@@ -1,0 +1,33 @@
+@model seashore_CRM.Models.Entities.Invoice
+
+@{
+    ViewData["Title"] = "Create Invoice";
+}
+
+<h1>Create Invoice</h1>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="SaleId" class="form-label">Sale Id</label>
+        <input asp-for="SaleId" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="InvoiceNumber" class="form-label">Invoice Number</label>
+        <input asp-for="InvoiceNumber" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="InvoiceDate" class="form-label">Invoice Date</label>
+        <input asp-for="InvoiceDate" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="DueDate" class="form-label">Due Date</label>
+        <input asp-for="DueDate" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="TotalAmount" class="form-label">Total Amount</label>
+        <input asp-for="TotalAmount" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Invoice</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
