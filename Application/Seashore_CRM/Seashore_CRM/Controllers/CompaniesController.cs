@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using seashore_CRM.DAL.Repositories;
 using seashore_CRM.Models.Entities;
 using System.Threading.Tasks;
 using System.Linq;
+using seashore_CRM.DAL.Repositories.Repository_Interfaces;
 
 namespace Seashore_CRM.Controllers
 {

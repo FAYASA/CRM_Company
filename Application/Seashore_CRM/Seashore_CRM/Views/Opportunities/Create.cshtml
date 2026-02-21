@@ -1,0 +1,35 @@
+@model seashore_CRM.Models.Entities.Opportunity
+
+@{
+    ViewData["Title"] = "Create Opportunity";
+}
+
+<h1>Create Opportunity</h1>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="LeadId" class="form-label"></label>
+        <select asp-for="LeadId" class="form-control" asp-items="ViewBag.Leads">
+            <option value="">-- Select Lead --</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Stage" class="form-label"></label>
+        <input asp-for="Stage" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="EstimatedValue" class="form-label"></label>
+        <input asp-for="EstimatedValue" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Probability" class="form-label"></label>
+        <input asp-for="Probability" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="ExpectedCloseDate" class="form-label"></label>
+        <input asp-for="ExpectedCloseDate" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

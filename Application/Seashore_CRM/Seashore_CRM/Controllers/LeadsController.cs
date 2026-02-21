@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using seashore_CRM.BLL.Services;
-using seashore_CRM.DAL.Repositories;
 using seashore_CRM.Models.DTOs;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Collections.Generic;
+using seashore_CRM.Models.Entities;
+using seashore_CRM.DAL.Repositories.Repository_Interfaces;
+using seashore_CRM.BLL.Services.Service_Interfaces;
 
 namespace Seashore_CRM.Controllers
 {
@@ -12,11 +16,13 @@ namespace Seashore_CRM.Controllers
     {
         private readonly ILeadService _leadService;
         private readonly IUnitOfWork _uow;
+        private readonly IWebHostEnvironment _env;
 
-        public LeadsController(ILeadService leadService, IUnitOfWork uow)
+        public LeadsController(ILeadService leadService, IUnitOfWork uow, IWebHostEnvironment env)
         {
             _leadService = leadService;
             _uow = uow;
+            _env = env;
         }
 
         public async Task<IActionResult> Index()
@@ -48,7 +54,69 @@ namespace Seashore_CRM.Controllers
                 return View(lead);
             }
 
-            await _leadService.AddLeadAsync(lead);
+            // Handle file uploads
+            var files = Request.Form.Files;
+            var uploadFolder = Path.Combine(_env.WebRootPath, "uploads");
+            Directory.CreateDirectory(uploadFolder);
+            var savedFiles = new List<string>();
+            foreach (var f in files)
+            {
+                var fileName = Path.GetRandomFileName() + Path.GetExtension(f.FileName);
+                var path = Path.Combine(uploadFolder, fileName);
+                using (var stream = System.IO.File.Create(path))
+                {
+                    await f.CopyToAsync(stream);
+                }
+                savedFiles.Add(fileName);
+            }
+            if (savedFiles.Any())
+            {
+                lead.AttachmentsJson = System.Text.Json.JsonSerializer.Serialize(savedFiles);
+            }
+
+            // If product items include free-entry products (no ProductId) create Product records
+            if (lead.ProductItems != null)
+            {
+                foreach (var pi in lead.ProductItems.Where(x => !x.ProductId.HasValue && !string.IsNullOrEmpty(x.ProductName)))
+                {
+                    var prod = new Product
+                    {
+                        ProductName = pi.ProductName,
+                        UnitPrice = pi.UnitPrice,
+                        TaxPercentage = pi.TaxPercentage,
+                        IsActive = true
+                    };
+                    await _uow.Products.AddAsync(prod);
+                    await _uow.CommitAsync();
+                    // set created product id back on dto
+                    pi.ProductId = prod.Id;
+                }
+            }
+
+            // Create Lead and get its Id
+            var leadId = await _leadService.AddLeadAsync(lead);
+
+            // Persist LeadItem rows for each product item
+            if (lead.ProductItems != null && lead.ProductItems.Any())
+            {
+                foreach (var pi in lead.ProductItems.Where(x => x.ProductId.HasValue))
+                {
+                    var lineTotal = pi.Quantity * pi.UnitPrice * (1 + (pi.TaxPercentage / 100M));
+                    var li = new LeadItem
+                    {
+                        LeadId = leadId,
+                        ProductId = pi.ProductId.Value,
+                        Quantity = pi.Quantity,
+                        UnitPrice = pi.UnitPrice,
+                        TaxPercentage = pi.TaxPercentage,
+                        LineTotal = lineTotal
+                    };
+                    await _uow.LeadItems.AddAsync(li);
+                }
+
+                await _uow.CommitAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -128,12 +196,14 @@ namespace Seashore_CRM.Controllers
             var sources = await _uow.LeadSources.GetAllAsync();
             var statuses = await _uow.LeadStatuses.GetAllAsync();
             var users = await _uow.Users.GetAllAsync();
+            var products = await _uow.Products.GetAllAsync();
 
             ViewBag.Companies = new SelectList(companies, "Id", "CompanyName", model?.CompanyId);
             ViewBag.Contacts = new SelectList(contacts, "Id", "FirstName", model?.ContactId);
             ViewBag.Sources = new SelectList(sources, "Id", "SourceName", model?.SourceId);
             ViewBag.Statuses = new SelectList(statuses, "Id", "StatusName", model?.StatusId);
             ViewBag.Users = new SelectList(users, "Id", "FullName", model?.AssignedUserId);
+            ViewBag.ProductList = products.Select(p => new SelectListItem(p.ProductName, p.Id.ToString())).ToList();
         }
     }
 }

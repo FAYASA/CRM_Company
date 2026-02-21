@@ -6,6 +6,8 @@ using AutoMapper;
 using FluentValidation;
 using seashore_CRM.Models.DTOs;
 using seashore_CRM.BLL.Validators;
+using seashore_CRM.DAL.Repositories.Repository_Interfaces;
+using seashore_CRM.BLL.Services.Service_Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,8 +26,34 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Repositories/UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+// Register specialized repositories individually (optional)
+builder.Services.AddScoped<ILeadRepository, LeadRepository>();
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ISaleRepository, SaleRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<ILeadItemRepository, LeadItemRepository>();
+
 // BLL services
 builder.Services.AddScoped<ILeadService, LeadService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<ILeadStatusService, LeadStatusService>();
+builder.Services.AddScoped<ILeadSourceService, LeadSourceService>();
+builder.Services.AddScoped<IOpportunityService, OpportunityService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<ISaleItemService, SaleItemService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IActivityService, ActivityService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<ILeadItemService, LeadItemService>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(seashore_CRM.BLL.Mapping.AutoMapperProfile));

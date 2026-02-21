@@ -7,7 +7,8 @@ using System;
 
 namespace seashore_CRM.DAL.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class
+    // Concrete base repository implementation used by all entity-specific repositories.
+    public class Repository<T> where T : class
     {
         protected readonly AppDbContext _context;
         protected readonly DbSet<T> _dbSet;

@@ -1,0 +1,17 @@
+@model seashore_CRM.Models.Entities.Category
+
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+<h1>Edit Category</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="CategoryName" class="form-label"></label>
+        <input asp-for="CategoryName" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

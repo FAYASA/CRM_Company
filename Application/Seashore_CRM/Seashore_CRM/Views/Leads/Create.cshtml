@@ -6,38 +6,134 @@
 
 <h1>Create Lead</h1>
 
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label asp-for="LeadType" class="form-label"></label>
-        <input asp-for="LeadType" class="form-control" />
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label asp-for="LeadType" class="form-label">Lead Type</label>
+                <div>
+                    <input type="radio" asp-for="LeadType" value="Corporate" /> Corporate
+                    <input type="radio" asp-for="LeadType" value="Individual" /> Individual
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CompanyId" class="form-label">Company</label>
+                <select asp-for="CompanyId" class="form-control" asp-items="ViewBag.Companies">
+                    <option value="">-- Select Company --</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ContactId" class="form-label">Contact</label>
+                <select asp-for="ContactId" class="form-control" asp-items="ViewBag.Contacts">
+                    <option value="">-- Select Contact --</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SourceId" class="form-label">Source</label>
+                <select asp-for="SourceId" class="form-control" asp-items="ViewBag.Sources">
+                    <option value="">-- Select Source --</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Priority" class="form-label">Priority</label>
+                <div>
+                    <button type="button" class="btn btn-danger btn-sm priority-btn">Hot</button>
+                    <button type="button" class="btn btn-warning btn-sm priority-btn">Warm</button>
+                    <button type="button" class="btn btn-success btn-sm priority-btn">Cold</button>
+                </div>
+                <input asp-for="Priority" type="hidden" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="AssignedUserId" class="form-label">Assigned User</label>
+                <select asp-for="AssignedUserId" class="form-control" asp-items="ViewBag.Users">
+                    <option value="">-- Select User --</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Attach Files</label>
+                <input type="file" name="files" multiple class="form-control" />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h5>Product Items</h5>
+            <table class="table" id="productTable">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Unit Price</th>
+                        <th>Tax %</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <select class="form-control product-select" name="ProductItems[0].ProductId">
+                                <option value="">-- Select Product --</option>
+                                @foreach (var p in ViewBag.ProductList)
+                                {
+                                    <option value="@p.Value">@p.Text</option>
+                                }
+                            </select>
+                        </td>
+                        <td><input class="form-control" name="ProductItems[0].Quantity" value="1" /></td>
+                        <td><input class="form-control" name="ProductItems[0].UnitPrice" value="0" /></td>
+                        <td><input class="form-control" name="ProductItems[0].TaxPercentage" value="0" /></td>
+                        <td><button type="button" class="btn btn-sm btn-danger remove-row">Remove</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" id="addProduct" class="btn btn-sm btn-primary">Add Product Row</button>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="CompanyId" class="form-label"></label>
-        <select asp-for="CompanyId" class="form-control" asp-items="ViewBag.Companies">
-            <option value="">-- Select Company --</option>
-        </select>
+    <div class="mt-3">
+        <button type="submit" class="btn btn-success">Save Lead</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="ContactId" class="form-label"></label>
-        <select asp-for="ContactId" class="form-control" asp-items="ViewBag.Contacts">
-            <option value="">-- Select Contact --</option>
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Priority" class="form-label"></label>
-        <input asp-for="Priority" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="AssignedUserId" class="form-label"></label>
-        <select asp-for="AssignedUserId" class="form-control" asp-items="ViewBag.Users">
-            <option value="">-- Select User --</option>
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>
+
+@section Scripts {
+    <script>
+        (function(){
+            let idx = 1;
+            $('#addProduct').on('click', function(){
+                const row = `<tr>
+                        <td>
+                            <select class="form-control product-select" name="ProductItems[${idx}].ProductId">
+                                <option value="">-- Select Product --</option>
+                                @foreach (var p in ViewBag.ProductList)
+                                {
+                                    <text><option value="@p.Value">@p.Text</option></text>
+                                }
+                            </select>
+                        </td>
+                        <td><input class="form-control" name="ProductItems[${idx}].Quantity" value="1" /></td>
+                        <td><input class="form-control" name="ProductItems[${idx}].UnitPrice" value="0" /></td>
+                        <td><input class="form-control" name="ProductItems[${idx}].TaxPercentage" value="0" /></td>
+                        <td><button type="button" class="btn btn-sm btn-danger remove-row">Remove</button></td>
+                    </tr>`;
+                $('#productTable tbody').append(row);
+                idx++;
+            });
+
+            $(document).on('click', '.remove-row', function(){
+                $(this).closest('tr').remove();
+            });
+
+            $('.priority-btn').click(function(){
+                $('.priority-btn').removeClass('selected');
+                $(this).addClass('selected');
+                $('input[name="Priority"]').val($(this).text());
+            });
+        })();
+    </script>
+}

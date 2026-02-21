@@ -1,0 +1,13 @@
+@model seashore_CRM.Models.Entities.Category
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<h1>Category Details</h1>
+
+<div>
+    <h4>@Model.CategoryName</h4>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

@@ -1,0 +1,82 @@
+@model seashore_CRM.Models.Entities.Sale
+
+@{
+    ViewData["Title"] = "Create Sale";
+}
+
+<h1>Create Sale</h1>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="CustomerId" class="form-label">Customer</label>
+        <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.Companies">
+            <option value="">-- Select Customer --</option>
+        </select>
+    </div>
+
+    <h5>Items</h5>
+    <table class="table" id="itemsTable">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Tax %</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select name="items[0].ProductId" class="form-control">
+                        <option value="">-- Select Product --</option>
+                        @foreach (var p in ViewBag.Products)
+                        {
+                            <option value="@p.Value">@p.Text</option>
+                        }
+                    </select>
+                </td>
+                <td><input name="items[0].Quantity" class="form-control" value="1" /></td>
+                <td><input name="items[0].UnitPrice" class="form-control" value="0" /></td>
+                <td><input name="items[0].TaxPercentage" class="form-control" value="0" /></td>
+                <td><button type="button" class="btn btn-sm btn-danger remove-row">Remove</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" id="addItem" class="btn btn-sm btn-primary">Add Item</button>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Create Sale</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts{
+    <script>
+        (function(){
+            let idx = 1;
+            $('#addItem').click(function(){
+                var row = `<tr>
+                    <td>
+                        <select name="items[${idx}].ProductId" class="form-control">
+                            <option value="">-- Select Product --</option>
+                            @foreach(var p in (List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.Products){
+                                <text> <option value="@p.Value">@p.Text</option></text>
+                            }
+                        </select>
+                    </td>
+                    <td><input name="items[${idx}].Quantity" class="form-control" value="1" /></td>
+                    <td><input name="items[${idx}].UnitPrice" class="form-control" value="0" /></td>
+                    <td><input name="items[${idx}].TaxPercentage" class="form-control" value="0" /></td>
+                    <td><button type="button" class="btn btn-sm btn-danger remove-row">Remove</button></td>
+                </tr>`;
+                $('#itemsTable tbody').append(row);
+                idx++;
+            });
+
+            $(document).on('click', '.remove-row', function(){
+                $(this).closest('tr').remove();
+            });
+        })();
+    </script>
+}

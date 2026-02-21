@@ -652,6 +652,68 @@ namespace seashore_CRM.DAL.Migrations
                     b.ToTable("Leads");
                 });
 
+            modelBuilder.Entity("seashore_CRM.Models.Entities.LeadItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("LeadId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("LineTotal")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<decimal>("TaxPercentage")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeadId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("LeadItems");
+                });
+
             modelBuilder.Entity("seashore_CRM.Models.Entities.LeadSource", b =>
                 {
                     b.Property<int>("Id")
@@ -1294,6 +1356,25 @@ namespace seashore_CRM.DAL.Migrations
                     b.Navigation("Source");
 
                     b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("seashore_CRM.Models.Entities.LeadItem", b =>
+                {
+                    b.HasOne("seashore_CRM.Models.Entities.Lead", "Lead")
+                        .WithMany()
+                        .HasForeignKey("LeadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("seashore_CRM.Models.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Lead");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("seashore_CRM.Models.Entities.Opportunity", b =>

@@ -1,11 +1,12 @@
 using AutoMapper;
-using seashore_CRM.DAL.Repositories;
 using seashore_CRM.Models.DTOs;
 using seashore_CRM.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using seashore_CRM.DAL.Repositories.Repository_Interfaces;
+using seashore_CRM.BLL.Services.Service_Interfaces;
 
 namespace seashore_CRM.BLL.Services
 {
@@ -13,18 +14,21 @@ namespace seashore_CRM.BLL.Services
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
+        private readonly ILeadItemRepository _leadItemRepo;
 
-        public LeadService(IUnitOfWork uow, IMapper mapper)
+        public LeadService(IUnitOfWork uow, IMapper mapper, ILeadItemRepository leadItemRepo)
         {
             _uow = uow;
             _mapper = mapper;
+            _leadItemRepo = leadItemRepo;
         }
 
-        public async Task AddLeadAsync(LeadDto leadDto)
+        public async Task<int> AddLeadAsync(LeadDto leadDto)
         {
             var entity = _mapper.Map<Lead>(leadDto);
             await _uow.Leads.AddAsync(entity);
             await _uow.CommitAsync();
+            return entity.Id;
         }
 
         public async Task DeleteLeadAsync(int id)
