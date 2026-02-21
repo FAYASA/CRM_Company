@@ -10,6 +10,7 @@ using seashore_CRM.Models.Entities;
 using seashore_CRM.DAL.Repositories.Repository_Interfaces;
 using seashore_CRM.BLL.Services.Service_Interfaces;
 using System.Text.Json;
+using System;
 
 namespace Seashore_CRM.Controllers
 {
@@ -65,6 +66,10 @@ namespace Seashore_CRM.Controllers
             // load recent activities for this lead
             var activities = (await _uow.Activities.FindAsync(a => a.LeadId == id)).OrderByDescending(a => a.ActivityDate).ToList();
             ViewBag.Activities = activities;
+
+            // load comments
+            var comments = (await _uow.Comments.FindAsync(c => c.LeadId == id)).OrderByDescending(c => c.CreatedDate).ToList();
+            ViewBag.Comments = comments;
 
             return View(lead);
         }
@@ -163,6 +168,21 @@ namespace Seashore_CRM.Controllers
                     await _uow.LeadItems.AddAsync(li);
                 }
 
+                await _uow.CommitAsync();
+            }
+
+            // Persist comments submitted in the form
+            var commentsText = Request.Form["Comments"].FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(commentsText))
+            {
+                var comment = new Comment
+                {
+                    LeadId = leadId,
+                    CommentText = commentsText,
+                    CreatedById = null,
+                    CreatedDate = DateTime.UtcNow
+                };
+                await _uow.Comments.AddAsync(comment);
                 await _uow.CommitAsync();
             }
 
@@ -283,6 +303,7 @@ namespace Seashore_CRM.Controllers
             var statuses = await _uow.LeadStatuses.GetAllAsync();
             var users = await _uow.Users.GetAllAsync();
             var products = await _uow.Products.GetAllAsync();
+            var categories = await _uow.Categories.GetAllAsync();
 
             ViewBag.Companies = new SelectList(companies, "Id", "CompanyName", model?.CompanyId);
             ViewBag.Contacts = new SelectList(contacts, "Id", "FirstName", model?.ContactId);
@@ -290,6 +311,29 @@ namespace Seashore_CRM.Controllers
             ViewBag.Statuses = new SelectList(statuses, "Id", "StatusName", model?.StatusId);
             ViewBag.Users = new SelectList(users, "Id", "FullName", model?.AssignedUserId);
             ViewBag.ProductList = products.Select(p => new SelectListItem(p.ProductName, p.Id.ToString())).ToList();
+            ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
+
+            // Expose product metadata to client as JSON for auto-fill (unit price, cost, tax, category)
+            var prodMap = products.Select(p => new {
+                id = p.Id,
+                name = p.ProductName,
+                unitPrice = p.UnitPrice,
+                cost = p.CostPrice,
+                tax = p.TaxPercentage,
+                categoryId = p.CategoryId
+            }).ToDictionary(x => x.id.ToString(), x => x);
+            ViewBag.ProductsJson = JsonSerializer.Serialize(prodMap);
+
+            // Simple comment templates for quick selection in UI
+            var commentTemplates = new List<string>
+            {
+                "Need more information",
+                "Sent quote",
+                "Followed up",
+                "Client requested sample",
+                "Waiting for approval"
+            };
+            ViewBag.CommentTemplates = new SelectList(commentTemplates);
 
             // expose mapping to client as JSON (status name -> activities array)
             ViewBag.StatusActivitiesJson = JsonSerializer.Serialize(StatusActivities);

@@ -305,3 +305,9 @@ F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\refint\Seashore_CRM.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.pdb
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Seashore_CRM.deps.json
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Seashore_CRM.runtimeconfig.json
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Seashore_CRM.dll
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Seashore_CRM.pdb
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.genruntimeconfig.cache
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\ref\Seashore_CRM.dll
