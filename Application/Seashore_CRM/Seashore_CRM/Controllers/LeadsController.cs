@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using seashore_CRM.Models.Entities;
 using seashore_CRM.DAL.Repositories.Repository_Interfaces;
 using seashore_CRM.BLL.Services.Service_Interfaces;
+using System.Text.Json;
 
 namespace Seashore_CRM.Controllers
 {
@@ -17,12 +18,27 @@ namespace Seashore_CRM.Controllers
         private readonly ILeadService _leadService;
         private readonly IUnitOfWork _uow;
         private readonly IWebHostEnvironment _env;
+        private readonly IActivityService _activityService;
 
-        public LeadsController(ILeadService leadService, IUnitOfWork uow, IWebHostEnvironment env)
+        // Mapping from lead status name to suggested activities
+        private static readonly Dictionary<string, string[]> StatusActivities = new()
+        {
+            { "Discover", new[] { "Interested", "Not Interested", "Average" } },
+            { "Quote Given", new[] { "Follow up", "Very Important", "Site visit", "Submit Sample" } },
+            { "Follow Up", new[] { "Site Visited", "Tele calling", "Price high", "Need more clarification", "Waiting for approval", "Expecting PO" } },
+            { "Forecast", new[] { "Quote confirmed", "Partially confirmed" } },
+            { "PO Received", new[] { "Delivery completed", "Delivery pending", "Partially delivered" } },
+            { "Invoicing", new[] { "Invoiced", "Note Invoiced", "Partially Invoiced" } },
+            { "Order Closed", new[] { "Payment completed", "Payment pending", "Partially payment received" } },
+            { "Order Lost", new[] { "Lost to Competition Reason Unknown", "Lost to Competition Reason known", "Client Dropped the plan Higher Price", "Client Dropped the plan Delivery Distance" } }
+        };
+
+        public LeadsController(ILeadService leadService, IUnitOfWork uow, IWebHostEnvironment env, IActivityService activityService)
         {
             _leadService = leadService;
             _uow = uow;
             _env = env;
+            _activityService = activityService;
         }
 
         public async Task<IActionResult> Index()
@@ -35,7 +51,40 @@ namespace Seashore_CRM.Controllers
         {
             var lead = await _leadService.GetLeadByIdAsync(id);
             if (lead == null) return NotFound();
+
+            // suggested activities from mapping
+            if (!string.IsNullOrEmpty(lead.StatusName) && StatusActivities.TryGetValue(lead.StatusName, out var acts))
+            {
+                ViewBag.SuggestedActivities = acts.ToList();
+            }
+            else
+            {
+                ViewBag.SuggestedActivities = new List<string>();
+            }
+
+            // load recent activities for this lead
+            var activities = (await _uow.Activities.FindAsync(a => a.LeadId == id)).OrderByDescending(a => a.ActivityDate).ToList();
+            ViewBag.Activities = activities;
+
             return View(lead);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddActivity(int leadId, string activityType)
+        {
+            if (string.IsNullOrWhiteSpace(activityType)) return BadRequest();
+
+            var act = new Activity
+            {
+                LeadId = leadId,
+                ActivityType = activityType,
+                Description = null,
+                ActivityDate = System.DateTime.UtcNow
+            };
+
+            await _activityService.AddAsync(act);
+            return RedirectToAction(nameof(Details), new { id = leadId });
         }
 
         public async Task<IActionResult> Create()
@@ -117,6 +166,24 @@ namespace Seashore_CRM.Controllers
                 await _uow.CommitAsync();
             }
 
+            // Persist any selected activities from create form
+            var selectedActivities = Request.Form["SelectedActivities"].ToList();
+            if (selectedActivities != null && selectedActivities.Any())
+            {
+                foreach (var at in selectedActivities)
+                {
+                    if (string.IsNullOrWhiteSpace(at)) continue;
+                    var a = new Activity
+                    {
+                        LeadId = leadId,
+                        ActivityType = at,
+                        ActivityDate = System.DateTime.UtcNow
+                    };
+                    await _uow.Activities.AddAsync(a);
+                }
+                await _uow.CommitAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -140,6 +207,25 @@ namespace Seashore_CRM.Controllers
             }
 
             await _leadService.UpdateLeadAsync(lead);
+
+            // Persist any selected activities from edit form
+            var selectedActivities = Request.Form["SelectedActivities"].ToList();
+            if (selectedActivities != null && selectedActivities.Any())
+            {
+                foreach (var at in selectedActivities)
+                {
+                    if (string.IsNullOrWhiteSpace(at)) continue;
+                    var a = new Activity
+                    {
+                        LeadId = lead.Id,
+                        ActivityType = at,
+                        ActivityDate = System.DateTime.UtcNow
+                    };
+                    await _uow.Activities.AddAsync(a);
+                }
+                await _uow.CommitAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -204,6 +290,9 @@ namespace Seashore_CRM.Controllers
             ViewBag.Statuses = new SelectList(statuses, "Id", "StatusName", model?.StatusId);
             ViewBag.Users = new SelectList(users, "Id", "FullName", model?.AssignedUserId);
             ViewBag.ProductList = products.Select(p => new SelectListItem(p.ProductName, p.Id.ToString())).ToList();
+
+            // expose mapping to client as JSON (status name -> activities array)
+            ViewBag.StatusActivitiesJson = JsonSerializer.Serialize(StatusActivities);
         }
     }
 }

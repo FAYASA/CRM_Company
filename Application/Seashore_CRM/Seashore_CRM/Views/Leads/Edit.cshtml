@@ -22,10 +22,69 @@
     </div>
 
     <div class="mb-3">
+        <label asp-for="StatusId" class="form-label">Status</label>
+        <select asp-for="StatusId" class="form-control" asp-items="ViewBag.Statuses" id="statusSelect">
+            <option value="">-- Select Status --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
         <label asp-for="Priority" class="form-label"></label>
         <input asp-for="Priority" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <h5>Suggested Activities</h5>
+        <div id="suggestedActivitiesArea"></div>
+        <div id="selectedActivitiesContainer"></div>
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>
+
+@section Scripts {
+    <script>
+        (function(){
+            const mapping = @Html.Raw(ViewBag.StatusActivitiesJson ?? "{}");
+
+            function renderSuggested(statusId) {
+                const area = $('#suggestedActivitiesArea');
+                area.empty();
+                if (!statusId) {
+                    area.append('<p class="text-muted">Select a status to see suggested activities.</p>');
+                    return;
+                }
+
+                const statusText = $('#statusSelect option:selected').text();
+                const activities = mapping[statusText];
+                if (!activities || activities.length === 0) {
+                    area.append('<p class="text-muted">No suggested activities for this status.</p>');
+                    return;
+                }
+
+                const list = $('<div class="d-flex flex-wrap"></div>');
+                activities.forEach(function(a, i){
+                    const btn = $(`<div class="m-1"><label class="btn btn-outline-primary btn-sm"><input type="checkbox" class="activity-checkbox" value="${a}" /> ${a}</label></div>`);
+                    list.append(btn);
+                });
+                area.append(list);
+
+                $('.activity-checkbox').on('change', function(){
+                    $('#selectedActivitiesContainer').empty();
+                    $('.activity-checkbox:checked').each(function(i, el){
+                        const val = $(el).val();
+                        $('#selectedActivitiesContainer').append(`<input type="hidden" name="SelectedActivities" value="${val}" />`);
+                    });
+                });
+            }
+
+            $('#statusSelect').on('change', function(){
+                renderSuggested($(this).val());
+            });
+
+            // initial
+            renderSuggested($('#statusSelect').val());
+        })();
+    </script>
+}
