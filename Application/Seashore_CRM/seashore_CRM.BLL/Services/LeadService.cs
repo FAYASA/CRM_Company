@@ -58,6 +58,32 @@ namespace seashore_CRM.BLL.Services
                     var user = await _uow.Users.GetByIdAsync(l.AssignedUserId.Value);
                     dto.AssignedUserName = user?.FullName;
                 }
+
+                // populate lead items totals (GrossTotal, Units) and product names
+                var items = (await _uow.LeadItems.FindAsync(x => x.LeadId == l.Id)).ToList();
+                if (items.Any())
+                {
+                    dto.Units = items.Sum(i => i.Quantity);
+                    dto.GrossTotal = items.Sum(i => i.LineTotal);
+                    dto.ProductNames = new List<string>();
+                    foreach (var it in items)
+                    {
+                        var p = await _uow.Products.GetByIdAsync(it.ProductId);
+                        if (p != null) dto.ProductNames.Add(p.ProductName);
+                    }
+                }
+
+                // latest activity and updated date
+                var acts = (await _uow.Activities.FindAsync(a => a.LeadId == l.Id)).OrderByDescending(a => a.ActivityDate).ToList();
+                if (acts.Any())
+                {
+                    dto.LatestActivity = acts.First().ActivityType;
+                    dto.UpdatedDate = acts.First().ActivityDate;
+                }
+
+                // closure date (use DecisionDate or ExpectedClosureDate)
+                dto.ClosureDate = l.DecisionDate ?? l.ExpectedClosureDate;
+
                 dtos.Add(dto);
             }
 
@@ -79,6 +105,30 @@ namespace seashore_CRM.BLL.Services
                 var user = await _uow.Users.GetByIdAsync(lead.AssignedUserId.Value);
                 dto.AssignedUserName = user?.FullName;
             }
+
+            // populate items
+            var items = (await _uow.LeadItems.FindAsync(x => x.LeadId == lead.Id)).ToList();
+            if (items.Any())
+            {
+                dto.Units = items.Sum(i => i.Quantity);
+                dto.GrossTotal = items.Sum(i => i.LineTotal);
+                dto.ProductNames = new List<string>();
+                foreach (var it in items)
+                {
+                    var p = await _uow.Products.GetByIdAsync(it.ProductId);
+                    if (p != null) dto.ProductNames.Add(p.ProductName);
+                }
+            }
+
+            var acts = (await _uow.Activities.FindAsync(a => a.LeadId == lead.Id)).OrderByDescending(a => a.ActivityDate).ToList();
+            if (acts.Any())
+            {
+                dto.LatestActivity = acts.First().ActivityType;
+                dto.UpdatedDate = acts.First().ActivityDate;
+            }
+
+            dto.ClosureDate = lead.DecisionDate ?? lead.ExpectedClosureDate;
+
             return dto;
         }
 

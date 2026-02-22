@@ -35,6 +35,7 @@ builder.Services.AddScoped<ISaleRepository, SaleRepository>();
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ILeadItemRepository, LeadItemRepository>();
+builder.Services.AddScoped<ILeadStatusActivityRepository, LeadStatusActivityRepository>();
 
 // BLL services
 builder.Services.AddScoped<ILeadService, LeadService>();
@@ -54,6 +55,7 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ILeadItemService, LeadItemService>();
+builder.Services.AddScoped<ILeadStatusActivityService, LeadStatusActivityService>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(seashore_CRM.BLL.Mapping.AutoMapperProfile));

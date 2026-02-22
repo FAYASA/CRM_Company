@@ -4,35 +4,46 @@
     ViewData["Title"] = "Create Product";
 }
 
-<h1>Create Product</h1>
+@await Html.PartialAsync("_PageHeader")
 
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label asp-for="ProductName" class="form-label"></label>
-        <input asp-for="ProductName" class="form-control" />
+<div class="card mx-auto" style="max-width:900px;">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="ProductName" class="form-label"></label>
+                    <input asp-for="ProductName" class="form-control form-control-lg" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="CategoryId" class="form-label"></label>
+                    <select asp-for="CategoryId" class="form-select form-select-lg" asp-items="ViewBag.Categories">
+                        <option value="">-- Select Category --</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="UnitPrice" class="form-label"></label>
+                    <input asp-for="UnitPrice" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="CostPrice" class="form-label"></label>
+                    <input asp-for="CostPrice" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="TaxPercentage" class="form-label"></label>
+                    <input asp-for="TaxPercentage" class="form-control" />
+                </div>
+                <div class="col-12">
+                    <div class="form-check">
+                        <input asp-for="IsActive" class="form-check-input" />
+                        <label asp-for="IsActive" class="form-check-label"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-action="Index" class="btn btn-link">Cancel</a>
+            </div>
+        </form>
     </div>
-    <div class="mb-3">
-        <label asp-for="CategoryId" class="form-label"></label>
-        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
-            <option value="">-- Select Category --</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label asp-for="UnitPrice" class="form-label"></label>
-        <input asp-for="UnitPrice" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="CostPrice" class="form-label"></label>
-        <input asp-for="CostPrice" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="TaxPercentage" class="form-label"></label>
-        <input asp-for="TaxPercentage" class="form-control" />
-    </div>
-    <div class="form-check mb-3">
-        <input asp-for="IsActive" class="form-check-input" />
-        <label asp-for="IsActive" class="form-check-label"></label>
-    </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+</div>

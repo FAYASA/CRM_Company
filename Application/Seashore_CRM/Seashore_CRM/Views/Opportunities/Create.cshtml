@@ -4,32 +4,26 @@
     ViewData["Title"] = "Create Opportunity";
 }
 
-<h1>Create Opportunity</h1>
+@await Html.PartialAsync("_PageHeader")
 
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label asp-for="LeadId" class="form-label"></label>
-        <select asp-for="LeadId" class="form-control" asp-items="ViewBag.Leads">
-            <option value="">-- Select Lead --</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Stage" class="form-label"></label>
-        <input asp-for="Stage" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="EstimatedValue" class="form-label"></label>
-        <input asp-for="EstimatedValue" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Probability" class="form-label"></label>
-        <input asp-for="Probability" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="ExpectedCloseDate" class="form-label"></label>
-        <input asp-for="ExpectedCloseDate" class="form-control" />
-    </div>
+<div class="card mx-auto" style="max-width:900px;">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="LeadId" class="form-label">Lead</label>
+                    <input asp-for="LeadId" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="EstimatedValue" class="form-label">Estimated Value</label>
+                    <input asp-for="EstimatedValue" class="form-control" />
+                </div>
+            </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-action="Index" class="btn btn-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

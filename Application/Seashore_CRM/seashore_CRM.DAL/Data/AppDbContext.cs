@@ -18,6 +18,7 @@ namespace seashore_CRM.DAL.Data
         public DbSet<Contact> Contacts => Set<Contact>();
         public DbSet<Lead> Leads => Set<Lead>();
         public DbSet<LeadStatus> LeadStatuses => Set<LeadStatus>();
+        public DbSet<LeadStatusActivity> LeadStatusActivities => Set<LeadStatusActivity>();
         public DbSet<LeadSource> LeadSources => Set<LeadSource>();
         public DbSet<Opportunity> Opportunities => Set<Opportunity>();
         public DbSet<Category> Categories => Set<Category>();
@@ -242,6 +243,13 @@ namespace seashore_CRM.DAL.Data
                 .WithMany()
                 .HasForeignKey(li => li.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // LeadStatus -> LeadStatusActivity
+            modelBuilder.Entity<LeadStatusActivity>()
+                .HasOne(a => a.LeadStatus)
+                .WithMany(s => s.Activities)
+                .HasForeignKey(a => a.LeadStatusId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         // ===============================

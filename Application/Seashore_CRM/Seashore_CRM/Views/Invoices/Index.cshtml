@@ -4,38 +4,45 @@
     ViewData["Title"] = "Invoices";
 }
 
-<h1>Invoices</h1>
+@await Html.PartialAsync("_PageHeader")
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">+ New Invoice</a>
-</p>
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Invoices</h5>
+            <a asp-action="Create" class="btn btn-primary">+ New Invoice</a>
+        </div>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Invoice #</th>
-            <th>Sale</th>
-            <th>Invoice Date</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var i in Model)
-    {
-        <tr>
-            <td>@i.InvoiceNumber</td>
-            <td>@i.SaleId</td>
-            <td>@i.InvoiceDate</td>
-            <td>@i.TotalAmount</td>
-            <td>@i.Status</td>
-            <td>
-                <a asp-action="Details" asp-route-id="@i.Id">Details</a> |
-                <a asp-action="RecordPayment" asp-route-invoiceId="@i.Id">Record Payment</a> |
-                <a asp-action="Delete" asp-route-id="@i.Id">Delete</a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle">
+                <thead>
+                    <tr class="text-muted small">
+                        <th>Invoice #</th>
+                        <th>Sale</th>
+                        <th>Invoice Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var i in Model)
+                {
+                    <tr>
+                        <td>@i.InvoiceNumber</td>
+                        <td>@i.SaleId</td>
+                        <td>@i.InvoiceDate</td>
+                        <td>@i.TotalAmount</td>
+                        <td>@i.Status</td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@i.Id" class="text-decoration-none">Details</a> |
+                            <a asp-action="RecordPayment" asp-route-invoiceId="@i.Id" class="text-decoration-none">Record Payment</a> |
+                            <a asp-action="Delete" asp-route-id="@i.Id" class="text-decoration-none text-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -4,21 +4,25 @@
     ViewData["Title"] = "Contact Details";
 }
 
-<h1>Contact Details</h1>
+@await Html.PartialAsync("_PageHeader")
 
-<div>
-    <h4>@Model.FirstName @Model.LastName</h4>
-    <dl class="row">
-        <dt class="col-sm-2">Company</dt>
-        <dd class="col-sm-10">@Model.Company?.CompanyName</dd>
+<div class="card mx-auto" style="max-width:900px;">
+    <div class="card-body">
+        <h4>@Model.FirstName @Model.LastName</h4>
+        <dl class="row">
+            <dt class="col-sm-3 text-muted">Company</dt>
+            <dd class="col-sm-9">@Model.Company?.CompanyName</dd>
 
-        <dt class="col-sm-2">Phone</dt>
-        <dd class="col-sm-10">@Model.Phone</dd>
+            <dt class="col-sm-3 text-muted">Phone</dt>
+            <dd class="col-sm-9">@Model.Phone</dd>
 
-        <dt class="col-sm-2">Email</dt>
-        <dd class="col-sm-10">@Model.Email</dd>
-    </dl>
+            <dt class="col-sm-3 text-muted">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+        </dl>
 
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <div class="d-flex gap-2 mt-3">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-link">Back to List</a>
+        </div>
+    </div>
 </div>

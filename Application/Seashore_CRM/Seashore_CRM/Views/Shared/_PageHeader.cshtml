@@ -1,0 +1,20 @@
+@* Reusable page header for Modern SaaS look. Uses ViewData["Title"] and ViewBag.Subtitle (optional). *@
+@{
+    var title = ViewData["Title"] as string ?? ViewBag.Title as string ?? "";
+    var subtitle = ViewBag.Subtitle as string;
+}
+<div class="mb-4">
+    <nav aria-label="breadcrumb" class="mb-2">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-action="Index" class="text-decoration-none text-muted">Back</a></li>
+            <li class="breadcrumb-item active">@title</li>
+        </ol>
+    </nav>
+    <div class="d-flex flex-column">
+        <h2 class="h4 fw-bold text-dark mb-1">@title</h2>
+        @if (!string.IsNullOrWhiteSpace(subtitle))
+        {
+            <p class="text-muted small mb-0">@subtitle</p>
+        }
+    </div>
+</div>

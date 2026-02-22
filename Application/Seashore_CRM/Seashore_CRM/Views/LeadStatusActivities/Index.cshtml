@@ -1,0 +1,41 @@
+@model IEnumerable<seashore_CRM.Models.Entities.LeadStatusActivity>
+
+@{
+    ViewData["Title"] = "Lead Status Activities";
+}
+
+@await Html.PartialAsync("_PageHeader")
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Status Activities</h5>
+            <a asp-action="Create" class="btn btn-primary">+ New Activity</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle">
+                <thead>
+                    <tr class="text-muted small">
+                        <th>Status</th>
+                        <th>Activity</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach(var a in Model)
+                {
+                    <tr>
+                        <td>@a.LeadStatus?.StatusName</td>
+                        <td>@a.ActivityName</td>
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@a.Id" class="text-decoration-none">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@a.Id" class="text-decoration-none text-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

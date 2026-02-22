@@ -1,8 +1,78 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="dashboard-container">
+    <div class="dashboard-top row g-3 mb-3">
+        <div class="col-md-3">
+            <div class="metric-card bg-info text-white p-3 rounded">
+                <div class="h1 mb-0">0</div>
+                <div>Purchase Orders</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card bg-success text-white p-3 rounded">
+                <div class="h1 mb-0">0</div>
+                <div>Sales Orders</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card bg-warning text-white p-3 rounded">
+                <div class="h1 mb-0">0</div>
+                <div>Receiving</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card bg-danger text-white p-3 rounded">
+                <div class="h1 mb-0">0</div>
+                <div>Shipment</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Product Type</div>
+                <div class="card-body">
+                    <div class="placeholder-chart" style="height:260px; display:flex; align-items:center; justify-content:center; color:#e74c3c; font-size:120px;">○</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Sales vs Purchase (Last 6 Months)</div>
+                <div class="card-body">
+                    <div class="placeholder-chart" style="height:260px;">(chart)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">Stocks Realtime</div>
+                <div class="card-body p-0">
+                    <table class="table table-sm mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Product</th>
+                                <th>Qty Purchase</th>
+                                <th>Qty Receiving</th>
+                                <th>Qty Sales</th>
+                                <th>Qty Shipment</th>
+                                <th>Qty On Hand</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Alice Mutton</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>Aniseed Syrup</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>Chai</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

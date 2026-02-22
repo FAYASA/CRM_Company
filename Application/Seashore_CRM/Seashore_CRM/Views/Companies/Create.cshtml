@@ -4,29 +4,38 @@
     ViewData["Title"] = "Create Company";
 }
 
-<h1>Create Company</h1>
+@await Html.PartialAsync("_PageHeader")
 
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label asp-for="CompanyName" class="form-label"></label>
-        <input asp-for="CompanyName" class="form-control" />
+<div class="card mx-auto" style="max-width:900px;">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="CompanyName" class="form-label"></label>
+                    <input asp-for="CompanyName" class="form-control form-control-lg" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="City" class="form-label"></label>
+                    <input asp-for="City" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Country" class="form-label"></label>
+                    <input asp-for="Country" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Phone" class="form-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                </div>
+                <div class="col-md-12">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-action="Index" class="btn btn-link">Cancel</a>
+            </div>
+        </form>
     </div>
-    <div class="mb-3">
-        <label asp-for="City" class="form-label"></label>
-        <input asp-for="City" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Country" class="form-label"></label>
-        <input asp-for="Country" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Phone" class="form-label"></label>
-        <input asp-for="Phone" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+</div>

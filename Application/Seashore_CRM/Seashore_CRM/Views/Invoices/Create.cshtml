@@ -4,30 +4,30 @@
     ViewData["Title"] = "Create Invoice";
 }
 
-<h1>Create Invoice</h1>
+@await Html.PartialAsync("_PageHeader")
 
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label asp-for="SaleId" class="form-label">Sale Id</label>
-        <input asp-for="SaleId" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="InvoiceNumber" class="form-label">Invoice Number</label>
-        <input asp-for="InvoiceNumber" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="InvoiceDate" class="form-label">Invoice Date</label>
-        <input asp-for="InvoiceDate" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="DueDate" class="form-label">Due Date</label>
-        <input asp-for="DueDate" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="TotalAmount" class="form-label">Total Amount</label>
-        <input asp-for="TotalAmount" class="form-control" />
-    </div>
+<div class="card mx-auto" style="max-width:1000px;">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="SaleId" class="form-label">Sale</label>
+                    <input asp-for="SaleId" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="InvoiceDate" class="form-label">Invoice Date</label>
+                    <input asp-for="InvoiceDate" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="TotalAmount" class="form-label">Total</label>
+                    <input asp-for="TotalAmount" class="form-control" />
+                </div>
+            </div>
 
-    <button type="submit" class="btn btn-primary">Create Invoice</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-action="Index" class="btn btn-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

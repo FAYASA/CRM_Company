@@ -1,0 +1,10 @@
+{
+  "Discover": [ "Interested", "Not Interested", "Average" ],
+  "Quote Given": [ "Follow up", "Very Important", "Site visit", "Submit Sample" ],
+  "Follow Up": [ "Site Visited", "Tele calling", "Price high", "Need more clarification", "Waiting for approval", "Expecting PO" ],
+  "Forecast": [ "Quote confirmed", "Partially confirmed" ],
+  "PO Received": [ "Delivery completed", "Delivery pending", "Partially delivered" ],
+  "Invoicing": [ "Invoiced", "Note Invoiced", "Partially Invoiced" ],
+  "Order Closed": [ "Payment completed", "Payment pending", "Partially payment received" ],
+  "Order Lost": [ "Lost to Competition Reason Unknown", "Lost to Competition Reason known", "Client Dropped the plan Higher Price", "Client Dropped the plan Delivery Distance" ]
+}

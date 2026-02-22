@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System;
 
 namespace seashore_CRM.Models.DTOs
 {
@@ -41,5 +42,13 @@ namespace seashore_CRM.Models.DTOs
         // UI-friendly display fields
         public string? StatusName { get; set; }
         public string? AssignedUserName { get; set; }
+
+        // Additional UI fields populated from DB
+        public decimal GrossTotal { get; set; }
+        public int Units { get; set; }
+        public string? LatestActivity { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public DateTime? ClosureDate { get; set; }
+        public List<string>? ProductNames { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
         IContactRepository Contacts { get; }
         ILeadRepository Leads { get; }
         ILeadStatusRepository LeadStatuses { get; }
+        ILeadStatusActivityRepository LeadStatusActivities { get; }
         ILeadSourceRepository LeadSources { get; }
         IOpportunityRepository Opportunities { get; }
         ICategoryRepository Categories { get; }

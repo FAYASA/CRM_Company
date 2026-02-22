@@ -18,6 +18,7 @@ namespace seashore_CRM.DAL.Repositories
             Contacts = new ContactRepository(_context);
             Leads = new LeadRepository(_context);
             LeadStatuses = new LeadStatusRepository(_context);
+            LeadStatusActivities = new LeadStatusActivityRepository(_context);
             LeadSources = new LeadSourceRepository(_context);
             Opportunities = new OpportunityRepository(_context);
             Categories = new CategoryRepository(_context);
@@ -37,6 +38,7 @@ namespace seashore_CRM.DAL.Repositories
         public IContactRepository Contacts { get; }
         public ILeadRepository Leads { get; }
         public ILeadStatusRepository LeadStatuses { get; }
+        public ILeadStatusActivityRepository LeadStatusActivities { get; }
         public ILeadSourceRepository LeadSources { get; }
         public IOpportunityRepository Opportunities { get; }
         public ICategoryRepository Categories { get; }

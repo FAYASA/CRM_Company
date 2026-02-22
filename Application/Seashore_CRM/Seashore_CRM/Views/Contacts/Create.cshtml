@@ -4,31 +4,70 @@
     ViewData["Title"] = "Create Contact";
 }
 
-<h1>Create Contact</h1>
+@await Html.PartialAsync("_PageHeader")
 
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label asp-for="FirstName" class="form-label"></label>
-        <input asp-for="FirstName" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="LastName" class="form-label"></label>
-        <input asp-for="LastName" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="CompanyId" class="form-label"></label>
-        <select asp-for="CompanyId" class="form-control" asp-items="ViewBag.Companies">
-            <option value="">-- Select Company --</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Phone" class="form-label"></label>
-        <input asp-for="Phone" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+<div class="page-card-inner mx-auto" style="max-width: 980px;">
+    <h1 class="mb-3">Create Contact</h1>
+
+    <form asp-action="Create" method="post">
+        <div class="form-grid">
+            <div>
+                <label asp-for="FirstName" class="form-label">First Name</label>
+                <div class="input-with-icon">
+                    <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                    <span class="input-icon"><i class="bi bi-person"></i></span>
+                </div>
+            </div>
+
+            <div>
+                <label asp-for="LastName" class="form-label">Last Name</label>
+                <div class="input-with-icon">
+                    <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                    <span class="input-icon"><i class="bi bi-person"></i></span>
+                </div>
+            </div>
+
+            <div class="form-full">
+                <label class="form-label">(Optional) Secondary Name</label>
+                <input class="form-control" placeholder="Additional name or notes" />
+            </div>
+
+            <div>
+                <label asp-for="CompanyId" class="form-label">Company</label>
+                <div class="input-inline">
+                    <select asp-for="CompanyId" class="form-select">
+                        <option value="">-- Select Company --</option>
+                        @foreach (var c in ViewBag.Companies as SelectList)
+                        {
+                            <option value="@c.Value">@c.Text</option>
+                        }
+                    </select>
+                    <span class="icon-box"><i class="bi bi-building"></i></span>
+                </div>
+            </div>
+
+            <div>
+                <label asp-for="Phone" class="form-label">Phone</label>
+                <div class="input-with-icon">
+                    <input asp-for="Phone" class="form-control" placeholder="Phone" />
+                    <span class="input-icon"><i class="bi bi-telephone"></i></span>
+                </div>
+            </div>
+
+            <div>
+                <label asp-for="Email" class="form-label">Email</label>
+                <div class="input-with-icon">
+                    <input asp-for="Email" class="form-control" placeholder="Email" />
+                    <span class="input-icon"><i class="bi bi-envelope"></i></span>
+                </div>
+            </div>
+
+            <div></div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-action="Index" class="btn btn-secondary-muted ms-2">Cancel</a>
+        </div>
+    </form>
+</div>

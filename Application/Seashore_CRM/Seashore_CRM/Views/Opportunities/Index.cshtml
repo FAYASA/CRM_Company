@@ -4,34 +4,43 @@
     ViewData["Title"] = "Opportunities";
 }
 
-<h1>Opportunities</h1>
+@await Html.PartialAsync("_PageHeader")
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>LeadId</th>
-            <th>Stage</th>
-            <th>Estimated Value</th>
-            <th>Probability</th>
-            <th>Expected Close</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var o in Model)
-    {
-        <tr>
-            <td>@o.Id</td>
-            <td>@o.LeadId</td>
-            <td>@o.Stage</td>
-            <td>@o.EstimatedValue</td>
-            <td>@o.Probability</td>
-            <td>@o.ExpectedCloseDate</td>
-            <td>
-                <a asp-action="Details" asp-route-id="@o.Id">Details</a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Opportunities</h5>
+            <a asp-action="Create" class="btn btn-primary">+ New Opportunity</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle">
+                <thead>
+                    <tr class="text-muted small">
+                        <th>#</th>
+                        <th>Lead</th>
+                        <th>Stage</th>
+                        <th>Estimated Value</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var o in Model)
+                {
+                    <tr>
+                        <td>@o.Id</td>
+                        <td>@o.LeadId</td>
+                        <td>@o.Stage</td>
+                        <td>@o.EstimatedValue</td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@o.Id" class="text-decoration-none">Details</a> |
+                            <a asp-action="Edit" asp-route-id="@o.Id" class="text-decoration-none">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@o.Id" class="text-decoration-none text-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

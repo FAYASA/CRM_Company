@@ -1,0 +1,7 @@
+@* Simple action bar partial: accepts ViewBag.Actions as IEnumerable of HtmlString or raw markup. Or you can pass in buttons in the view via RenderSection. *@
+<div class="d-flex align-items-center justify-content-end mb-3">
+    @if (ViewBag.Actions != null)
+    {
+        @Html.Raw(ViewBag.Actions.ToString())
+    }
+</div>

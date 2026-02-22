@@ -3,37 +3,41 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Seashore_CRM</title>
+    <title>@ViewData["Title"] - Seashore CRM</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Seashore_CRM.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
-<body>
+<body class="app-shell">
+
+    <!-- Top Navbar -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Seashore_CRM</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg navbar-dark app-navbar">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand fw-semibold d-flex align-items-center" asp-controller="Home" asp-action="Index">
+                    <span class="logo-mark me-2"></span>
+                    <span>Seashore CRM</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Companies" asp-action="Index">Companies</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Leads" asp-action="Index">Leads</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Contacts" asp-action="Index">Contacts</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Products" asp-action="Index">Products</a>
-                        </li>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
+                        <li class="nav-item me-2"><a class="nav-link" asp-controller="Companies" asp-action="Index">Companies</a></li>
+                        <li class="nav-item me-2"><a class="nav-link" asp-controller="Leads" asp-action="Index">Leads</a></li>
+                        <li class="nav-item me-2"><a class="nav-link" asp-controller="Contacts" asp-action="Index">Contacts</a></li>
+                        <li class="nav-item me-2"><a class="nav-link" asp-controller="Products" asp-action="Index">Products</a></li>
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">More</a>
-                            <ul class="dropdown-menu" aria-labelledby="moreDropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">More</a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreDropdown">
                                 <li><a class="dropdown-item" asp-controller="Opportunities" asp-action="Index">Opportunities</a></li>
                                 <li><a class="dropdown-item" asp-controller="Sales" asp-action="Index">Sales</a></li>
                                 <li><a class="dropdown-item" asp-controller="Invoices" asp-action="Index">Invoices</a></li>
@@ -47,17 +51,23 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Seashore_CRM - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <!-- Main Content -->
+    <main role="main" class="pb-4 py-4 vw-100">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3 bg-light border-top">
+        <div class="container-fluid px-4">
+            <div class="d-flex justify-content-between small text-muted">
+                <div>&copy; @DateTime.UtcNow.Year - Seashore_CRM</div>
+                <div><a asp-controller="Home" asp-action="Privacy">Privacy</a></div>
+            </div>
         </div>
     </footer>
+
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>

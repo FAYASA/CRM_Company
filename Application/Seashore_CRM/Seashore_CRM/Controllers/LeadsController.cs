@@ -20,26 +20,15 @@ namespace Seashore_CRM.Controllers
         private readonly IUnitOfWork _uow;
         private readonly IWebHostEnvironment _env;
         private readonly IActivityService _activityService;
+        private readonly ILeadStatusActivityService _leadStatusActivityService;
 
-        // Mapping from lead status name to suggested activities
-        private static readonly Dictionary<string, string[]> StatusActivities = new()
-        {
-            { "Discover", new[] { "Interested", "Not Interested", "Average" } },
-            { "Quote Given", new[] { "Follow up", "Very Important", "Site visit", "Submit Sample" } },
-            { "Follow Up", new[] { "Site Visited", "Tele calling", "Price high", "Need more clarification", "Waiting for approval", "Expecting PO" } },
-            { "Forecast", new[] { "Quote confirmed", "Partially confirmed" } },
-            { "PO Received", new[] { "Delivery completed", "Delivery pending", "Partially delivered" } },
-            { "Invoicing", new[] { "Invoiced", "Note Invoiced", "Partially Invoiced" } },
-            { "Order Closed", new[] { "Payment completed", "Payment pending", "Partially payment received" } },
-            { "Order Lost", new[] { "Lost to Competition Reason Unknown", "Lost to Competition Reason known", "Client Dropped the plan Higher Price", "Client Dropped the plan Delivery Distance" } }
-        };
-
-        public LeadsController(ILeadService leadService, IUnitOfWork uow, IWebHostEnvironment env, IActivityService activityService)
+        public LeadsController(ILeadService leadService, IUnitOfWork uow, IWebHostEnvironment env, IActivityService activityService, ILeadStatusActivityService leadStatusActivityService)
         {
             _leadService = leadService;
             _uow = uow;
             _env = env;
             _activityService = activityService;
+            _leadStatusActivityService = leadStatusActivityService;
         }
 
         public async Task<IActionResult> Index()
@@ -53,8 +42,9 @@ namespace Seashore_CRM.Controllers
             var lead = await _leadService.GetLeadByIdAsync(id);
             if (lead == null) return NotFound();
 
-            // suggested activities from mapping
-            if (!string.IsNullOrEmpty(lead.StatusName) && StatusActivities.TryGetValue(lead.StatusName, out var acts))
+            // suggested activities from mapping (load from DB only)
+            var mapping = await GetStatusActivitiesAsync();
+            if (!string.IsNullOrEmpty(lead.StatusName) && mapping.TryGetValue(lead.StatusName, out var acts))
             {
                 ViewBag.SuggestedActivities = acts.ToList();
             }
@@ -90,6 +80,50 @@ namespace Seashore_CRM.Controllers
 
             await _activityService.AddAsync(act);
             return RedirectToAction(nameof(Details), new { id = leadId });
+        }
+
+        // Allows adding a new activity name for a specific status (persist in DB)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddStatusActivity(string statusName, string activityName)
+        {
+            if (string.IsNullOrWhiteSpace(statusName) || string.IsNullOrWhiteSpace(activityName))
+                return BadRequest("statusName and activityName are required");
+
+            // Find the status in DB
+            var status = (await _uow.LeadStatuses.FindAsync(s => s.StatusName == statusName)).FirstOrDefault();
+            if (status == null)
+            {
+                // create new status if not exists
+                status = new LeadStatus { StatusName = statusName };
+                await _uow.LeadStatuses.AddAsync(status);
+                await _uow.CommitAsync();
+            }
+
+            // check if activity already exists for this status
+            var existing = (await _uow.LeadStatusActivities.FindAsync(a => a.LeadStatusId == status.Id && a.ActivityName == activityName)).FirstOrDefault();
+            if (existing == null)
+            {
+                var act = new LeadStatusActivity
+                {
+                    LeadStatusId = status.Id,
+                    ActivityName = activityName
+                };
+                await _uow.LeadStatusActivities.AddAsync(act);
+                await _uow.CommitAsync();
+            }
+
+            // Return current mapping (build from DB only)
+            var mapping = new Dictionary<string, string[]>();
+            var statuses = await _uow.LeadStatuses.GetAllAsync();
+            foreach (var st in statuses)
+            {
+                var acts = (await _uow.LeadStatusActivities.FindAsync(a => a.LeadStatusId == st.Id)).Select(a => a.ActivityName).ToArray();
+                if (acts.Length > 0)
+                    mapping[st.StatusName] = acts;
+            }
+
+            return Json(new { success = true, mapping = mapping });
         }
 
         public async Task<IActionResult> Create()
@@ -335,8 +369,45 @@ namespace Seashore_CRM.Controllers
             };
             ViewBag.CommentTemplates = new SelectList(commentTemplates);
 
-            // expose mapping to client as JSON (status name -> activities array)
-            ViewBag.StatusActivitiesJson = JsonSerializer.Serialize(StatusActivities);
+            // expose mapping to client as JSON (status name -> activities array). Load from DB only
+            var mapping = await GetStatusActivitiesAsync();
+            ViewBag.StatusActivitiesJson = JsonSerializer.Serialize(mapping);
+        }
+
+        // Build mapping from DB only (do not fallback to file or defaults)
+        private async Task<Dictionary<string, string[]>> GetStatusActivitiesAsync()
+        {
+            var mapping = new Dictionary<string, string[]>();
+            var statuses = (await _uow.LeadStatuses.GetAllAsync()).ToList();
+            if (statuses.Any())
+            {
+                foreach (var st in statuses)
+                {
+                    var acts = (await _uow.LeadStatusActivities.FindAsync(a => a.LeadStatusId == st.Id)).Select(a => a.ActivityName).ToArray();
+                    if (acts.Length > 0) mapping[st.StatusName] = acts;
+                }
+
+                return mapping;
+            }
+
+            // If there are no statuses in DB return an empty mapping (client will show no suggestions)
+            return mapping;
+        }
+
+        private async Task SaveStatusActivitiesAsync(Dictionary<string, string[]> mapping)
+        {
+            try
+            {
+                var dataDir = Path.Combine(_env.WebRootPath ?? "", "data");
+                Directory.CreateDirectory(dataDir);
+                var file = Path.Combine(dataDir, "status_activities.json");
+                var json = JsonSerializer.Serialize(mapping);
+                await System.IO.File.WriteAllTextAsync(file, json);
+            }
+            catch
+            {
+                // swallow for now
+            }
         }
     }
 }

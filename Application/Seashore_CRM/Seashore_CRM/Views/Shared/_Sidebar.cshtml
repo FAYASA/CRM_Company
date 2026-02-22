@@ -1,0 +1,26 @@
+@* Left sidebar used for dashboard layout *@
+<div class="app-sidebar">
+    <div class="sidebar-header d-flex align-items-center p-3">
+        <div class="me-2 logo-box">CRMP</div>
+        <div class="sidebar-title">CRMPlus</div>
+    </div>
+
+    <div class="sidebar-user p-3 d-flex align-items-center">
+        <img src="~/img/avatar.png" class="rounded-circle me-2" alt="user" style="width:40px;height:40px;object-fit:cover;" />
+        <div>
+            <div class="small text-white-50">super@admin.com</div>
+            <div class="text-success small">? Online</div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav px-2">
+        <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link text-white" asp-controller="Home" asp-action="Index"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link text-white" asp-controller="Companies" asp-action="Index"><i class="bi bi-building me-2"></i> Companies</a></li>
+            <li class="nav-item"><a class="nav-link text-white" asp-controller="Leads" asp-action="Index"><i class="bi bi-person-lines-fill me-2"></i> Leads</a></li>
+            <li class="nav-item"><a class="nav-link text-white" asp-controller="Contacts" asp-action="Index"><i class="bi bi-people me-2"></i> Contacts</a></li>
+            <li class="nav-item"><a class="nav-link text-white" asp-controller="Products" asp-action="Index"><i class="bi bi-box-seam me-2"></i> Products</a></li>
+            <li class="nav-item"><a class="nav-link text-white" asp-controller="Opportunities" asp-action="Index"><i class="bi bi-briefcase me-2"></i> Opportunities</a></li>
+        </ul>
+    </nav>
+</div>

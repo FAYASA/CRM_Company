@@ -4,38 +4,153 @@
     ViewData["Title"] = "Leads";
 }
 
-<h1>Leads</h1>
+@await Html.PartialAsync("_PageHeader")
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Lead</a>
-</p>
+<div class="card">
+    <div class="card-body">
 
-<table class="table table-striped table-bordered">
-    <thead class="table-light">
-        <tr>
-            <th>Id</th>
-            <th>Lead Type</th>
-            <th>Priority</th>
-            <th>Status</th>
-            <th>Assigned User</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var lead in Model)
-    {
-        <tr>
-            <td>@lead.Id</td>
-            <td>@lead.LeadType</td>
-            <td>@lead.Priority</td>
-            <td>@lead.StatusName</td>
-            <td>@lead.AssignedUserName</td>
-            <td>
-                <a asp-action="Details" asp-route-id="@lead.Id" class="btn btn-sm btn-outline-primary">Details</a>
-                <a asp-action="Edit" asp-route-id="@lead.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
-                <a asp-action="Delete" asp-route-id="@lead.Id" class="btn btn-sm btn-outline-danger">Delete</a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+        <!-- Header with title and new lead button -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Leads</h5>
+            <a asp-action="Create" class="btn btn-primary">+ New Lead</a>
+        </div>
+
+        <!-- Filters / search bar -->
+        <form method="get" class="row g-2 align-items-center mb-3">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                    <input name="q" type="search" class="form-control border-start-0" placeholder="Customer / Location / Contact / Remarks" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <select name="status" class="form-select">
+                    <option value="">All Statuses</option>
+                    @* populate with statuses if available via ViewBag.Statuses *@
+                    @if (ViewBag.Statuses is SelectList statuses)
+                    {
+                        foreach (var s in statuses)
+                        {
+                            <option value="@s.Value">@s.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="assigned" class="form-select">
+                    <option value="">Any Assigned</option>
+                    @if (ViewBag.Users is SelectList users)
+                    {
+                        foreach (var u in users)
+                        {
+                            <option value="@u.Value">@u.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="category" class="form-select">
+                    <option value="">Category</option>
+                    @* optional categories *@
+                    @if (ViewBag.Categories is SelectList cats)
+                    {
+                        foreach (var c in cats)
+                        {
+                            <option value="@c.Value">@c.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </form>
+
+        <!-- Leads table -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle" style="min-width:1200px;">
+                <thead class="table-light small text-uppercase">
+                    <tr>
+                        <th style="width:30%">Customer / Location</th>
+                        <th style="width:15%">Status / Activity</th>
+                        <th style="width:10%">Product Group / Name</th>
+                        <th style="width:10%; text-align:right;">Gross Total</th>
+                        <th style="width:10%">Follow Up</th>
+                        <th style="width:10%">Updated</th>
+                        <th style="width:10%">Closure</th>
+                        <th style="width:8%">Assigned / Region</th>
+                        <th style="width:7%">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var l in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">@l.LeadType</div>
+                                <div class="small text-muted">@(l.ProductNames != null && l.ProductNames.Any() ? string.Join(", ", l.ProductNames.Take(2)) : "")</div>
+                            </td>
+                            <td>
+                                <div class="fw-semibold">@l.StatusName</div>
+                                <div class="small text-muted">@(!string.IsNullOrEmpty(l.LatestActivity) ? l.LatestActivity : "-")</div>
+                            </td>
+                            <td>
+                                <div class="small text-muted">@((l.ProductNames != null && l.ProductNames.Any()) ? l.ProductNames.First() : "-")</div>
+                                <div class="fw-semibold text-truncate">@((l.ProductNames != null && l.ProductNames.Any()) ? string.Join(", ", l.ProductNames) : "-")</div>
+                            </td>
+                            <td class="text-end">
+                                @if (l.GrossTotal > 0)
+                                {
+                                    @l.GrossTotal.ToString("N2")
+                                    <div class="small text-muted">Units @l.Units</div>
+                                }
+                                else
+                                {
+                                    <div class="small text-muted">-</div>
+                                }
+                            </td>
+                            <td>
+                                @if (l.DecisionDate.HasValue)
+                                {
+                                    <div class="small">@l.DecisionDate.Value.ToString("dd-MMM")</div>
+                                }
+                                else
+                                {
+                                    <div class="small text-muted">-</div>
+                                }
+                            </td>
+                            <td>
+                                @if (l.UpdatedDate.HasValue)
+                                {
+                                    <div class="small">@l.UpdatedDate.Value.ToString("dd-MMM HH:mm")</div>
+                                }
+                                else
+                                {
+                                    <div class="small text-muted">-</div>
+                                }
+                            </td>
+                            <td>
+                                @if (l.ClosureDate.HasValue)
+                                {
+                                    <div class="small">@l.ClosureDate.Value.ToString("dd-MMM")</div>
+                                }
+                                else
+                                {
+                                    <div class="small text-muted">-</div>
+                                }
+                            </td>
+                            <td>
+                                <div class="small">@(!string.IsNullOrEmpty(l.AssignedUserName) ? l.AssignedUserName : "-")</div>
+                                <div class="small text-muted">-</div>
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Edit" asp-route-id="@l.Id" class="btn btn-sm btn-outline-primary" title="Edit"><i class="bi bi-pencil"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

@@ -4,48 +4,66 @@
     ViewData["Title"] = "Qualify Lead";
 }
 
-<h1>Qualify Lead</h1>
+@await Html.PartialAsync("_PageHeader")
 
-<form asp-action="Qualify" method="post">
-    <input type="hidden" asp-for="Id" />
+<div class="card mx-auto" style="max-width:1000px;">
+    <div class="card-body">
+        <h4 class="mb-3">Qualify Lead</h4>
+        <form asp-action="Qualify" method="post">
+            <input type="hidden" asp-for="Id" />
 
-    <div class="mb-3 form-check">
-        <input asp-for="IsQualified" class="form-check-input" />
-        <label asp-for="IsQualified" class="form-check-label">Qualified</label>
+            <div class="mb-3 form-check">
+                <input asp-for="IsQualified" class="form-check-input" />
+                <label asp-for="IsQualified" class="form-check-label">Qualified</label>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="QualifiedOn" class="form-label"></label>
+                <input asp-for="QualifiedOn" class="form-control" type="datetime-local" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="QualifiedById" class="form-label"></label>
+                <select asp-for="QualifiedById" class="form-control" asp-items="ViewBag.Users">
+                    <option value="">-- Select User --</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="QualificationNotes" class="form-label"></label>
+                <textarea asp-for="QualificationNotes" class="form-control"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Budget" class="form-label"></label>
+                <input asp-for="Budget" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DecisionDate" class="form-label"></label>
+                <input asp-for="DecisionDate" class="form-control" type="date" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Probability" class="form-label"></label>
+                <input asp-for="Probability" class="form-control" type="number" min="0" max="100" />
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="LeadType" class="form-label"></label>
+                    <input asp-for="LeadType" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="StatusId" class="form-label">Status</label>
+                    <select asp-for="StatusId" class="form-select" asp-items="ViewBag.Statuses"></select>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save Qualification</button>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="QualifiedOn" class="form-label"></label>
-        <input asp-for="QualifiedOn" class="form-control" type="datetime-local" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="QualifiedById" class="form-label"></label>
-        <select asp-for="QualifiedById" class="form-control" asp-items="ViewBag.Users">
-            <option value="">-- Select User --</option>
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="QualificationNotes" class="form-label"></label>
-        <textarea asp-for="QualificationNotes" class="form-control"></textarea>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Budget" class="form-label"></label>
-        <input asp-for="Budget" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="DecisionDate" class="form-label"></label>
-        <input asp-for="DecisionDate" class="form-control" type="date" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Probability" class="form-label"></label>
-        <input asp-for="Probability" class="form-control" type="number" min="0" max="100" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save Qualification</button>
-    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
-</form>
+</div>

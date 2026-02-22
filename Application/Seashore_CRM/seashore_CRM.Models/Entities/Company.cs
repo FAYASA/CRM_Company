@@ -8,5 +8,10 @@ namespace seashore_CRM.Models.Entities
         public string? Country { get; set; }
         public string? Phone { get; set; }
         public string? Email { get; set; }
+
+        // New fields
+        public string? Pin { get; set; }
+        public string? Website { get; set; }
+        public string? AddressPost { get; set; }
     }
 }

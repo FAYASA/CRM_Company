@@ -1,0 +1,25 @@
+@model seashore_CRM.Models.Entities.LeadStatusActivity
+
+@{
+    ViewData["Title"] = "Delete Status Activity";
+}
+
+@await Html.PartialAsync("_PageHeader")
+
+<div class="card mx-auto" style="max-width:800px;">
+    <div class="card-body">
+        <h3>Are you sure you want to delete this activity?</h3>
+        <div class="mb-3">
+            <h4>@Model.ActivityName</h4>
+            <p>Status: @Model.LeadStatus?.StatusName</p>
+        </div>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <a asp-action="Index" class="btn btn-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

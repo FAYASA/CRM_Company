@@ -387,6 +387,9 @@ namespace seashore_CRM.DAL.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AddressPost")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -416,6 +419,9 @@ namespace seashore_CRM.DAL.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Pin")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -426,6 +432,9 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Website")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -794,6 +803,52 @@ namespace seashore_CRM.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LeadStatuses");
+                });
+
+            modelBuilder.Entity("seashore_CRM.Models.Entities.LeadStatusActivity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActivityName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("LeadStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeadStatusId");
+
+                    b.ToTable("LeadStatusActivities");
                 });
 
             modelBuilder.Entity("seashore_CRM.Models.Entities.Opportunity", b =>
@@ -1377,6 +1432,17 @@ namespace seashore_CRM.DAL.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("seashore_CRM.Models.Entities.LeadStatusActivity", b =>
+                {
+                    b.HasOne("seashore_CRM.Models.Entities.LeadStatus", "LeadStatus")
+                        .WithMany("Activities")
+                        .HasForeignKey("LeadStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LeadStatus");
+                });
+
             modelBuilder.Entity("seashore_CRM.Models.Entities.Opportunity", b =>
                 {
                     b.HasOne("seashore_CRM.Models.Entities.Lead", "Lead")
@@ -1462,6 +1528,11 @@ namespace seashore_CRM.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("seashore_CRM.Models.Entities.LeadStatus", b =>
+                {
+                    b.Navigation("Activities");
                 });
 
             modelBuilder.Entity("seashore_CRM.Models.Entities.Sale", b =>
