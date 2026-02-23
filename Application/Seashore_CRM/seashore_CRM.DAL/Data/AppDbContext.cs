@@ -62,7 +62,7 @@ namespace seashore_CRM.DAL.Data
                         .HasDefaultValueSql("GETUTCDATE()");
 
                     modelBuilder.Entity(clrType)
-                        .Property(nameof(BaseEntity.IsDeleted))
+                        .Property(nameof(BaseEntity.IsActive))
                         .HasDefaultValue(false);
 
                     // Concurrency token
@@ -258,7 +258,7 @@ namespace seashore_CRM.DAL.Data
         private static LambdaExpression GetIsDeletedRestriction(Type type)
         {
             var parameter = Expression.Parameter(type, "e");
-            var property = Expression.Property(parameter, nameof(BaseEntity.IsDeleted));
+            var property = Expression.Property(parameter, nameof(BaseEntity.IsActive));
             var condition = Expression.Equal(property, Expression.Constant(false));
             var lambda = Expression.Lambda(condition, parameter);
             return lambda;

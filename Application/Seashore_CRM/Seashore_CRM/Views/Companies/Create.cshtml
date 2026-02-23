@@ -1,4 +1,4 @@
-@model seashore_CRM.Models.Entities.Company
+@model seashore_CRM.Models.DTOs.CompanyCreateDto
 
 @{
     ViewData["Title"] = "Create Company";
@@ -6,36 +6,166 @@
 
 @await Html.PartialAsync("_PageHeader")
 
-<div class="card mx-auto" style="max-width:900px;">
-    <div class="card-body">
-        <form asp-action="Create" method="post">
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label asp-for="CompanyName" class="form-label"></label>
-                    <input asp-for="CompanyName" class="form-control form-control-lg" />
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="City" class="form-label"></label>
-                    <input asp-for="City" class="form-control" />
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="Country" class="form-label"></label>
-                    <input asp-for="Country" class="form-control" />
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="Phone" class="form-label"></label>
-                    <input asp-for="Phone" class="form-control" />
-                </div>
-                <div class="col-md-12">
-                    <label asp-for="Email" class="form-label"></label>
-                    <input asp-for="Email" class="form-control" />
-                </div>
-            </div>
+<div class="container my-4">
+    <div class="card shadow-sm mx-auto form-container">
 
-            <div class="mt-4 d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Create</button>
-                <a asp-action="Index" class="btn btn-link">Cancel</a>
-            </div>
-        </form>
+        <!-- Header -->
+        <div class="card-header bg-light">
+            <h5 class="mb-0 fw-semibold">
+                <i class="bi bi-building me-2"></i>
+                Create Company
+            </h5>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <form asp-action="Create" method="post" id="companyForm">
+                @Html.AntiForgeryToken()
+
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row g-3">
+                    <!-- Company Name -->
+                    <div class="col-md-6">
+                        <label asp-for="CompanyName" class="form-label fw-semibold required"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-building"></i></span>
+                            <input asp-for="CompanyName" class="form-control" placeholder="Enter company name" />
+                        </div>
+                        <span asp-validation-for="CompanyName" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label fw-semibold required"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Enter email address" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <!-- City -->
+                    <div class="col-md-6">
+                        <label asp-for="City" class="form-label fw-semibold required"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                            <input asp-for="City" class="form-control" placeholder="Enter city" />
+                        </div>
+                        <span asp-validation-for="City" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Website -->
+                    <div class="col-md-6">
+                        <label asp-for="Website" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-globe"></i></span>
+                            <input asp-for="Website" class="form-control" placeholder="www.example.com" />
+                        </div>
+                        <span asp-validation-for="Website" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6">
+                        <label asp-for="Phone" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                            <input asp-for="Phone" type="tel" class="form-control" placeholder="Enter phone number" />
+                        </div>
+                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Industry Dropdown -->
+                    <div class="col-md-6">
+                        <label asp-for="Industry" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
+                            <select asp-for="Industry" class="form-select">
+                                <option value="">-- Select Industry --</option>
+                                <option>Construction & Contracting</option>
+                                <option>Electrical Trading</option>
+                                <option>Switchgear & Panels</option>
+                                <option>Power Solutions</option>
+                                <option>Automation & Control Systems</option>
+                                <option>Lighting Solutions</option>
+                                <option>General Trading</option>
+                                <option>Import & Export</option>
+                                <option>Equipment Rental & Logistics</option>
+                                <option>Cooling & Air Conditioning</option>
+                                <option>IT Solutions & Technology Services</option>
+                                <option>Steel & Metals</option>
+                                <option>Cement & Building Materials</option>
+                                <option>Petrochemicals</option>
+                                <option>Industrial Equipment</option>
+                                <option>Fabrication & Assembly</option>
+                                <option>Shipping & Freight</option>
+                                <option>Warehousing</option>
+                                <option>Consulting & Solutions</option>
+                                <option>Facility Management</option>
+                                <option>Sports & Media</option>
+                                <option>Education & Training</option>
+                                <option>Healthcare Services</option>
+                                <option>Hospitality & Tourism</option>
+                                <option>Real Estate</option>
+                                <option>Insurance & Finance</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="Industry" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="col-12">
+                        <label asp-for="Address" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-house"></i></span>
+                            <textarea asp-for="Address" rows="2" class="form-control" placeholder="Enter address"></textarea>
+                        </div>
+                        <span asp-validation-for="Address" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Address Post -->
+                    <div class="col-md-6">
+                        <label asp-for="AddressPost" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-mailbox"></i></span>
+                            <input asp-for="AddressPost" class="form-control" />
+                        </div>
+                        <span asp-validation-for="AddressPost" class="text-danger small"></span>
+                    </div>
+
+                    <!-- PIN -->
+                    <div class="col-md-6">
+                        <label asp-for="Pin" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-key"></i></span>
+                            <input asp-for="Pin" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Pin" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-4 d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4" id="submitBtn">
+                        <span class="spinner-border spinner-border-sm d-none me-2" id="submitSpinner"></span>
+                        Create
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("companyForm")
+            .addEventListener("submit", function () {
+                document.getElementById("submitSpinner").classList.remove("d-none");
+                document.getElementById("submitBtn").setAttribute("disabled", "disabled");
+            });
+    </script>
+}

@@ -1,86 +1,121 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using seashore_CRM.Models.Entities;
-using System.Threading.Tasks;
-using System.Linq;
-using seashore_CRM.DAL.Repositories.Repository_Interfaces;
+using seashore_CRM.BLL.Services.Service_Interfaces;
+using seashore_CRM.Models.DTOs;
 
 namespace Seashore_CRM.Controllers
 {
     public class ContactsController : Controller
     {
-        private readonly IUnitOfWork _uow;
+        private readonly IContactService _contactService;
+        private readonly ICompanyService _companyService;
 
-        public ContactsController(IUnitOfWork uow)
+        public ContactsController(
+            IContactService contactService,
+            ICompanyService companyService)
         {
-            _uow = uow;
+            _contactService = contactService;
+            _companyService = companyService;
         }
 
+        // ===============================
+        // INDEX
+        // ===============================
         public async Task<IActionResult> Index()
         {
-            var contacts = await _uow.Contacts.GetAllAsync();
-            return View(contacts.ToList());
+            var contacts = await _contactService.GetAllAsync();
+            return View(contacts);
         }
 
+        // ===============================
+        // DETAILS
+        // ===============================
         public async Task<IActionResult> Details(int id)
         {
-            var contact = await _uow.Contacts.GetByIdAsync(id);
-            if (contact == null) return NotFound();
+            var contact = await _contactService.GetByIdAsync(id);
+            if (contact == null)
+                return NotFound();
+
             return View(contact);
         }
 
+        // ===============================
+        // CREATE (GET)
+        // ===============================
         public async Task<IActionResult> Create()
         {
-            var companies = await _uow.Companies.GetAllAsync();
-            ViewBag.Companies = new SelectList(companies, "Id", "CompanyName");
-            return View(new Contact());
+            await LoadCompanies();
+            return View(new ContactCreateDto());
         }
 
+        // ===============================
+        // CREATE (POST)
+        // ===============================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Contact contact)
+        public async Task<IActionResult> Create(ContactCreateDto dto)
         {
             if (!ModelState.IsValid)
             {
-                var companies = await _uow.Companies.GetAllAsync();
-                ViewBag.Companies = new SelectList(companies, "Id", "CompanyName");
-                return View(contact);
+                await LoadCompanies();
+                return View(dto);
             }
 
-            await _uow.Contacts.AddAsync(contact);
-            await _uow.CommitAsync();
+            await _contactService.CreateAsync(dto);
             return RedirectToAction(nameof(Index));
         }
 
+        // ===============================
+        // EDIT (GET)
+        // ===============================
         public async Task<IActionResult> Edit(int id)
         {
-            var contact = await _uow.Contacts.GetByIdAsync(id);
-            if (contact == null) return NotFound();
-            var companies = await _uow.Companies.GetAllAsync();
-            ViewBag.Companies = new SelectList(companies, "Id", "CompanyName", contact.CompanyId);
-            return View(contact);
+            var contact = await _contactService.GetByIdAsync(id);
+            if (contact == null)
+                return NotFound();
+
+            var dto = new ContactUpdateDto
+            {
+                Id = contact.Id,
+                ContactName = contact.ContactName,
+                Email = contact.Email,
+                Phone = contact.Phone,
+                Mobile = contact.Mobile,
+                Designation = contact.Designation,
+                IsActive = contact.IsActive,
+                RowVersion = contact.RowVersion
+            };
+
+            await LoadCompanies();
+            return View(dto);
         }
 
+        // ===============================
+        // EDIT (POST)
+        // ===============================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Contact contact)
+        public async Task<IActionResult> Edit(ContactUpdateDto dto)
         {
-            if (id != contact.Id) return BadRequest();
             if (!ModelState.IsValid)
             {
-                var companies = await _uow.Companies.GetAllAsync();
-                ViewBag.Companies = new SelectList(companies, "Id", "CompanyName", contact.CompanyId);
-                return View(contact);
+                await LoadCompanies();
+                return View(dto);
             }
-            _uow.Contacts.Update(contact);
-            await _uow.CommitAsync();
+
+            await _contactService.UpdateAsync(dto);
             return RedirectToAction(nameof(Index));
         }
 
+        // ===============================
+        // DELETE
+        // ===============================
         public async Task<IActionResult> Delete(int id)
         {
-            var contact = await _uow.Contacts.GetByIdAsync(id);
-            if (contact == null) return NotFound();
+            var contact = await _contactService.GetByIdAsync(id);
+            if (contact == null)
+                return NotFound();
+
             return View(contact);
         }
 
@@ -88,13 +123,17 @@ namespace Seashore_CRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var contact = await _uow.Contacts.GetByIdAsync(id);
-            if (contact != null)
-            {
-                _uow.Contacts.Remove(contact);
-                await _uow.CommitAsync();
-            }
+            await _contactService.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        // ===============================
+        // HELPER
+        // ===============================
+        private async Task LoadCompanies()
+        {
+            var companies = await _companyService.GetAllAsync();
+            ViewBag.Companies = new SelectList(companies, "Id", "CompanyName");
         }
     }
 }

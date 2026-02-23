@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Seashore_CRM.styles.css" asp-append-version="true" />
+    <link href="~/css/site-custom.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body class="app-shell">
@@ -26,7 +27,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="mainNavbar">
+                @* <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
                         <li class="nav-item me-2"><a class="nav-link" asp-controller="Companies" asp-action="Index">Companies</a></li>
                         <li class="nav-item me-2"><a class="nav-link" asp-controller="Leads" asp-action="Index">Leads</a></li>
@@ -47,17 +48,23 @@
                             </ul>
                         </li>
                     </ul>
-                </div>
+                </div> *@
             </div>
         </nav>
     </header>
 
-    <!-- Main Content -->
-    <main role="main" class="pb-4 py-4 vw-100">
-        @RenderBody()
-    </main>
+    <!-- Two-column layout: sidebar + main -->
+    <div class="d-flex">
+        <aside class="bg-dark vh-100" style="width:260px;">
+            @await Html.PartialAsync("_Sidebar")
+        </aside>
 
-    <!-- Footer -->
+        <main role="main" class="flex-grow-1 p-4">
+            @RenderBody()
+        </main>
+    </div>
+
+    @* <!-- Footer -->
     <footer class="footer mt-auto py-3 bg-light border-top">
         <div class="container-fluid px-4">
             <div class="d-flex justify-content-between small text-muted">
@@ -65,7 +72,7 @@
                 <div><a asp-controller="Home" asp-action="Privacy">Privacy</a></div>
             </div>
         </div>
-    </footer>
+    </footer> *@
 
     <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

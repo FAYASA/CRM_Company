@@ -1,29 +1,32 @@
-using System;
 using System.Threading.Tasks;
 using seashore_CRM.Models.Entities;
 
 namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
-        IUserRepository Users { get; }
-        IRoleRepository Roles { get; }
         ICompanyRepository Companies { get; }
         IContactRepository Contacts { get; }
-        ILeadRepository Leads { get; }
-        ILeadStatusRepository LeadStatuses { get; }
-        ILeadStatusActivityRepository LeadStatusActivities { get; }
-        ILeadSourceRepository LeadSources { get; }
-        IOpportunityRepository Opportunities { get; }
-        ICategoryRepository Categories { get; }
-        IProductRepository Products { get; }
-        ISaleRepository Sales { get; }
-        ISaleItemRepository SaleItems { get; }
         IInvoiceRepository Invoices { get; }
         IPaymentRepository Payments { get; }
+        ISaleRepository Sales { get; }
+        ISaleItemRepository SaleItems { get; }
+
+        IProductRepository Products { get; }
+        ICategoryRepository Categories { get; }
+
+        ILeadRepository Leads { get; }
+        ILeadItemRepository LeadItems { get; }
+        ILeadStatusRepository LeadStatuses { get; }
+        ILeadSourceRepository LeadSources { get; }
+        ILeadStatusActivityRepository LeadStatusActivities { get; }
+
         IActivityRepository Activities { get; }
         ICommentRepository Comments { get; }
-        ILeadItemRepository LeadItems { get; }
+
+        IUserRepository Users { get; }
+        IOpportunityRepository Opportunities { get; }
+        IRoleRepository Roles { get; }
 
         Task<int> CommitAsync();
     }

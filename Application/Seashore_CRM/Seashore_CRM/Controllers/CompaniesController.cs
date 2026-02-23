@@ -1,120 +1,164 @@
 using Microsoft.AspNetCore.Mvc;
-using seashore_CRM.Models.Entities;
+using seashore_CRM.BLL.Services.Service_Interfaces;
+using seashore_CRM.Models.DTOs;
 using System.Threading.Tasks;
 using System.Linq;
-using seashore_CRM.DAL.Repositories.Repository_Interfaces;
-using System;
 using System.Collections.Generic;
 
 namespace Seashore_CRM.Controllers
 {
     public class CompaniesController : Controller
     {
-        private readonly IUnitOfWork _uow;
+        private readonly ICompanyService _service;
 
-        public CompaniesController(IUnitOfWork uow)
+        public CompaniesController(ICompanyService service)
         {
-            _uow = uow;
+            _service = service;
         }
 
-        // Enhanced Index: search, filter, sort, pagination
-        public async Task<IActionResult> Index(string q = null, string sort = "name", string dir = "asc", int page = 1, int pageSize = 20, string status = null)
+        // ============================
+        // INDEX
+        // ============================
+        public async Task<IActionResult> Index(string q, string sortBy = "CompanyName", string sortOrder = "asc", int page = 1, int pageSize = 20)
         {
-            var companies = (await _uow.Companies.GetAllAsync()).AsQueryable();
+            var companies = string.IsNullOrWhiteSpace(q)
+                ? await _service.GetAllAsync()
+                : await _service.SearchAsync(q);
 
-            // Search
-            if (!string.IsNullOrWhiteSpace(q))
-            {
-                var qq = q.Trim().ToLowerInvariant();
-                companies = companies.Where(c => (c.CompanyName ?? "").ToLower().Contains(qq)
-                                                || (c.City ?? "").ToLower().Contains(qq)
-                                                || (c.Country ?? "").ToLower().Contains(qq)
-                                                || (c.Phone ?? "").ToLower().Contains(qq)
-                                                || (c.Email ?? "").ToLower().Contains(qq));
-            }
+            // apply sorting
+            companies = SortCompanies(companies, sortBy, sortOrder);
 
-            // Status filter
-            if (!string.IsNullOrWhiteSpace(status))
-            {
-                if (status.Equals("active", StringComparison.OrdinalIgnoreCase))
-                    companies = companies.Where(c => !c.IsDeleted);
-                if (status.Equals("inactive", StringComparison.OrdinalIgnoreCase))
-                    companies = companies.Where(c => c.IsDeleted);
-            }
-
-            // Sorting
-            var isAsc = dir?.ToLowerInvariant() != "desc";
-            companies = sort?.ToLowerInvariant() switch
-            {
-                "location" => isAsc ? companies.OrderBy(c => c.City) : companies.OrderByDescending(c => c.City),
-                "status" => isAsc ? companies.OrderBy(c => c.IsDeleted) : companies.OrderByDescending(c => c.IsDeleted),
-                _ => isAsc ? companies.OrderBy(c => c.CompanyName) : companies.OrderByDescending(c => c.CompanyName),
-            };
-
-            // Paging
-            var total = companies.Count();
-            pageSize = Math.Max(5, Math.Min(100, pageSize));
-            page = Math.Max(1, page);
-            var totalPages = (int)Math.Ceiling(total / (double)pageSize);
-            var items = companies.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
-            // Pass state to view
-            ViewBag.TotalCount = total;
+            // provide view with the same keys Index.cshtml expects
+            ViewBag.Query = q;
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
-            ViewBag.TotalPages = totalPages;
-            ViewBag.Query = q;
-            ViewBag.Sort = sort;
-            ViewBag.Dir = dir;
-            ViewBag.Status = status;
+            ViewBag.TotalCount = companies.Count;
+            ViewBag.TotalPages = 1; // adjust if you introduce real paging
 
-            return View(items);
+            ViewBag.SortBy = sortBy;
+            ViewBag.SortOrder = sortOrder;
+
+            return View(companies);
         }
 
+        private List<CompanyListDto> SortCompanies(List<CompanyListDto> list, string sortBy, string sortOrder)
+        {
+            if (list == null || list.Count == 0) return list;
+
+            bool asc = string.Equals(sortOrder, "asc", System.StringComparison.OrdinalIgnoreCase);
+
+            return sortBy switch
+            {
+                "City" => asc ? list.OrderBy(c => c.City).ToList() : list.OrderByDescending(c => c.City).ToList(),
+                "Address" => asc ? list.OrderBy(c => c.Address).ToList() : list.OrderByDescending(c => c.Address).ToList(),
+                "Status" => asc ? list.OrderBy(c => c.IsActive).ToList() : list.OrderByDescending(c => c.IsActive).ToList(),
+                _ => asc ? list.OrderBy(c => c.CompanyName).ToList() : list.OrderByDescending(c => c.CompanyName).ToList(),
+            };
+        }
+
+        // ============================
+        // DETAILS
+        // ============================
         public async Task<IActionResult> Details(int id)
         {
-            var company = await _uow.Companies.GetByIdAsync(id);
+            var company = await _service.GetByIdAsync(id);
             if (company == null) return NotFound();
+
             return View(company);
         }
 
+        // ============================
+        // CREATE
+        // ============================
         public IActionResult Create()
         {
-            return View(new Company());
+            return View(new CompanyCreateDto());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Company company)
+        public async Task<IActionResult> Create(CompanyCreateDto dto)
         {
-            if (!ModelState.IsValid) return View(company);
-            await _uow.Companies.AddAsync(company);
-            await _uow.CommitAsync();
+            if (await _service.IsCompanyNameTakenAsync(dto.CompanyName))
+                ModelState.AddModelError(nameof(dto.CompanyName), "Company name already exists.");
+
+            if (await _service.IsEmailTakenAsync(dto.Email))
+                ModelState.AddModelError(nameof(dto.Email), "Email already exists.");
+
+            if (await _service.IsCompanyPhoneTakenAsync(dto.Phone))
+                ModelState.AddModelError(nameof(dto.Phone), "Phone Number already exists.");
+
+            if (!ModelState.IsValid)
+                return View(dto);
+
+            await _service.CreateAsync(dto);
+
+            TempData["Success"] = "Company created successfully.";
             return RedirectToAction(nameof(Index));
         }
 
+        // ============================
+        // EDIT
+        // ============================
         public async Task<IActionResult> Edit(int id)
         {
-            var company = await _uow.Companies.GetByIdAsync(id);
-            if (company == null) return NotFound();
-            return View(company);
+            var detail = await _service.GetByIdAsync(id);
+            if (detail == null) return NotFound();
+
+            var dto = new CompanyUpdateDto
+            {
+                Id = detail.Id,
+                CompanyName = detail.CompanyName,
+                Address = detail.Address,
+                AddressPost = detail.AddressPost,
+                Pin = detail.Pin,
+                City = detail.City,
+                //Country = detail.Country,
+                Phone = detail.Phone,
+                Email = detail.Email,
+                IsActive = detail.IsActive,
+                Website = detail.Website,
+                Industry = detail.Industry
+            };
+
+            return View(dto);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Company company)
+        public async Task<IActionResult> Edit(int id, CompanyUpdateDto dto)
         {
-            if (id != company.Id) return BadRequest();
-            if (!ModelState.IsValid) return View(company);
-            _uow.Companies.Update(company);
-            await _uow.CommitAsync();
+            if (id != dto.Id) return BadRequest();
+
+            if (await _service.IsCompanyNameTakenAsync(dto.CompanyName, dto.Id))
+                ModelState.AddModelError(nameof(dto.CompanyName), "Company name already exists.");
+
+            if (await _service.IsEmailTakenAsync(dto.Email, dto.Id))
+                ModelState.AddModelError(nameof(dto.Email), "Email already exists.");
+
+            if (await _service.IsCompanyPhoneTakenAsync(dto.Phone, dto.Id))
+                ModelState.AddModelError(nameof(dto.Phone), "Phone Number already exists.");
+
+            if (!ModelState.IsValid)
+                return View(dto);
+
+            var result = await _service.UpdateAsync(dto);
+
+            if (!result)
+                return NotFound();
+
+            TempData["Success"] = "Company updated successfully.";
             return RedirectToAction(nameof(Index));
         }
 
+        // ============================
+        // DELETE
+        // ============================
         public async Task<IActionResult> Delete(int id)
         {
-            var company = await _uow.Companies.GetByIdAsync(id);
+            var company = await _service.GetByIdAsync(id);
             if (company == null) return NotFound();
+
             return View(company);
         }
 
@@ -122,13 +166,39 @@ namespace Seashore_CRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var company = await _uow.Companies.GetByIdAsync(id);
-            if (company != null)
-            {
-                _uow.Companies.Remove(company);
-                await _uow.CommitAsync();
-            }
+            await _service.DeleteAsync(id);
+            TempData["Success"] = "Company deleted successfully.";
             return RedirectToAction(nameof(Index));
+        }
+
+        // ============================
+        // Remote validation endpoints (used by RemoteAttribute)
+        // ============================
+        [AcceptVerbs("Get", "Post")]
+        public async Task<IActionResult> VerifyEmail(string email, int? id)
+        {
+            var taken = await _service.IsEmailTakenAsync(email, id);
+            if (taken)
+                return Json($"Email '{email}' is already in use.");
+            return Json(true);
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public async Task<IActionResult> VerifyCompanyName(string companyName, int? id)
+        {
+            var taken = await _service.IsCompanyNameTakenAsync(companyName, id);
+            if (taken)
+                return Json($"Company name '{companyName}' is already in use.");
+            return Json(true);
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public async Task<IActionResult> VerifyCompanyPhone(string companyPhone, int? id)
+        {
+            var taken = await _service.IsCompanyPhoneTakenAsync(companyPhone, id);
+            if (taken)
+                return Json($"Phone Number '{companyPhone}' is already in use.");
+            return Json(true);
         }
     }
 }

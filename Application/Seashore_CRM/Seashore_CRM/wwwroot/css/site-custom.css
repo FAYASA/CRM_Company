@@ -1,0 +1,8 @@
+﻿.form-container {
+    max-width: 850px;
+}
+
+label.required::after {
+    content: " *";
+    color: #dc3545;
+}

@@ -17,6 +17,12 @@ F:\CRM\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.B
 F:\CRM\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore.3126C893.Up2Date
 F:\CRM\Application\Seashore_CRM\seashore_CRM.BLL\bin\Debug\net8.0\seashore_CRM.BLL.runtimeconfig.json
 F:\CRM\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.genruntimeconfig.cache
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.csproj.AssemblyReference.cache
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.GeneratedMSBuildEditorConfig.editorconfig
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.AssemblyInfoInputs.cache
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.AssemblyInfo.cs
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.csproj.CoreCompileInputs.cache
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.sourcelink.json
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\bin\Debug\net8.0\seashore_CRM.BLL.deps.json
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\bin\Debug\net8.0\seashore_CRM.BLL.runtimeconfig.json
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\bin\Debug\net8.0\seashore_CRM.BLL.dll
@@ -25,12 +31,6 @@ F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\bin\Debug\n
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\bin\Debug\net8.0\seashore_CRM.Models.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\bin\Debug\net8.0\seashore_CRM.Models.pdb
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\bin\Debug\net8.0\seashore_CRM.DAL.pdb
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.csproj.AssemblyReference.cache
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.GeneratedMSBuildEditorConfig.editorconfig
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.AssemblyInfoInputs.cache
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.AssemblyInfo.cs
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.csproj.CoreCompileInputs.cache
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.sourcelink.json
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore.3126C893.Up2Date
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\seashore_CRM.BLL.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.BLL\obj\Debug\net8.0\refint\seashore_CRM.BLL.dll

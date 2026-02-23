@@ -9,56 +9,59 @@ namespace seashore_CRM.DAL.Repositories
     {
         private readonly AppDbContext _context;
 
+        public ICompanyRepository Companies { get; }
+        public IContactRepository Contacts { get; }
+        public IInvoiceRepository Invoices { get; }
+        public IPaymentRepository Payments { get; }
+        public ISaleRepository Sales { get; }
+        public ISaleItemRepository SaleItems { get; }
+
+        public IProductRepository Products { get; }
+        public ICategoryRepository Categories { get; }
+
+        public ILeadRepository Leads { get; }
+        public ILeadItemRepository LeadItems { get; }
+        public ILeadStatusRepository LeadStatuses { get; }
+        public ILeadSourceRepository LeadSources { get; }
+        public ILeadStatusActivityRepository LeadStatusActivities { get; }
+
+        public IActivityRepository Activities { get; }
+        public ICommentRepository Comments { get; }
+
+        public IUserRepository Users { get; }
+        public IOpportunityRepository Opportunities { get; }
+        public IRoleRepository Roles { get; }
+
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
-            Users = new UserRepository(_context);
-            Roles = new RoleRepository(_context);
-            Companies = new CompanyRepository(_context);
-            Contacts = new ContactRepository(_context);
-            Leads = new LeadRepository(_context);
-            LeadStatuses = new LeadStatusRepository(_context);
-            LeadStatusActivities = new LeadStatusActivityRepository(_context);
-            LeadSources = new LeadSourceRepository(_context);
-            Opportunities = new OpportunityRepository(_context);
-            Categories = new CategoryRepository(_context);
-            Products = new ProductRepository(_context);
-            Sales = new SaleRepository(_context);
-            SaleItems = new SaleItemRepository(_context);
-            Invoices = new InvoiceRepository(_context);
-            Payments = new PaymentRepository(_context);
-            Activities = new ActivityRepository(_context);
-            Comments = new CommentRepository(_context);
-            LeadItems = new LeadItemRepository(_context);
-        }
+            Companies = new CompanyRepository(context);
+            Contacts = new ContactRepository(context);
+            Invoices = new InvoiceRepository(context);
+            Payments = new PaymentRepository(context);
+            Sales = new SaleRepository(context);
+            SaleItems = new SaleItemRepository(context);
 
-        public IUserRepository Users { get; }
-        public IRoleRepository Roles { get; }
-        public ICompanyRepository Companies { get; }
-        public IContactRepository Contacts { get; }
-        public ILeadRepository Leads { get; }
-        public ILeadStatusRepository LeadStatuses { get; }
-        public ILeadStatusActivityRepository LeadStatusActivities { get; }
-        public ILeadSourceRepository LeadSources { get; }
-        public IOpportunityRepository Opportunities { get; }
-        public ICategoryRepository Categories { get; }
-        public IProductRepository Products { get; }
-        public ISaleRepository Sales { get; }
-        public ISaleItemRepository SaleItems { get; }
-        public IInvoiceRepository Invoices { get; }
-        public IPaymentRepository Payments { get; }
-        public IActivityRepository Activities { get; }
-        public ICommentRepository Comments { get; }
-        public ILeadItemRepository LeadItems { get; }
+            Products = new ProductRepository(context);
+            Categories = new CategoryRepository(context);
+
+            Leads = new LeadRepository(context);
+            LeadItems = new LeadItemRepository(context);
+            LeadStatuses = new LeadStatusRepository(context);
+            LeadSources = new LeadSourceRepository(context);
+            LeadStatusActivities = new LeadStatusActivityRepository(context);
+
+            Activities = new ActivityRepository(context);
+            Comments = new CommentRepository(context);
+
+            Users = new UserRepository(context);
+            Opportunities = new OpportunityRepository(context);
+            Roles = new RoleRepository(context);
+        }
 
         public async Task<int> CommitAsync()
         {
             return await _context.SaveChangesAsync();
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
         }
     }
 }

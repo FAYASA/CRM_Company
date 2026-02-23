@@ -13,7 +13,7 @@ namespace seashore_CRM.Models.Entities
         public DateTime? UpdatedDate { get; set; }
         public string? UpdatedBy { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public bool IsActive { get; set; } =  true;
 
         // Concurrency token (prevents overwrite issues)
         [Timestamp]
