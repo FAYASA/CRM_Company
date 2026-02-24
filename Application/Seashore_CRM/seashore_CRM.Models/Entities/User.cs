@@ -8,13 +8,11 @@ namespace seashore_CRM.Models.Entities
         public string FullName { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string? Contact { get; set; }
+        public string? Designation { get; set; }
         public string? Region { get; set; }
         public string PasswordHash { get; set; } = null!;
         public int RoleId { get; set; }
-        public bool IsActive { get; set; } = true;
 
-        // New fields
-        public UserStatus Status { get; set; } = UserStatus.Active;
 
         // Reporting user (manager/leader)
         public int? ReportToUserId { get; set; }

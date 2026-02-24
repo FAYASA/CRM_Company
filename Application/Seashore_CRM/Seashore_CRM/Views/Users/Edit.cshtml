@@ -40,6 +40,12 @@
                         <input class="form-control" name="region" value="@ViewBag.Region" />
                     </div>
 
+                    <!-- Designation -->
+                    <div class="col-md-6">
+                        <label class="form-label">Designation</label>
+                        <input name="designation" class="form-control" />
+                    </div>
+
                     <div class="col-md-6">
                         <label class="form-label">Reporting To</label>
                         <select class="form-select" name="reportToUserId">
@@ -84,23 +90,6 @@
                                 }
                             }
                         </select>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label">Status</label>
-                        <select class="form-select" name="status">
-                            @{
-                                var sVal = (string?)ViewBag.Status ?? "0";
-                                if (sVal == "0") { <option value="0" selected="selected">Active</option>; } else { <option value="0">Active</option>; }
-                                if (sVal == "1") { <option value="1" selected="selected">Inactive</option>; } else { <option value="1">Inactive</option>; }
-                                if (sVal == "2") { <option value="2" selected="selected">Suspended</option>; } else { <option value="2">Suspended</option>; }
-                            }
-                        </select>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label">Products</label>
-                        <input class="form-control" />
                     </div>
 
                     <div class="col-12 pt-3">

@@ -23,6 +23,7 @@ namespace seashore_CRM.Models.DTOs
         public string? FullName { get; set; }
         public string? Contact { get; set; }
         public string? Region { get; set; }
+        public string? Designation { get; set; }
         public List<string> Roles { get; set; } = new List<string>();
         public UserStatus Status { get; set; } = UserStatus.Active;
         public bool IsActive { get; set; } = true;
@@ -33,13 +34,14 @@ namespace seashore_CRM.Models.DTOs
     {
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
+        public string? ConfirmPassword { get; set; }
         public string? FullName { get; set; }
         public string? Contact { get; set; }
         public string? Region { get; set; }
         public string? Role { get; set; }
         public string? ReportToUserId { get; set; }
-        public UserStatus Status { get; set; } = UserStatus.Active;
         public bool IsActive { get; set; } = true;
+        public string? Designation { get; set; }
     }
 
     public class UserUpdateDto
@@ -49,10 +51,12 @@ namespace seashore_CRM.Models.DTOs
         public string? FullName { get; set; }
         public string? Contact { get; set; }
         public string? Region { get; set; }
+        public string? Designation { get; set; }
         public List<string> Roles { get; set; } = new List<string>();
         public string? ReportToUserId { get; set; }
         public UserStatus Status { get; set; } = UserStatus.Active;
         public bool IsActive { get; set; } = true;
         public string? NewPassword { get; set; }
+        public string? NewPasswordConfirm { get; set; }
     }
 }

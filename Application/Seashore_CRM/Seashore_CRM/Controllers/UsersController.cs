@@ -53,35 +53,32 @@ namespace Seashore_CRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(
-            string email,
-            string password,
-            string? role,
-            string? reportToUserId,
-            string? fullName,
-            string? contact,
-            string? region,
-            string? status,
-            bool isActive = true)
+        public async Task<IActionResult> Create(UserCreateDto userCreateDto)
         {
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(userCreateDto.Email) || string.IsNullOrWhiteSpace(userCreateDto.Password))
             {
                 ModelState.AddModelError(string.Empty, "Email and password are required.");
                 await PopulateCreateViewBags();
                 return View();
             }
 
+            if (userCreateDto.Password != userCreateDto.ConfirmPassword)
+            {
+                ModelState.AddModelError(string.Empty, "Password and Confirm Password do not match.");
+                await PopulateCreateViewBags();
+                return View();
+            }
+
             var dto = new UserCreateDto
             {
-                Email = email,
-                Password = password,
-                Role = role,
-                ReportToUserId = reportToUserId,
-                FullName = fullName,
-                Contact = contact,
-                Region = region,
-                Status = int.TryParse(status, out var s) ? (UserStatus)s : UserStatus.Active,
-                IsActive = isActive
+                Email = userCreateDto.Email,
+                Password = userCreateDto.Password,
+                Role = userCreateDto.Role,
+                ReportToUserId = userCreateDto.ReportToUserId,
+                FullName = userCreateDto.FullName,
+                Contact = userCreateDto.Contact,
+                Region = userCreateDto.Region,
+                IsActive = userCreateDto.IsActive
             };
 
             var id = await _userAppService.CreateAsync(dto);
@@ -130,8 +127,19 @@ namespace Seashore_CRM.Controllers
             string? region,
             string? status,
             bool isActive = true,
-            string? newPassword = null)
+            string? newPassword = null,
+            string? confirmPassword = null)
         {
+            if (!string.IsNullOrWhiteSpace(newPassword))
+            {
+                if (newPassword != confirmPassword)
+                {
+                    ModelState.AddModelError(string.Empty, "New Password and Confirm Password do not match.");
+                    await PopulateEditViewBags(id);
+                    return View();
+                }
+            }
+
             var dto = new UserUpdateDto
             {
                 Id = id,

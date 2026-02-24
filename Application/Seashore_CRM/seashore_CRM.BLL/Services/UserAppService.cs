@@ -5,6 +5,7 @@ using seashore_CRM.Common.Constants;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidation;
 
 namespace seashore_CRM.BLL.Services
 {
@@ -60,6 +61,7 @@ namespace seashore_CRM.BLL.Services
                 FullName = claims.FirstOrDefault(c => c.Type == "FullName")?.Value,
                 Contact = claims.FirstOrDefault(c => c.Type == "Contact")?.Value,
                 Region = claims.FirstOrDefault(c => c.Type == "Region")?.Value,
+                Designation = claims.FirstOrDefault(c => c.Type == "Designation")?.Value,
                 Roles = roles.ToList(),
                 Status = int.TryParse(claims.FirstOrDefault(c => c.Type == "Status")?.Value, out var s) ? (UserStatus)s : UserStatus.Active,
                 IsActive = bool.TryParse(claims.FirstOrDefault(c => c.Type == "IsActive")?.Value, out var ia) ? ia : true,
@@ -69,6 +71,11 @@ namespace seashore_CRM.BLL.Services
 
         public async Task<string> CreateAsync(UserCreateDto dto)
         {
+            // validate dto
+            var validator = new seashore_CRM.BLL.Validators.UserCreateDtoValidator();
+            var vresult = await validator.ValidateAsync(dto);
+            if (!vresult.IsValid) return string.Empty;
+
             var user = new seashore_CRM.Models.Identity.ApplicationUser
             {
                 UserName = dto.Email,
@@ -88,6 +95,7 @@ namespace seashore_CRM.BLL.Services
             if (!string.IsNullOrEmpty(dto.FullName)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("FullName", dto.FullName));
             if (!string.IsNullOrEmpty(dto.Contact)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Contact", dto.Contact));
             if (!string.IsNullOrEmpty(dto.Region)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Region", dto.Region));
+            if (!string.IsNullOrEmpty(dto.Designation)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Designation", dto.Designation));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Status", ((int)dto.Status).ToString()));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("IsActive", dto.IsActive.ToString()));
             if (!string.IsNullOrEmpty(dto.ReportToUserId)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("ReportToUserId", dto.ReportToUserId));
@@ -97,6 +105,11 @@ namespace seashore_CRM.BLL.Services
 
         public async Task<bool> UpdateAsync(UserUpdateDto dto)
         {
+            // validate dto
+            var validator = new seashore_CRM.BLL.Validators.UserUpdateDtoValidator();
+            var vresult = await validator.ValidateAsync(dto);
+            if (!vresult.IsValid) return false;
+
             var user = await _userManager.FindByIdAsync(dto.Id);
             if (user == null) return false;
 
@@ -115,7 +128,7 @@ namespace seashore_CRM.BLL.Services
 
             // update claims
             var claims = await _userManager.GetClaimsAsync(user);
-            var claimTypes = new[] { "FullName", "Contact", "Region", "Status", "IsActive", "ReportToUserId" };
+            var claimTypes = new[] { "FullName", "Contact", "Region", "Status", "IsActive", "ReportToUserId", "Designation" };
             foreach (var ct in claimTypes)
             {
                 var existing = claims.Where(c => c.Type == ct).ToList();
@@ -128,6 +141,7 @@ namespace seashore_CRM.BLL.Services
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Status", ((int)dto.Status).ToString()));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("IsActive", dto.IsActive.ToString()));
             if (!string.IsNullOrEmpty(dto.ReportToUserId)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("ReportToUserId", dto.ReportToUserId));
+            if (!string.IsNullOrEmpty(dto.Designation)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Designation", dto.Designation));
 
             if (!string.IsNullOrEmpty(dto.NewPassword))
             {

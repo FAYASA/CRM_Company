@@ -113,6 +113,8 @@ builder.Services.AddAutoMapper(typeof(seashore_CRM.BLL.Mapping.AutoMapperProfile
 
 // FluentValidation
 builder.Services.AddTransient<IValidator<LeadDto>, LeadDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.Models.DTOs.UserCreateDto>, seashore_CRM.BLL.Validators.UserCreateDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.Models.DTOs.UserUpdateDto>, seashore_CRM.BLL.Validators.UserUpdateDtoValidator>();
 
 var app = builder.Build();
 

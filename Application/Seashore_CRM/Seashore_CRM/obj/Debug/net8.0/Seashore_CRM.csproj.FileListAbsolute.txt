@@ -319,4 +319,3 @@ F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\ref\Seashore_CRM.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\seashore_CRM.Common.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\seashore_CRM.Common.pdb
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
