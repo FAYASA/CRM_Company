@@ -14,7 +14,7 @@ namespace seashore_CRM.DAL.Data
             if (!context.Roles.Any())
             {
                 context.Roles.AddRange(
-                    new Role { RoleName = "Admin" },
+                    new Role { RoleName = "Administrator" },
                     new Role { RoleName = "SalesRep" },
                     new Role { RoleName = "Manager" }
                 );

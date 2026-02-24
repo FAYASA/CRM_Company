@@ -16,7 +16,10 @@ public class ContactRepository : IContactRepository
 
     public async Task<Contact?> GetByIdAsync(int id)
     {
-        return await _context.Contacts.FindAsync(id);
+        return await _context.Contacts
+            .IgnoreQueryFilters()
+            .Include(c => c.Company)
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task AddAsync(Contact entity)
@@ -36,24 +39,27 @@ public class ContactRepository : IContactRepository
 
     public async Task<IEnumerable<Contact>> GetAllAsync()
     {
-        return await _context.Contacts.ToListAsync();
+        return await _context.Contacts
+            .IgnoreQueryFilters()
+    .Include(c => c.Company)
+    .ToListAsync();
     }
 
     public async Task<IEnumerable<Contact>> FindAsync(Expression<Func<Contact, bool>> predicate)
     {
-        return await _context.Contacts.Where(predicate).ToListAsync();
+        return await _context.Contacts.IgnoreQueryFilters().Where(predicate).ToListAsync();
     }
 
     public async Task<Contact?> GetWithCompanyAsync(int id)
     {
-        return await _context.Contacts
+        return await _context.Contacts.IgnoreQueryFilters()
             .Include(c => c.Company)
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<IEnumerable<Contact>> GetAllWithCompanyAsync()
     {
-        return await _context.Contacts
+        return await _context.Contacts.IgnoreQueryFilters()
             .Include(c => c.Company)
             .ToListAsync();
     }
@@ -61,6 +67,7 @@ public class ContactRepository : IContactRepository
     public async Task<IEnumerable<Contact>> GetByCompanyIdAsync(int companyId)
     {
         return await _context.Contacts
+            .IgnoreQueryFilters()
             .Where(c => c.CompanyId == companyId)
             .ToListAsync();
     }

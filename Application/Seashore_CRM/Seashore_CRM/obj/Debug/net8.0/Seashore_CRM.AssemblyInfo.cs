@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Seashore_CRM")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b3e6bd145606f09bf87ca2d9796139f689fe4a05")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+87de4977c78d36871315a81c0c021ed2fe5b3acf")]
 [assembly: System.Reflection.AssemblyProductAttribute("Seashore_CRM")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Seashore_CRM")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -53,11 +53,12 @@ namespace seashore_CRM.BLL.Services
                 Phone = c.Phone,
                 Mobile = c.Mobile,
                 Designation = c.Designation,
-                CompanyId = c.Company.Id,
+                CompanyId = c.CompanyId,
                 CompanyName = c.Company?.CompanyName,
                 IsActive = c.IsActive,
                 RowVersion = c.RowVersion
             };
+
         }
 
         // ===============================
@@ -74,7 +75,8 @@ namespace seashore_CRM.BLL.Services
                 Mobile = dto.Mobile,
                 Designation = dto.Designation,
                 IsActive = true,
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = "System" // optional if NOT NULL in DB
             };
 
             await _uow.Contacts.AddAsync(entity);

@@ -3,13 +3,18 @@ using System.Linq.Expressions;
 using System.Reflection;
 using seashore_CRM.Models.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http; // for user logn 
+using seashore_CRM.Models.Identity;
 
 namespace seashore_CRM.DAL.Data
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        private readonly IHttpContextAccessor _httpContextAccessor; // For accessing user info in audit fields
+
+        public AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public DbSet<User> Users => Set<User>();
@@ -122,6 +127,10 @@ namespace seashore_CRM.DAL.Data
 
             modelBuilder.Entity<LeadItem>()
                 .HasIndex(li => li.ProductId);
+
+            // Index for report-to relationship
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.ReportToUserId);
         }
 
         // ===============================
@@ -157,6 +166,13 @@ namespace seashore_CRM.DAL.Data
                 .HasOne(l => l.AssignedUser)
                 .WithMany()
                 .HasForeignKey(l => l.AssignedUserId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // Self-referencing report-to relationship for User
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.ReportToUser)
+                .WithMany()
+                .HasForeignKey(u => u.ReportToUserId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Opportunity>()
@@ -252,14 +268,46 @@ namespace seashore_CRM.DAL.Data
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
+
+        // Override SaveChangesAsync // this for automatically setting audit fields and implementing soft delete logic
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries<BaseEntity>();
+            foreach (var entry in entries)
+            {
+                var now = DateTime.UtcNow;
+                var userId = _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "System";
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedDate = now;
+                        entry.Entity.CreatedBy = userId;
+                        entry.Entity.IsActive = true; // Ensure new entities are active
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.UpdatedDate = now;
+                        entry.Entity.UpdatedBy = userId;
+                        break;
+                    case EntityState.Deleted:
+                        // Soft delete: mark as inactive instead of deleting
+                        entry.State = EntityState.Modified;
+                        entry.Entity.IsActive = false;
+                        entry.Entity.UpdatedDate = now;
+                        entry.Entity.UpdatedBy = userId;
+                        break;
+                }
+            }
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
         // ===============================
-        // SOFT DELETE FILTER
+        // SOFT DELETE FILTER /// Global Query Filter
         // ===============================
         private static LambdaExpression GetIsDeletedRestriction(Type type)
         {
             var parameter = Expression.Parameter(type, "e");
             var property = Expression.Property(parameter, nameof(BaseEntity.IsActive));
-            var condition = Expression.Equal(property, Expression.Constant(false));
+            var condition = Expression.Equal(property, Expression.Constant(true));
             var lambda = Expression.Lambda(condition, parameter);
             return lambda;
         }

@@ -8,11 +8,13 @@
     ".NETCoreApp,Version=v8.0": {
       "Seashore_CRM/1.0.0": {
         "dependencies": {
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
           "Microsoft.EntityFrameworkCore": "8.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.0",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
           "seashore_CRM.BLL": "1.0.0",
+          "seashore_CRM.Common": "1.0.0",
           "seashore_CRM.DAL": "1.0.0"
         },
         "runtime": {
@@ -1042,12 +1044,25 @@
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
           "FluentValidation": "11.6.0",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
           "seashore_CRM.DAL": "1.0.0",
           "seashore_CRM.Models": "1.0.0"
         },
         "runtime": {
           "seashore_CRM.BLL.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "seashore_CRM.Common/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
+          "Microsoft.Extensions.Logging": "9.0.0"
+        },
+        "runtime": {
+          "seashore_CRM.Common.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -1071,8 +1086,10 @@
       "seashore_CRM.Models/1.0.0": {
         "dependencies": {
           "Microsoft.AspNet.Mvc": "5.3.0",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
           "Microsoft.AspNetCore.Mvc.Abstractions": "2.3.9",
-          "Microsoft.Extensions.Logging": "9.0.0"
+          "Microsoft.Extensions.Logging": "9.0.0",
+          "seashore_CRM.Common": "1.0.0"
         },
         "runtime": {
           "seashore_CRM.Models.dll": {
@@ -1741,6 +1758,11 @@
       "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
     },
     "seashore_CRM.BLL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "seashore_CRM.Common/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

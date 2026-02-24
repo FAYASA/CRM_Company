@@ -22,33 +22,20 @@
                     <span>Seashore CRM</span>
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <div class="d-flex ms-auto align-items-center">
+                    @if (User?.Identity?.IsAuthenticated == true)
+                    {
+                        <span class="text-light me-2">@User.Identity.Name</span>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-light">Logout</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="btn btn-sm btn-outline-light" asp-controller="Account" asp-action="Login">Login</a>
+                    }
+                </div>
 
-                @* <div class="collapse navbar-collapse" id="mainNavbar">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
-                        <li class="nav-item me-2"><a class="nav-link" asp-controller="Companies" asp-action="Index">Companies</a></li>
-                        <li class="nav-item me-2"><a class="nav-link" asp-controller="Leads" asp-action="Index">Leads</a></li>
-                        <li class="nav-item me-2"><a class="nav-link" asp-controller="Contacts" asp-action="Index">Contacts</a></li>
-                        <li class="nav-item me-2"><a class="nav-link" asp-controller="Products" asp-action="Index">Products</a></li>
-                    </ul>
-
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">More</a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreDropdown">
-                                <li><a class="dropdown-item" asp-controller="Opportunities" asp-action="Index">Opportunities</a></li>
-                                <li><a class="dropdown-item" asp-controller="Sales" asp-action="Index">Sales</a></li>
-                                <li><a class="dropdown-item" asp-controller="Invoices" asp-action="Index">Invoices</a></li>
-                                <li><a class="dropdown-item" asp-controller="Payments" asp-action="Index">Payments</a></li>
-                                <li><a class="dropdown-item" asp-controller="Activities" asp-action="Index">Activities</a></li>
-                                <li><a class="dropdown-item" asp-controller="Users" asp-action="Index">Users</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div> *@
             </div>
         </nav>
     </header>
@@ -63,16 +50,6 @@
             @RenderBody()
         </main>
     </div>
-
-    @* <!-- Footer -->
-    <footer class="footer mt-auto py-3 bg-light border-top">
-        <div class="container-fluid px-4">
-            <div class="d-flex justify-content-between small text-muted">
-                <div>&copy; @DateTime.UtcNow.Year - Seashore_CRM</div>
-                <div><a asp-controller="Home" asp-action="Privacy">Privacy</a></div>
-            </div>
-        </div>
-    </footer> *@
 
     <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -22,6 +22,7 @@ namespace Seashore_CRM.Controllers
         // INDEX
         // ===============================
         public async Task<IActionResult> Index()
+        
         {
             var contacts = await _contactService.GetAllAsync();
             return View(contacts);
@@ -77,6 +78,7 @@ namespace Seashore_CRM.Controllers
             var dto = new ContactUpdateDto
             {
                 Id = contact.Id,
+                CompanyId = contact.CompanyId,
                 ContactName = contact.ContactName,
                 Email = contact.Email,
                 Phone = contact.Phone,

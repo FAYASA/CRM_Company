@@ -44,7 +44,7 @@ namespace seashore_CRM.Models.DTOs
         public string ContactName { get; set; } = null!;
 
         [Required]
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
 
         [EmailAddress]
         public string? Email { get; set; }
@@ -84,7 +84,7 @@ namespace seashore_CRM.Models.DTOs
         public string ContactName { get; set; } = null!;
         public string CompanyName { get; set; } = null!;
 
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
 
         public string? Email { get; set; }
         public string? Phone { get; set; }

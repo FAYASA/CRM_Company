@@ -1779,6 +1779,7 @@
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
           "FluentValidation": "11.6.0",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
           "seashore_CRM.DAL": "1.0.0",
           "seashore_CRM.Models": "1.0.0"
@@ -1788,6 +1789,20 @@
         },
         "runtime": {
           "bin/placeholder/seashore_CRM.BLL.dll": {}
+        }
+      },
+      "seashore_CRM.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
+          "Microsoft.Extensions.Logging": "9.0.0"
+        },
+        "compile": {
+          "bin/placeholder/seashore_CRM.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/seashore_CRM.Common.dll": {}
         }
       },
       "seashore_CRM.DAL/1.0.0": {
@@ -1812,8 +1827,10 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "Microsoft.AspNet.Mvc": "5.3.0",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
           "Microsoft.AspNetCore.Mvc.Abstractions": "2.3.9",
-          "Microsoft.Extensions.Logging": "9.0.0"
+          "Microsoft.Extensions.Logging": "9.0.0",
+          "seashore_CRM.Common": "1.0.0"
         },
         "compile": {
           "bin/placeholder/seashore_CRM.Models.dll": {}
@@ -4647,6 +4664,11 @@
       "path": "../seashore_CRM.BLL/seashore_CRM.BLL.csproj",
       "msbuildProject": "../seashore_CRM.BLL/seashore_CRM.BLL.csproj"
     },
+    "seashore_CRM.Common/1.0.0": {
+      "type": "project",
+      "path": "../seashore_CRM.Common/seashore_CRM.Common.csproj",
+      "msbuildProject": "../seashore_CRM.Common/seashore_CRM.Common.csproj"
+    },
     "seashore_CRM.DAL/1.0.0": {
       "type": "project",
       "path": "../seashore_CRM.DAL/seashore_CRM.DAL.csproj",
@@ -4660,11 +4682,13 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.0",
       "Microsoft.EntityFrameworkCore >= 8.0.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.0",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.0",
       "Microsoft.Extensions.Logging >= 9.0.0",
       "seashore_CRM.BLL >= 1.0.0",
+      "seashore_CRM.Common >= 1.0.0",
       "seashore_CRM.DAL >= 1.0.0"
     ]
   },
@@ -4704,6 +4728,9 @@
             "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.BLL.csproj": {
               "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.BLL.csproj"
             },
+            "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj": {
+              "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj"
+            },
             "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DAL.csproj": {
               "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DAL.csproj"
             }
@@ -4726,6 +4753,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[8.0.0, )"
+          },
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",
             "version": "[8.0.0, )"

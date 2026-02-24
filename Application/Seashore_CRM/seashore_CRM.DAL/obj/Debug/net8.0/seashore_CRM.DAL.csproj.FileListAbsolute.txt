@@ -33,3 +33,5 @@ F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\n
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\seashore_CRM.DAL.pdb
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\seashore_CRM.DAL.genruntimeconfig.cache
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.DAL\obj\Debug\net8.0\ref\seashore_CRM.DAL.dll
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.DAL\bin\Debug\net8.0\seashore_CRM.Common.dll
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\seashore_CRM.DAL\bin\Debug\net8.0\seashore_CRM.Common.pdb

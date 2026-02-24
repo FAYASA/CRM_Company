@@ -1,4 +1,4 @@
-@model seashore_CRM.Models.Entities.Contact
+@model seashore_CRM.Models.DTOs.ContactCreateDto
 
 @{
     ViewData["Title"] = "Create Contact";
@@ -6,60 +6,155 @@
 
 @await Html.PartialAsync("_PageHeader")
 
-<div class="page-card-inner mx-auto" style="max-width: 980px;">
-    <h1 class="mb-3">Create Contact</h1>
+<div class="container my-4">
+    <div class="card shadow-sm mx-auto form-container">
 
-    <form asp-action="Create" method="post">
-        <div class="form-grid">
-            <div>
-                <label asp-for="Contact_Name" class="form-label">Contact Name</label>
-                <div class="input-with-icon">
-                    <input asp-for="Contact_Name" class="form-control" placeholder="Contact Name" />
-                    <span class="input-icon"><i class="bi bi-person"></i></span>
-                </div>
-            </div>
-
-            <div class="form-full">
-                <label class="form-label">(Optional) Secondary Name</label>
-                <input class="form-control" placeholder="Additional name or notes" />
-            </div>
-
-            <div>
-                <label asp-for="CompanyId" class="form-label">Company</label>
-                <div class="input-inline">
-                    <select asp-for="CompanyId" class="form-select">
-                        <option value="">-- Select Company --</option>
-                        @foreach (var c in ViewBag.Companies as SelectList)
-                        {
-                            <option value="@c.Value">@c.Text</option>
-                        }
-                    </select>
-                    <span class="icon-box"><i class="bi bi-building"></i></span>
-                </div>
-            </div>
-
-            <div>
-                <label asp-for="Phone" class="form-label">Phone</label>
-                <div class="input-with-icon">
-                    <input asp-for="Phone" class="form-control" placeholder="Phone" />
-                    <span class="input-icon"><i class="bi bi-telephone"></i></span>
-                </div>
-            </div>
-
-            <div>
-                <label asp-for="Email" class="form-label">Email</label>
-                <div class="input-with-icon">
-                    <input asp-for="Email" class="form-control" placeholder="Email" />
-                    <span class="input-icon"><i class="bi bi-envelope"></i></span>
-                </div>
-            </div>
-
-            <div></div>
+        <!-- Header -->
+        <div class="card-header bg-light">
+            <h5 class="mb-0 fw-semibold">
+                <i class="bi bi-person-lines-fill me-2"></i>
+                Create Contact
+            </h5>
         </div>
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Create</button>
-            <a asp-action="Index" class="btn btn-secondary-muted ms-2">Cancel</a>
+        <!-- Body -->
+        <div class="card-body">
+            <form asp-action="Create" method="post" id="contactForm">
+                @Html.AntiForgeryToken()
+
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row g-3">
+
+                    <!-- Contact Name -->
+                    <div class="col-md-6">
+                        <label asp-for="ContactName" class="form-label fw-semibold required">Contact Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person"></i>
+                            </span>
+                            <input asp-for="ContactName"
+                                   class="form-control"
+                                   placeholder="Enter contact name" />
+                        </div>
+                        <span asp-validation-for="ContactName" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Company Dropdown -->
+                    <div class="col-md-6">
+                        <label asp-for="CompanyId" class="form-label fw-semibold required">Company</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-building"></i>
+                            </span>
+                            <select asp-for="CompanyId"
+                                    asp-items="ViewBag.Companies"
+                                    class="form-select">
+                                <option value="">-- Select Company --</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="CompanyId" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Designation -->
+                    <div class="col-md-6">
+                        <label asp-for="Designation" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-briefcase"></i>
+                            </span>
+                            <input asp-for="Designation"
+                                   class="form-control"
+                                   placeholder="Manager, Director, Engineer..." />
+                        </div>
+                        <span asp-validation-for="Designation" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope"></i>
+                            </span>
+                            <input asp-for="Email"
+                                   type="email"
+                                   class="form-control"
+                                   placeholder="Enter email address" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6">
+                        <label asp-for="Phone" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-telephone"></i>
+                            </span>
+                            <input asp-for="Phone"
+                                   type="tel"
+                                   class="form-control"
+                                   placeholder="Enter phone number" />
+                        </div>
+                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Mobile -->
+                    <div class="col-md-6">
+                        <label asp-for="Mobile" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-phone"></i>
+                            </span>
+                            <input asp-for="Mobile"
+                                   type="tel"
+                                   class="form-control"
+                                   placeholder="Enter mobile number" />
+                        </div>
+                        <span asp-validation-for="Mobile" class="text-danger small"></span>
+                    </div>
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-4 d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary px-4" id="submitBtn">
+                        <span class="spinner-border spinner-border-sm d-none me-2" id="submitSpinner"></span>
+                        Create
+                    </button>
+                </div>
+
+            </form>
         </div>
-    </form>
+    </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById("contactForm")
+            .addEventListener("submit", function (e) {
+
+                var form = $(this);
+
+                // If form is NOT valid, stop loading state
+                if (!form.valid()) {
+                    return;
+                }
+
+                document.getElementById("submitSpinner")
+                    .classList.remove("d-none");
+
+                document.getElementById("submitBtn")
+                    .setAttribute("disabled", "disabled");
+            });
+    </script>
+}
+}

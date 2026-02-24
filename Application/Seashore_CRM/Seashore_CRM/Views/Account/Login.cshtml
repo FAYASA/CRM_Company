@@ -1,0 +1,90 @@
+@model Seashore_CRM.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@await Html.PartialAsync("_PageHeader")
+
+<div class="container my-5">
+    <div class="card shadow-sm mx-auto" style="max-width:500px;">
+        <!-- Header -->
+        <div class="card-header bg-light">
+            <h5 class="mb-0 fw-semibold">
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+                Login
+            </h5>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <form asp-action="Login" method="post" id="loginForm">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="ReturnUrl" />
+
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-semibold required"></label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+                        <input asp-for="Email" class="form-control" placeholder="Enter email address" />
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label fw-semibold required"></label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-lock"></i>
+                        </span>
+                        <input asp-for="Password" type="password" class="form-control" placeholder="Enter password" />
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="form-check mb-3">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label"></label>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-primary px-4" id="submitBtn">
+                        <span class="spinner-border spinner-border-sm d-none me-2" id="submitSpinner"></span>
+                        Login
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const form = document.getElementById("loginForm");
+        const btn = document.getElementById("submitBtn");
+        const spinner = document.getElementById("submitSpinner");
+
+        form.addEventListener("submit", function () {
+            if (document.querySelectorAll(".validation-summary-errors").length === 0) {
+                spinner.classList.remove("d-none");
+                btn.setAttribute("disabled", "disabled");
+            }
+        });
+
+        window.addEventListener("load", function () {
+            btn.removeAttribute("disabled");
+            spinner.classList.add("d-none");
+        });
+    </script>
+}

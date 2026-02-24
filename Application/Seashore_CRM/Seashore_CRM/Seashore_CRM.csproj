@@ -9,9 +9,11 @@
   <ItemGroup>
     <ProjectReference Include="..\seashore_CRM.DAL\seashore_CRM.DAL.csproj" />
     <ProjectReference Include="..\seashore_CRM.BLL\seashore_CRM.BLL.csproj" />
+    <ProjectReference Include="..\seashore_CRM.Common\seashore_CRM.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
