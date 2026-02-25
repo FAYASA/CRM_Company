@@ -18,9 +18,10 @@
         <nav class="navbar navbar-expand-lg navbar-dark app-navbar">
             <div class="container-fluid px-4">
                 <a class="navbar-brand fw-semibold d-flex align-items-center" asp-controller="Home" asp-action="Index">
-                    <span class="logo-mark me-2"></span>
+                    <img src="~/img/" alt="Seashore CRM Logo" style="height:32px;" class="me-2" />
                     <span>Seashore CRM</span>
                 </a>
+
 
                 <div class="d-flex ms-auto align-items-center">
                     @if (User?.Identity?.IsAuthenticated == true)

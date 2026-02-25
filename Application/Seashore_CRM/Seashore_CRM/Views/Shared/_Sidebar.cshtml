@@ -1,32 +1,99 @@
 ﻿@using seashore_CRM.Common.Constants
-@* Left sidebar used for dashboard layout *@
-<div class="app-sidebar">
-    @* <div class="sidebar-header d-flex align-items-center p-3">
-        <div class="me-2 logo-box">CRMP</div>
-        <div class="sidebar-title">CRMPlus</div>
-    </div> *@
 
-    @* <div class="sidebar-user p-3 d-flex align-items-center">
-        <img src="~/img/avatar.png" class="rounded-circle me-2" alt="user" style="width:40px;height:40px;object-fit:cover;" />
-        <div>
-            <div class="small text-white-50">super@admin.com</div>
-            <div class="text-success small">● Online</div>
-        </div>
-    </div> *@
-
-    <nav class="sidebar-nav px-2">
+<div class="app-sidebar d-flex flex-column bg-dark vh-100">
+    <nav class="sidebar-nav px-2 flex-grow-1">
         <ul class="nav flex-column">
-            <li class="nav-item"><a class="nav-link text-white" asp-controller="Home" asp-action="Index"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link text-white" asp-controller="Companies" asp-action="Index"><i class="bi bi-building me-2"></i> Companies</a></li>
-            <li class="nav-item"><a class="nav-link text-white" asp-controller="Leads" asp-action="Index"><i class="bi bi-person-lines-fill me-2"></i> Leads</a></li>
-            <li class="nav-item"><a class="nav-link text-white" asp-controller="Contacts" asp-action="Index"><i class="bi bi-people me-2"></i> Contacts</a></li>
-            <li class="nav-item"><a class="nav-link text-white" asp-controller="Products" asp-action="Index"><i class="bi bi-box-seam me-2"></i> Products</a></li>
-            <li class="nav-item"><a class="nav-link text-white" asp-controller="Opportunities" asp-action="Index"><i class="bi bi-briefcase me-2"></i> Opportunities</a></li>
 
+            <!-- Main Menu -->
+            <li class="nav-item text-uppercase text-muted small mt-3">Main Menu</li>
+            <li class="nav-item">
+                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active bg-secondary rounded" : "")" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-controller="Companies" asp-action="Index">
+                    <i class="bi bi-building me-2"></i> Companies
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center" asp-controller="Leads" asp-action="Index">
+                    <span><i class="bi bi-person-lines-fill me-2"></i> Leads</span>
+                    <span class="badge bg-danger rounded-pill">3</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-controller="Contacts" asp-action="Index">
+                    <i class="bi bi-people me-2"></i> Contacts
+                </a>
+            </li>
+
+            <!-- General -->
+            <li class="nav-item text-uppercase text-muted small mt-3">General</li>
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-controller="Products" asp-action="Index">
+                    <i class="bi bi-box-seam me-2"></i> Products
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center" asp-controller="Opportunities" asp-action="Index">
+                    <span><i class="bi bi-briefcase me-2"></i> Opportunities</span>
+                    <span class="badge bg-warning text-dark rounded-pill">5</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-controller="Reports" asp-action="Index">
+                    <i class="bi bi-bar-chart-line me-2"></i> Reports
+                </a>
+            </li>
+
+            <!-- Account -->
+            <li class="nav-item text-uppercase text-muted small mt-3">Account</li>
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-controller="Profile" asp-action="Index">
+                    <i class="bi bi-person-circle me-2"></i> Profile
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-controller="Settings" asp-action="Index">
+                    <i class="bi bi-gear me-2"></i> Settings
+                </a>
+            </li>
+
+            <!-- Admin-only Users section -->
             @if (User?.IsInRole(RoleNames.Administrator) == true)
             {
-                <li class="nav-item"><a class="nav-link text-white" asp-controller="Users" asp-action="Index"><i class="bi bi-people-fill me-2"></i> Users</a></li>
+                <li class="nav-item mt-3">
+                    <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                       data-bs-toggle="collapse" href="#usersMenu" role="button" aria-expanded="false" aria-controls="usersMenu">
+                        <span><i class="bi bi-people-fill me-2"></i> Users</span>
+                        <i class="bi bi-caret-down-fill"></i>
+                    </a>
+                    <div class="collapse" id="usersMenu">
+                        <ul class="nav flex-column ms-3">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Users" asp-action="Index">
+                                    <i class="bi bi-list-ul me-2"></i> All Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Users" asp-action="Create">
+                                    <i class="bi bi-person-plus-fill me-2"></i> Create User
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             }
         </ul>
     </nav>
+
+    <!-- Sidebar user profile -->
+    <div class="sidebar-user p-3 mt-auto d-flex align-items-center border-top">
+        <img src="~/img/avatar.png" class="rounded-circle me-2" alt="user" style="width:40px;height:40px;object-fit:cover;" />
+        <div>
+            <div class="small text-white-50">@User.Identity?.Name</div>
+            <div class="text-success small">● Online</div>
+        </div>
+    </div>
 </div>
