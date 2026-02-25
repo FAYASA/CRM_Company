@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
-namespace Seashore_CRM.ViewModels
+namespace Seashore_CRM.ViewModels.Login
 {
     public class RegisterViewModel
     {

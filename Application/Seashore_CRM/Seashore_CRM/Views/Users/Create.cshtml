@@ -1,3 +1,6 @@
+@using Seashore_CRM.ViewModels.User
+@model UserCreateViewModel
+
 @{
     ViewData["Title"] = "Create User";
 }
@@ -17,7 +20,7 @@
 
         <!-- Body -->
         <div class="card-body">
-            <form method="post" asp-action="Create" id="userForm">
+            <form asp-action="Create" method="post" id="userForm">
                 @Html.AntiForgeryToken()
 
                 <!-- Validation Summary -->
@@ -27,67 +30,57 @@
 
                     <!-- Full Name -->
                     <div class="col-md-6">
-                        <label class="form-label">Full Name</label>
-                        <input name="fullName" class="form-control" />
+                        <label asp-for="FullName" class="form-label"></label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
                     </div>
 
                     <!-- Contact -->
                     <div class="col-md-6">
-                        <label class="form-label">Contact</label>
-                        <input name="contact" class="form-control" />
+                        <label asp-for="Contact" class="form-label"></label>
+                        <input asp-for="Contact" class="form-control" />
+                        <span asp-validation-for="Contact" class="text-danger"></span>
                     </div>
 
                     <!-- Email -->
                     <div class="col-md-6">
-                        <label class="form-label">Email ID as User Name</label>
-                        <input name="email" type="email" class="form-control" />
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" type="email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
                     <!-- Designation -->
                     <div class="col-md-6">
-                        <label class="form-label">Designation</label>
-                        <input name="designation" class="form-control" />
+                        <label asp-for="Designation" class="form-label"></label>
+                        <input asp-for="Designation" class="form-control" />
+                        <span asp-validation-for="Designation" class="text-danger"></span>
                     </div>
 
                     <!-- Region -->
                     <div class="col-md-6">
-                        <label class="form-label">Region</label>
-                        <input name="region" class="form-control" />
+                        <label asp-for="Region" class="form-label"></label>
+                        <input asp-for="Region" class="form-control" />
+                        <span asp-validation-for="Region" class="text-danger"></span>
                     </div>
 
                     <!-- Reporting To -->
                     <div class="col-md-6">
-                        <label class="form-label">Reporting To</label>
-                        <select name="reportToUserId" class="form-select">
+                        <label asp-for="ReportToUserId" class="form-label">Report To User</label>
+                        <select asp-for="ReportToUserId" class="form-select"
+                                asp-items="Model.Users">
                             <option value="">-- Select --</option>
-                            @{
-                                var users = (System.Collections.IEnumerable)ViewBag.Users ?? new List<object>();
-                                foreach (var u in users)
-                                {
-                                    var du = (dynamic)u;
-                                    string id = du.Id as string ?? "";
-                                    string name = du.UserName ?? du.Email ?? id;
-                                    <option value="@id">@name</option>
-                                }
-                            }
                         </select>
+                        <span asp-validation-for="ReportToUserId" class="text-danger"></span>
                     </div>
 
                     <!-- Role -->
                     <div class="col-md-6">
-                        <label class="form-label">User Role</label>
-                        <select name="role" class="form-select">
+                        <label asp-for="RoleId" class="form-label">Role</label>
+                        <select asp-for="RoleId" class="form-select" asp-items="Model.Roles">
                             <option value="">-- Select role --</option>
-                            @{
-                                var roles = (List<string>)ViewBag.Roles ?? new List<string>();
-                                foreach (var r in roles)
-                                {
-                                    <option value="@r">@r</option>
-                                }
-                            }
                         </select>
+                        <span asp-validation-for="RoleId" class="text-danger"></span>
                     </div>
-
 
                     <!-- Password Section -->
                     <div class="col-12 pt-3">
@@ -96,22 +89,24 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">New Password</label>
-                        <input type="password" name="password" class="form-control" />
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">Confirm Password</label>
-                        <input type="password" name="confirmPassword" class="form-control" />
+                        <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
 
-                    <!-- Active Checkbox -->
+                    @* <!-- Active Checkbox -->
                     <div class="col-12">
                         <div class="form-check mt-2">
-                            <input class="form-check-input" type="checkbox" name="isActive" value="true" checked />
-                            <label class="form-check-label">Active</label>
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label"></label>
                         </div>
-                    </div>
+                    </div> *@
 
                 </div>
 

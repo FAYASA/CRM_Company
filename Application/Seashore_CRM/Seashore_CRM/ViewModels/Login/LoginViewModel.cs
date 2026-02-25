@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Seashore_CRM.ViewModels
+namespace Seashore_CRM.ViewModels.Login
 {
     public class LoginViewModel
     {

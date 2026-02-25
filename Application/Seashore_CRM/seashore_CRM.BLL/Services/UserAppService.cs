@@ -96,9 +96,9 @@ namespace seashore_CRM.BLL.Services
             if (!string.IsNullOrEmpty(dto.Contact)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Contact", dto.Contact));
             if (!string.IsNullOrEmpty(dto.Region)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Region", dto.Region));
             if (!string.IsNullOrEmpty(dto.Designation)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Designation", dto.Designation));
-            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Status", ((int)dto.Status).ToString()));
+            //await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Status", ((int)dto.Status).ToString()));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("IsActive", dto.IsActive.ToString()));
-            if (!string.IsNullOrEmpty(dto.ReportToUserId)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("ReportToUserId", dto.ReportToUserId));
+            //if (!string.IsNullOrEmpty(dto.ReportToUserId)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("ReportToUserId", dto.ReportToUserId));
 
             return user.Id;
         }

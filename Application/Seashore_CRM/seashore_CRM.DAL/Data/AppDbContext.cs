@@ -5,6 +5,7 @@ using seashore_CRM.Models.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http; // for user logn 
 using seashore_CRM.Models.Identity;
+using System.Security.Claims;
 
 namespace seashore_CRM.DAL.Data
 {
@@ -276,7 +277,9 @@ namespace seashore_CRM.DAL.Data
             foreach (var entry in entries)
             {
                 var now = DateTime.UtcNow;
-                var userId = _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "System";
+                var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value 
+                            ?? _httpContextAccessor.HttpContext?.User?.Identity?.Name 
+                            ?? "System";
                 switch (entry.State)
                 {
                     case EntityState.Added:

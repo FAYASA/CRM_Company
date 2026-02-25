@@ -2,9 +2,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using seashore_CRM.Models.Identity;
-using Seashore_CRM.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using seashore_CRM.BLL.Services.Service_Interfaces;
+using System.Linq;
+using seashore_CRM.Models.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Seashore_CRM.ViewModels.Login;
 
 namespace Seashore_CRM.Controllers
 {
@@ -13,12 +19,16 @@ namespace Seashore_CRM.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IUserService _userService; // application users table service
+        private readonly IRoleService _roleService; // service to read role names
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IUserService userService, IRoleService roleService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
+            _userService = userService;
+            _roleService = roleService;
         }
 
         [HttpGet]
@@ -36,24 +46,53 @@ namespace Seashore_CRM.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var user = await _userManager.FindByEmailAsync(model.Email!);
-            if (user == null)
+            // Authenticate against the application Users table (custom users)
+            var users = await _userService.GetAllAsync();
+            var appUser = users.FirstOrDefault(u => string.Equals(u.Email?.Trim(), model.Email?.Trim(), System.StringComparison.OrdinalIgnoreCase));
+
+            if (appUser == null || !appUser.IsActive)
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return View(model);
             }
 
-            var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
-            if (result.Succeeded)
+            var passwordHasher = new PasswordHasher<User>();
+            var verification = passwordHasher.VerifyHashedPassword(null, appUser.PasswordHash, model.Password);
+            if (verification == PasswordVerificationResult.Failed)
             {
-                if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
-                    return Redirect(model.ReturnUrl);
-
-                return RedirectToAction("Index", "Companies");
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View(model);
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return View(model);
+            // build claims and sign in using Identity cookie scheme so the rest of the app (Authorize) works
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, appUser.Id.ToString()),
+                new Claim(ClaimTypes.Name, string.IsNullOrWhiteSpace(appUser.FullName) ? appUser.Email : appUser.FullName),
+                new Claim(ClaimTypes.Email, appUser.Email ?? string.Empty),
+                new Claim("IsActive", appUser.IsActive.ToString())
+            };
+
+            // include role claim from Roles table if available
+            if (appUser.RoleId > 0)
+            {
+                var roleEntity = await _roleService.GetByIdAsync(appUser.RoleId);
+                if (roleEntity != null)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, roleEntity.RoleName));
+                }
+            }
+
+            var identity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            var authProperties = new AuthenticationProperties { IsPersistent = model.RememberMe };
+            await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal, authProperties);
+
+            if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                return Redirect(model.ReturnUrl);
+
+            return RedirectToAction("Index", "Companies");
         }
 
         [HttpPost]
@@ -61,7 +100,7 @@ namespace Seashore_CRM.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
             return RedirectToAction("Login", "Account");
         }
 

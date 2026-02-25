@@ -35,11 +35,13 @@ namespace seashore_CRM.Models.DTOs
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string? ConfirmPassword { get; set; }
-        public string? FullName { get; set; }
+        public string FullName { get; set; } = null!;
         public string? Contact { get; set; }
         public string? Region { get; set; }
         public string? Role { get; set; }
-        public string? ReportToUserId { get; set; }
+
+        public int RoleId { get; set; }
+        public int? ReportToUserId { get; set; }
         public bool IsActive { get; set; } = true;
         public string? Designation { get; set; }
     }
