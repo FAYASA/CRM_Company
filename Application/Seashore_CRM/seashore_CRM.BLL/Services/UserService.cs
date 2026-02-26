@@ -145,5 +145,55 @@ namespace seashore_CRM.BLL.Services
             return all.Any(u => !string.IsNullOrWhiteSpace(u.Contact) && u.Contact!.ToLower().Trim() == contact.ToLower().Trim() && (!excludeId.HasValue || u.Id != excludeId.Value));
         }
 
+        public async Task<ProfileViewDto?> GetProfileAsync(int userId)
+        {
+            var user = await _uow.Users.GetByIdAsync(userId);
+
+            if (user == null) return null;
+
+            return new ProfileViewDto
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FullName = user.FullName,
+                Contact = user.Contact,
+                Region = user.Region,
+                RoleName = user.Role?.RoleName ?? "",
+                IsActive = user.IsActive,
+                CreatedDate = user.CreatedDate
+            };
+        }
+
+        public async Task UpdateProfileAsync(ProfileUpdateDto dto)
+        {
+            var user = await _uow.Users.GetByIdAsync(dto.Id);
+            if (user == null)
+                throw new Exception("User not found");
+
+            user.Email = dto.Email;
+            user.FullName = dto.FullName;
+            user.Contact = dto.Contact;
+            user.Region = dto.Region;
+            user.UpdatedDate = DateTime.UtcNow;
+
+            _uow.Users.Update(user);
+            await _uow.CommitAsync();
+        }
+
+        public async Task ChangePasswordAsync(ChangePasswordDto dto)
+        {
+            var user = await _uow.Users.GetByIdAsync(dto.UserId);
+            if (user == null)
+                throw new Exception("User not found");
+
+            if (!BCrypt.Net.BCrypt.Verify(dto.CurrentPassword, user.PasswordHash))
+                throw new Exception("Current password is incorrect");
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+            user.UpdatedDate = DateTime.UtcNow;
+
+            _uow.Users.Update(user);
+            await _uow.CommitAsync();
+        }
     }
 }

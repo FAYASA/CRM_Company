@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "tGX6PgW77kc=",
+  "dgSpecHash": "6e8mCz4EEpY=",
   "success": true,
   "projectFilePath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Fayas\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\Fayas\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Fayas\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\8.0.0\\microsoft.aspnetcore.cryptography.internal.8.0.0.nupkg.sha512",
     "C:\\Users\\Fayas\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\8.0.0\\microsoft.aspnetcore.cryptography.keyderivation.8.0.0.nupkg.sha512",

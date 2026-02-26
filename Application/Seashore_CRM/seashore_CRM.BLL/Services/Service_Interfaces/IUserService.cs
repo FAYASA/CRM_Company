@@ -14,6 +14,11 @@ namespace seashore_CRM.BLL.Services.Service_Interfaces
         Task DeleteAsync(int id);
         Task ToggleStatusAsync(int id);
 
+        // added for profile management
+        Task<ProfileViewDto?> GetProfileAsync(int userId);
+        Task UpdateProfileAsync(ProfileUpdateDto dto);
+        Task ChangePasswordAsync(ChangePasswordDto dto);
+
         // Validation helpers
         Task<bool> IsEmailTakenAsync(string email, int? excludeId = null);
         Task<bool> IsFullNameTakenAsync(string fullName, int? excludeId = null);
