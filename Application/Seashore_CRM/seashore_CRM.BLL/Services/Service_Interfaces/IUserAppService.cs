@@ -7,9 +7,9 @@ namespace seashore_CRM.BLL.Services.Service_Interfaces
     public interface IUserAppService
     {
         Task<List<UserListDto>> GetAllAsync();
-        Task<UserDetailDto?> GetByIdAsync(string id);
+        Task<UserDetailDto?> GetByIdAsync(int id);
         Task<string> CreateAsync(UserCreateDto dto);
         Task<bool> UpdateAsync(UserUpdateDto dto);
-        Task DeleteAsync(string id);
+        Task DeleteAsync(int id);
     }
 }

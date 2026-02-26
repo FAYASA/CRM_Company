@@ -7,10 +7,10 @@ namespace seashore_CRM.BLL.Services.Service_Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<User>> GetAllAsync();
-        Task<User?> GetByIdAsync(int id);
+        Task<IEnumerable<UserListDto>> GetAllAsync();
+        Task<UserDetailDto?> GetByIdAsync(int id);
         Task<int> CreateAsync(UserCreateDto dto);
-        Task UpdateAsync(User entity);
+        Task UpdateAsync(UserUpdateDto dto);
         Task DeleteAsync(int id);
         Task ToggleStatusAsync(int id);
 

@@ -1,0 +1,35 @@
+@page
+@model Seashore_CRM.Pages.Account.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h3>Profile</h3>
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">User name</dt>
+            <dd class="col-sm-9">@Model.UserName</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Full name</dt>
+            <dd class="col-sm-9">@Model.FullName</dd>
+
+            <dt class="col-sm-3">Contact</dt>
+            <dd class="col-sm-9">@Model.Contact</dd>
+
+            <dt class="col-sm-3">Region</dt>
+            <dd class="col-sm-9">@Model.Region</dd>
+
+            <dt class="col-sm-3">Designation</dt>
+            <dd class="col-sm-9">@Model.Designation</dd>
+
+            <dt class="col-sm-3">Roles</dt>
+            <dd class="col-sm-9">@string.Join(", ", Model.Roles)</dd>
+        </dl>
+
+        <a class="btn btn-primary" asp-page="/Account/Settings">Edit settings</a>
+    </div>
+</div>

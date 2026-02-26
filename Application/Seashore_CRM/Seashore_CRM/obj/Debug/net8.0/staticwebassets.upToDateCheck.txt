@@ -2,6 +2,7 @@ wwwroot\css\site.css
 wwwroot\css\site-custom.css
 wwwroot\data\status_activities.json
 wwwroot\favicon.ico
+wwwroot\img\1656233019117.jfif
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
@@ -60,5 +61,3 @@ wwwroot\lib\jquery-validation\LICENSE.md
 wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
 wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
 wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
-wwwroot\uploads\wdwv5tas.1a4.png
-wwwroot\uploads\xddiftw1.lgv.png

@@ -29,33 +29,51 @@ namespace seashore_CRM.BLL.Services
                 var roles = await _userManager.GetRolesAsync(u);
                 var claims = await _userManager.GetClaimsAsync(u);
                 var status = claims.FirstOrDefault(c => c.Type == "Status")?.Value;
+                var reportTo = claims.FirstOrDefault(c => c.Type == "ReportToUserId")?.Value;
+
+                int? reportToId = null;
+                if (int.TryParse(reportTo, out var rt)) reportToId = rt;
+
+                int idInt = 0;
+                if (!int.TryParse(u.Id, out idInt)) idInt = 0;
 
                 list.Add(new UserListDto
                 {
-                    Id = u.Id,
-                    UserName = u.UserName ?? u.Email ?? "",
+                    Id = idInt,
+                    FullName = claims.FirstOrDefault(c => c.Type == "FullName")?.Value ?? u.UserName ?? u.Email ?? "",
                     Email = u.Email ?? "",
-                    Roles = roles.ToList(),
+                    Role = roles.ToList(),
                     Status = int.TryParse(status, out var s) ? (UserStatus)s : UserStatus.Active,
                     Region = claims.FirstOrDefault(c => c.Type == "Region")?.Value,
                     IsActive = bool.TryParse(claims.FirstOrDefault(c => c.Type == "IsActive")?.Value, out var ia) ? ia : true,
-                    ReportToUserId = claims.FirstOrDefault(c => c.Type == "ReportToUserId")?.Value
+                    ReportToUserId = reportToId,
+                    PasswordHash = u.PasswordHash,
+                    RoleId = 0
                 });
             }
             return list;
         }
 
-        public async Task<UserDetailDto?> GetByIdAsync(string id)
+        public async Task<UserDetailDto?> GetByIdAsync(int id)
         {
-            var u = await _userManager.FindByIdAsync(id);
+            // convert int id to string id expected by UserManager
+            var strId = id.ToString();
+            var u = await _userManager.FindByIdAsync(strId);
             if (u == null) return null;
 
             var claims = await _userManager.GetClaimsAsync(u);
             var roles = await _userManager.GetRolesAsync(u);
 
+            var reportTo = claims.FirstOrDefault(c => c.Type == "ReportToUserId")?.Value;
+            int? reportToId = null;
+            if (int.TryParse(reportTo, out var rt)) reportToId = rt;
+
+            int idInt = 0;
+            if (!int.TryParse(u.Id, out idInt)) idInt = 0;
+
             return new UserDetailDto
             {
-                Id = u.Id,
+                Id = idInt,
                 UserName = u.UserName ?? u.Email ?? "",
                 Email = u.Email ?? "",
                 FullName = claims.FirstOrDefault(c => c.Type == "FullName")?.Value,
@@ -65,7 +83,9 @@ namespace seashore_CRM.BLL.Services
                 Roles = roles.ToList(),
                 Status = int.TryParse(claims.FirstOrDefault(c => c.Type == "Status")?.Value, out var s) ? (UserStatus)s : UserStatus.Active,
                 IsActive = bool.TryParse(claims.FirstOrDefault(c => c.Type == "IsActive")?.Value, out var ia) ? ia : true,
-                ReportToUserId = claims.FirstOrDefault(c => c.Type == "ReportToUserId")?.Value
+                ReportToUserId = reportToId,
+                PasswordHash = u.PasswordHash,
+                RoleId = 0
             };
         }
 
@@ -110,7 +130,8 @@ namespace seashore_CRM.BLL.Services
             var vresult = await validator.ValidateAsync(dto);
             if (!vresult.IsValid) return false;
 
-            var user = await _userManager.FindByIdAsync(dto.Id);
+            var strId = dto.Id.ToString();
+            var user = await _userManager.FindByIdAsync(strId);
             if (user == null) return false;
 
             if (!string.Equals(user.Email, dto.Email, System.StringComparison.OrdinalIgnoreCase))
@@ -140,7 +161,7 @@ namespace seashore_CRM.BLL.Services
             if (!string.IsNullOrEmpty(dto.Region)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Region", dto.Region!));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Status", ((int)dto.Status).ToString()));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("IsActive", dto.IsActive.ToString()));
-            if (!string.IsNullOrEmpty(dto.ReportToUserId)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("ReportToUserId", dto.ReportToUserId));
+            if (dto.ReportToUserId.HasValue) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("ReportToUserId", dto.ReportToUserId.Value.ToString()));
             if (!string.IsNullOrEmpty(dto.Designation)) await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("Designation", dto.Designation));
 
             if (!string.IsNullOrEmpty(dto.NewPassword))
@@ -153,9 +174,10 @@ namespace seashore_CRM.BLL.Services
             return true;
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(int id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var strId = id.ToString();
+            var user = await _userManager.FindByIdAsync(strId);
             if (user == null) return;
             await _userManager.DeleteAsync(user);
         }

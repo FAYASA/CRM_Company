@@ -61,19 +61,65 @@ namespace seashore_CRM.BLL.Services
             await _uow.CommitAsync();
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<UserListDto>> GetAllAsync()
         {
-            return await _uow.Users.GetAllAsync();
+            var users = await _uow.Users.GetAllAsync();
+            return users.Select(u => new UserListDto
+            {
+                Id = u.Id,
+                FullName = u.FullName,
+                Email = u.Email,
+                Contact = u.Contact,
+                Region = u.Region,
+                IsActive = u.IsActive,
+                ReportToUserId = u.ReportToUserId,
+                ReportToName = u.ReportToUser != null ? u.ReportToUser.FullName : null,
+                Role = u.Role != null ? new List<string> { u.Role.RoleName } : new List<string>(),
+                // populate PasswordHash and RoleId for login and controller needs
+                PasswordHash = u.PasswordHash,
+                RoleId = u.RoleId
+            }).ToList();
         }
 
-        public async Task<User?> GetByIdAsync(int id)
+        public async Task<UserDetailDto?> GetByIdAsync(int id)
         {
-            return await _uow.Users.GetByIdAsync(id);
+            
+            var users = await _uow.Users.GetByIdAsync(id);
+
+            return users == null ? null : new UserDetailDto
+            {
+                Id = users.Id,
+                FullName = users.FullName,
+                Email = users.Email,
+                Contact = users.Contact,
+                Region = users.Region,
+                Designation = users.Designation,
+                IsActive = users.IsActive,
+                ReportToUserId = users.ReportToUserId,
+                ReportToName = users.ReportToUser != null ? users.ReportToUser.FullName : null,
+                Roles = users.Role != null ? new List<string> { users.Role.RoleName } : new List<string>(),
+                // populate PasswordHash and RoleId for login and controller needs
+                PasswordHash = users.PasswordHash,
+                RoleId = users.RoleId
+            };
         }
 
-        public async Task UpdateAsync(User entity)
+        public async Task UpdateAsync(UserUpdateDto dto)
         {
-            _uow.Users.Update(entity);
+            var users = await _uow.Users.GetByIdAsync(dto.Id);
+            if (users == null) return;
+            users.Email = dto.Email;
+            if (!string.IsNullOrWhiteSpace(dto.NewPassword))
+            {
+                users.PasswordHash = _passwordHasher.HashPassword(users, dto.NewPassword);
+            }
+            users.RoleId = dto.RoleId;
+            users.ReportToUserId = dto.ReportToUserId;
+            users.FullName = dto.FullName;
+            users.Contact = dto.Contact;
+            users.Region = dto.Region;
+            users.Designation = dto.Designation;
+            users.IsActive = dto.IsActive;
             await _uow.CommitAsync();
         }
 
@@ -98,5 +144,6 @@ namespace seashore_CRM.BLL.Services
             var all = await _uow.Users.GetAllAsync();
             return all.Any(u => !string.IsNullOrWhiteSpace(u.Contact) && u.Contact!.ToLower().Trim() == contact.ToLower().Trim() && (!excludeId.HasValue || u.Id != excludeId.Value));
         }
+
     }
 }

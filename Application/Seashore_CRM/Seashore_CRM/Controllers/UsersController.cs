@@ -47,10 +47,9 @@ namespace Seashore_CRM.Controllers
                 IsActive = d.IsActive,
 
                 // ReportToUser navigation
-                ReportToName = d.ReportToUser != null ? d.ReportToUser.FullName : null,
-
+                ReportToName = d.ReportToName,
                 // Single role mapped as a list with one string
-                Roles = d.Role != null ? new List<string> { d.Role.RoleName } : new List<string>()
+                Roles = d.Role,
             }).ToList();
 
             return View(model);
@@ -205,26 +204,34 @@ namespace Seashore_CRM.Controllers
                 return View(model);
             }
 
-            var entity = await _userService.GetByIdAsync(model.Id);
-            if (entity == null) return NotFound();
+            var existing = await _userService.GetByIdAsync(model.Id);
+            if (existing == null) return NotFound();
 
-            entity.FullName = model.FullName;
-            entity.Contact = model.Contact;
-            entity.Email = model.Email;
-            entity.Designation = model.Designation;
-            entity.Region = model.Region;
-            entity.ReportToUserId = model.ReportToUserId;
-            entity.RoleId = model.RoleId;
-            entity.IsActive = model.IsActive;
+            // map ViewModel to UserUpdateDto
+            var updateDto = new UserUpdateDto
+            {
+                Id = model.Id,
+                Email = model.Email,
+                FullName = model.FullName,
+                Contact = model.Contact,
+                Region = model.Region,
+                Designation = model.Designation,
+                RoleId = model.RoleId,
+                ReportToUserId = model.ReportToUserId,
+                IsActive = model.IsActive,
+                NewPassword = model.NewPassword
+            };
 
             if (!string.IsNullOrWhiteSpace(model.NewPassword))
             {
-                entity.PasswordHash = _passwordHasher.HashPassword(entity, model.NewPassword);
+                // Hash the new password before sending to service
+                var tempUser = new seashore_CRM.Models.Entities.User { Id = model.Id };
+                updateDto.NewPassword = _passwordHasher.HashPassword(tempUser, model.NewPassword);
             }
 
             try
             {
-                await _userService.UpdateAsync(entity);
+                await _userService.UpdateAsync(updateDto);
             }
             catch (System.Exception ex)
             {

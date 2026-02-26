@@ -12,12 +12,12 @@ namespace seashore_CRM.Models.Entities
         public string? Region { get; set; }
         public string PasswordHash { get; set; } = null!;
         public int RoleId { get; set; }
+        public Role? Role { get; set; }
 
 
         // Reporting user (manager/leader)
         public int? ReportToUserId { get; set; }
         public User? ReportToUser { get; set; }
 
-        public Role? Role { get; set; }
     }
 }
