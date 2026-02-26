@@ -70,7 +70,8 @@ namespace Seashore_CRM.Controllers
                 new Claim(ClaimTypes.NameIdentifier, appUser.Id.ToString()),
                 new Claim(ClaimTypes.Name, string.IsNullOrWhiteSpace(appUser.FullName) ? appUser.Email : appUser.FullName),
                 new Claim(ClaimTypes.Email, appUser.Email ?? string.Empty),
-                new Claim("IsActive", appUser.IsActive.ToString())
+                new Claim("IsActive", appUser.IsActive.ToString()),
+                
             };
 
             // include role claim from Roles table if available

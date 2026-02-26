@@ -1,0 +1,57 @@
+﻿@model seashore_CRM.Models.DTOs.ProfileViewDto
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<h2 class="mb-4">My Profile</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Full Name</div>
+            <div class="col-md-9">@Model.FullName</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Email</div>
+            <div class="col-md-9">@Model.Email</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Contact</div>
+            <div class="col-md-9">@Model.Contact</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Region</div>
+            <div class="col-md-9">@Model.Region</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Role</div>
+            <div class="col-md-9">@Model.RoleName</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Status</div>
+            <div class="col-md-9">
+                @if (Model.IsActive)
+                {
+                    <span class="badge bg-success">Active</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Inactive</span>
+                }
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a asp-action="Edit" class="btn btn-primary me-2">Edit Profile</a>
+            <a asp-action="ChangePassword" class="btn btn-warning">Change Password</a>
+        </div>
+
+    </div>
+</div>
