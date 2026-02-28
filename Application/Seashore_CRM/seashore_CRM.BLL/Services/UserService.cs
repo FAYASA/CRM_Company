@@ -8,7 +8,7 @@ using seashore_CRM.Models.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Helpers;
+
 
 
 namespace seashore_CRM.BLL.Services
@@ -170,6 +170,21 @@ namespace seashore_CRM.BLL.Services
             if (user == null)
                 throw new Exception("User not found");
 
+            // Check if email is already taken by another user
+            var emailTaken = await IsEmailTakenAsync(dto.Email, dto.Id);
+            if (emailTaken)
+                throw new Exception($"Email '{dto.Email}' is already in use.");
+
+            var fullNameTaken = await IsFullNameTakenAsync(dto.FullName, dto.Id);
+            if (fullNameTaken)
+                throw new Exception($"Full Name '{dto.FullName}' is already in use.");
+
+            var contactTaken = !string.IsNullOrWhiteSpace(dto.Contact)
+                && await IsContactTakenAsync(dto.Contact, dto.Id);
+            if (contactTaken)
+                throw new Exception($"Contact '{dto.Contact}' is already in use.");
+
+            // Safe to update
             user.Email = dto.Email;
             user.FullName = dto.FullName;
             user.Contact = dto.Contact;
@@ -186,10 +201,16 @@ namespace seashore_CRM.BLL.Services
             if (user == null)
                 throw new Exception("User not found");
 
-            if (!BCrypt.Net.BCrypt.Verify(dto.CurrentPassword, user.PasswordHash))
+            var result = _passwordHasher.VerifyHashedPassword(
+                user,
+                user.PasswordHash,
+                dto.CurrentPassword
+            );
+
+            if (result == PasswordVerificationResult.Failed)
                 throw new Exception("Current password is incorrect");
 
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+            user.PasswordHash = _passwordHasher.HashPassword(user, dto.NewPassword);
             user.UpdatedDate = DateTime.UtcNow;
 
             _uow.Users.Update(user);

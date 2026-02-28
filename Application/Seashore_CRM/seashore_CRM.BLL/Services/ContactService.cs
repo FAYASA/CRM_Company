@@ -76,7 +76,6 @@ namespace seashore_CRM.BLL.Services
                 Designation = dto.Designation,
                 IsActive = true,
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = "System" // optional if NOT NULL in DB
             };
 
             await _uow.Contacts.AddAsync(entity);

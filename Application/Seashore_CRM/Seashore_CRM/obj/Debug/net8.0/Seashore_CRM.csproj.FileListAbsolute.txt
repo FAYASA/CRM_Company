@@ -170,13 +170,8 @@ F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\BCrypt.Net-Next.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\FluentValidation.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Humanizer.dll
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\System.Web.Mvc.dll
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\System.Web.Razor.dll
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\System.Web.Helpers.dll
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\System.Web.WebPages.Deployment.dll
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\System.Web.WebPages.Razor.dll
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\System.Web.WebPages.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
@@ -204,9 +199,10 @@ F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Microsoft.Web.Infrastructure.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Mono.TextTemplating.dll
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Newtonsoft.Json.dll
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\BouncyCastle.Crypto.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\System.CodeDom.dll
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\bin\Debug\net8.0\System.Composition.AttributedModel.dll
@@ -301,6 +297,7 @@ F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.AssemblyInfoInputs.cache
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.AssemblyInfo.cs
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.csproj.CoreCompileInputs.cache
+F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.MvcApplicationPartsAssemblyInfo.cs
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.MvcApplicationPartsAssemblyInfo.cache
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.RazorAssemblyInfo.cache
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.RazorAssemblyInfo.cs

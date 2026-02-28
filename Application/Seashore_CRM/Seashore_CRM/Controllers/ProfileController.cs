@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using seashore_CRM.BLL.Services.Service_Interfaces;
 using seashore_CRM.Models.DTOs;
+using System.Security.Claims;
 
 namespace Seashore_CRM.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly IUserService _userService;
@@ -60,13 +63,61 @@ namespace Seashore_CRM.Controllers
             if (!ModelState.IsValid)
                 return View(dto);
 
-            await _userService.ChangePasswordAsync(dto);
-            return RedirectToAction("Index");
+            dto.UserId = GetCurrentUserId();
+
+            try
+            {
+                await _userService.ChangePasswordAsync(dto);
+                TempData["SuccessMessage"] = "Password updated successfully!";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                // Display exception message as alert
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(dto);
+            }
         }
+
 
         private int GetCurrentUserId()
         {
-            return int.Parse(User.FindFirst("UserId").Value);
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
+                throw new Exception("User is not authenticated.");
+
+            return int.Parse(userIdClaim.Value);
+        }
+
+        // ============================
+        // Remote validation endpoints (used by RemoteAttribute)
+        // ============================
+        [AcceptVerbs("Get", "Post")]
+        public async Task<IActionResult> VerifyEmail(string email, int? id)
+        {
+            var taken = await _userService.IsEmailTakenAsync(email, id);
+            if (taken)
+                return Json($"Email '{email}' is already in use.");
+            return Json(true);
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public async Task<IActionResult> VerifyContactNumber(string contact, int? id)
+        {
+            var taken = await _userService.IsContactTakenAsync(contact, id);
+            if (taken)
+                return Json($"Contact Number '{contact}' is already in use.");
+            return Json(true);
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public async Task<IActionResult> VerifyFullName(string FullName, int? id)
+        {
+            var taken = await _userService.IsFullNameTakenAsync(FullName, id);
+            if (taken)
+                return Json($"Full Name '{FullName}' is already in use.");
+            return Json(true);
         }
     }
 }

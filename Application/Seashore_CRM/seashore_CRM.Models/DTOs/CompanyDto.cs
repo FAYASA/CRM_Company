@@ -33,8 +33,8 @@ namespace seashore_CRM.Models.DTOs
         public string? Phone { get; set; }
 
         [RegularExpression(
-            @"^(https?:\/\/)?(www\.)?[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}$",
-            ErrorMessage = "Enter valid website like www.example.com")]
+            @"^(https?:\/\/)?([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}(\/.*)?$",
+            ErrorMessage = "Enter valid website like https://www.example.com")]
         public string? Website { get; set; }
 
         public string? Pin { get; set; }
@@ -65,6 +65,9 @@ namespace seashore_CRM.Models.DTOs
 
         public string? Address { get; set; }
         public string? Phone { get; set; }
+        [RegularExpression(
+            @"^(https?:\/\/)?([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}(\/.*)?$",
+            ErrorMessage = "Enter valid website like https://www.example.com")]
         public string? Website { get; set; }
         public string? Pin { get; set; }
 
@@ -88,8 +91,11 @@ namespace seashore_CRM.Models.DTOs
         public string? Industry { get; set; } = null!;
         public bool IsActive { get; set; }
 
+        public string? Phone { get; set; }
+
         public string? Address { get; set; }
         public string? AddressPost { get; set; }
+        public byte[]? RowVersion { get; set; }
     }
 
     // ================================
@@ -113,5 +119,7 @@ namespace seashore_CRM.Models.DTOs
 
         public DateTime CreatedDate { get; set; }
         public string? CreatedBy { get; set; }
+
+        public byte[]? RowVersion { get; set; }
     }
 }

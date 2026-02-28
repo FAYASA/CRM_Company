@@ -1,16 +1,13 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.IdentityModel.Tokens;
 using seashore_CRM.BLL.Services.Service_Interfaces;
 using seashore_CRM.Common.Constants;
 using seashore_CRM.Models.DTOs;
-using Seashore_CRM.ViewModels;
 using Seashore_CRM.ViewModels.User;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace Seashore_CRM.Controllers
 {
@@ -19,7 +16,8 @@ namespace Seashore_CRM.Controllers
     {
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
-        private readonly PasswordHasher<seashore_CRM.Models.Entities.User> _passwordHasher = new PasswordHasher<seashore_CRM.Models.Entities.User>();
+        private readonly PasswordHasher<seashore_CRM.Models.Entities.User> _passwordHasher
+            = new PasswordHasher<seashore_CRM.Models.Entities.User>();
 
         public UsersController(IUserService userService, IRoleService roleService)
         {
@@ -27,13 +25,9 @@ namespace Seashore_CRM.Controllers
             _roleService = roleService;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ToggleStatus(int id)
-        {
-            await _userService.ToggleStatusAsync(id);
-            return RedirectToAction(nameof(Index));
-        }
+        // ====================
+        // INDEX
+        // ====================
         public async Task<IActionResult> Index()
         {
             var dtos = await _userService.GetAllAsync();
@@ -45,89 +39,73 @@ namespace Seashore_CRM.Controllers
                 Email = d.Email,
                 Region = d.Region,
                 IsActive = d.IsActive,
-
-                // ReportToUser navigation
                 ReportToName = d.ReportToName,
-                // Single role mapped as a list with one string
                 Roles = d.Role,
             }).ToList();
 
             return View(model);
         }
 
+        // ====================
+        // CREATE
+        // ====================
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var roles = await _roleService.GetAllAsync();
-            var users = await _userService.GetAllAsync();
-
-            var vm = new UserCreateViewModel
-            {
-                Roles = roles.Select(r => new SelectListItem
-                {
-                    Value = r.Id.ToString(),
-                    Text = r.RoleName
-                }),
-                Users = (await _userService.GetAllAsync()).Select(u => new SelectListItem
-                {
-                    Value = u.Id.ToString(),
-                    Text = u.FullName
-                })
-            };
-
+            var vm = await PopulateCreateViewModel();
             return View(vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UserCreateDto userCreateDto)
+        public async Task<IActionResult> Create(UserCreateViewModel model)
         {
-            // uniqueness checks similar to CompaniesController
-            if (await _userService.IsEmailTakenAsync(userCreateDto.Email))
-                ModelState.AddModelError(nameof(userCreateDto.Email), "Email already exists.");
+            // uniqueness checks
+            if (await _userService.IsEmailTakenAsync(model.Email))
+                ModelState.AddModelError(nameof(model.Email), "Email already exists.");
 
-            if (await _userService.IsFullNameTakenAsync(userCreateDto.FullName))
-                ModelState.AddModelError(nameof(userCreateDto.FullName), "Full name already exists.");
+            if (await _userService.IsFullNameTakenAsync(model.FullName))
+                ModelState.AddModelError(nameof(model.FullName), "Full name already exists.");
 
-            if (!string.IsNullOrWhiteSpace(userCreateDto.Contact) && await _userService.IsContactTakenAsync(userCreateDto.Contact))
-                ModelState.AddModelError(nameof(userCreateDto.Contact), "Contact already exists.");
+            if (!string.IsNullOrWhiteSpace(model.Contact) && await _userService.IsContactTakenAsync(model.Contact))
+                ModelState.AddModelError(nameof(model.Contact), "Contact already exists.");
+
+            // Password and email required
+            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
+                ModelState.AddModelError(string.Empty, "Email and password are required.");
+
+            // Password confirmation
+            if (!string.IsNullOrWhiteSpace(model.Password) && model.Password != model.ConfirmPassword)
+                ModelState.AddModelError(string.Empty, "Password and Confirm Password do not match.");
 
             if (!ModelState.IsValid)
             {
-                var vm = await PopulateCreateViewModel(userCreateDto);
-                return View(vm);
-            }
-
-            if (string.IsNullOrWhiteSpace(userCreateDto.Email) ||
-                string.IsNullOrWhiteSpace(userCreateDto.Password))
-            {
-                ModelState.AddModelError(string.Empty, "Email and password are required.");
-                var vm = await PopulateCreateViewModel(userCreateDto);
-                return View(vm);
-            }
-
-            if (userCreateDto.Password != userCreateDto.ConfirmPassword)
-            {
-                ModelState.AddModelError(string.Empty, "Password and Confirm Password do not match.");
-                var vm = await PopulateCreateViewModel(userCreateDto);
+                var vm = await PopulateCreateViewModel(model);
                 return View(vm);
             }
 
             try
             {
-                var id = await _userService.CreateAsync(userCreateDto);
-
-                if (string.IsNullOrEmpty(id.ToString()))
+                // Map ViewModel → DTO
+                var dto = new UserCreateDto
                 {
-                    ModelState.AddModelError(string.Empty, "Failed to create user.");
-                    var vm = await PopulateCreateViewModel(userCreateDto);
-                    return View(vm);
-                }
+                    FullName = model.FullName,
+                    Email = model.Email,
+                    Contact = model.Contact,
+                    Designation = model.Designation,
+                    Region = model.Region,
+                    ReportToUserId = string.IsNullOrEmpty(model.ReportToUserId) ? null : int.Parse(model.ReportToUserId),
+                    RoleId = string.IsNullOrEmpty(model.RoleId) ? 0 : int.Parse(model.RoleId),
+                    IsActive = model.IsActive,
+                    Password = model.Password
+                };
+
+                await _userService.CreateAsync(dto);
             }
             catch (System.Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
-                var vm = await PopulateCreateViewModel(userCreateDto);
+                var vm = await PopulateCreateViewModel(model);
                 return View(vm);
             }
 
@@ -144,11 +122,11 @@ namespace Seashore_CRM.Controllers
             if (entity == null) return NotFound();
 
             var roles = (await _roleService.GetAllAsync())
-                        .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.RoleName }).ToList();
+                .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.RoleName }).ToList();
 
             var users = (await _userService.GetAllAsync())
-                        .Where(u => u.Id != id) // prevent reporting to self
-                        .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.FullName ?? u.Email }).ToList();
+                .Where(u => u.Id != id)
+                .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.FullName ?? u.Email }).ToList();
 
             var vm = new UserUpdateViewModel
             {
@@ -165,7 +143,6 @@ namespace Seashore_CRM.Controllers
                 Users = users
             };
 
-            // Populate ViewBag for the Edit view
             ViewBag.Roles = roles;
             ViewBag.Users = users;
 
@@ -182,7 +159,6 @@ namespace Seashore_CRM.Controllers
                 return View(model);
             }
 
-            // Uniqueness checks excluding current user
             if (await _userService.IsEmailTakenAsync(model.Email, model.Id))
                 ModelState.AddModelError(nameof(model.Email), "Email already exists.");
 
@@ -192,11 +168,8 @@ namespace Seashore_CRM.Controllers
             if (!string.IsNullOrWhiteSpace(model.Contact) && await _userService.IsContactTakenAsync(model.Contact, model.Id))
                 ModelState.AddModelError(nameof(model.Contact), "Contact already exists.");
 
-            // Password validation
             if (!string.IsNullOrWhiteSpace(model.NewPassword) && model.NewPassword != model.ConfirmPassword)
-            {
                 ModelState.AddModelError(string.Empty, "Password and Confirm Password do not match.");
-            }
 
             if (!ModelState.IsValid)
             {
@@ -207,24 +180,22 @@ namespace Seashore_CRM.Controllers
             var existing = await _userService.GetByIdAsync(model.Id);
             if (existing == null) return NotFound();
 
-            // map ViewModel to UserUpdateDto
             var updateDto = new UserUpdateDto
             {
                 Id = model.Id,
-                Email = model.Email,
                 FullName = model.FullName,
+                Email = model.Email,
                 Contact = model.Contact,
-                Region = model.Region,
                 Designation = model.Designation,
-                RoleId = model.RoleId,
+                Region = model.Region,
                 ReportToUserId = model.ReportToUserId,
+                RoleId = model.RoleId,
                 IsActive = model.IsActive,
                 NewPassword = model.NewPassword
             };
 
             if (!string.IsNullOrWhiteSpace(model.NewPassword))
             {
-                // Hash the new password before sending to service
                 var tempUser = new seashore_CRM.Models.Entities.User { Id = model.Id };
                 updateDto.NewPassword = _passwordHasher.HashPassword(tempUser, model.NewPassword);
             }
@@ -252,96 +223,71 @@ namespace Seashore_CRM.Controllers
                 .Where(u => u.Id != model.Id)
                 .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.FullName ?? u.Email }).ToList();
 
-            // Also set ViewBag so the Edit view which uses ViewBag items is populated when re-displaying
             ViewBag.Roles = model.Roles;
             ViewBag.Users = model.Users;
         }
 
+        // ====================
+        // Toggle Status
+        // ====================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleStatus(int id)
+        {
+            await _userService.ToggleStatusAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
 
-        // Remote validation endpoints
+        // ====================
+        // Remote Validation
+        // ====================
         [AcceptVerbs("Get", "Post")]
         public async Task<IActionResult> VerifyEmail(string email, int? id)
         {
-            var taken = await _userService.IsEmailTakenAsync(email, id);
-            if (taken)
-                return Json($"Email '{email}' is already in use.");
-            return Json(true);
+            return Json(await _userService.IsEmailTakenAsync(email, id)
+                ? $"Email '{email}' is already in use." : true);
         }
 
         [AcceptVerbs("Get", "Post")]
         public async Task<IActionResult> VerifyFullName(string fullName, int? id)
         {
-            var taken = await _userService.IsFullNameTakenAsync(fullName, id);
-            if (taken)
-                return Json($"Full name '{fullName}' is already in use.");
-            return Json(true);
+            return Json(await _userService.IsFullNameTakenAsync(fullName, id)
+                ? $"Full name '{fullName}' is already in use." : true);
         }
 
         [AcceptVerbs("Get", "Post")]
         public async Task<IActionResult> VerifyContact(string contact, int? id)
         {
-            var taken = await _userService.IsContactTakenAsync(contact, id);
-            if (taken)
-                return Json($"Contact '{contact}' is already in use.");
-            return Json(true);
+            return Json(await _userService.IsContactTakenAsync(contact, id)
+                ? $"Contact '{contact}' is already in use." : true);
         }
 
-        private async Task<UserCreateViewModel> PopulateCreateViewModel(UserCreateDto? dto = null)
+        // ====================
+        // Populate Create ViewModel
+        // ====================
+        private async Task<UserCreateViewModel> PopulateCreateViewModel(UserCreateViewModel? model = null)
         {
-            var roles = (await _roleService.GetAllAsync()).Select(r => new SelectListItem
-            {
-                Value = r.Id.ToString(),
-                Text = r.RoleName
-            }).ToList();
+            var roles = (await _roleService.GetAllAsync())
+                .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.RoleName }).ToList();
 
-            var users = (await _userService.GetAllAsync()).Select(u => new SelectListItem
-            {
-                Value = u.Id.ToString(),
-                Text = u.FullName ?? u.Email
-            }).ToList();
+            var users = (await _userService.GetAllAsync())
+                .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.FullName ?? u.Email }).ToList();
 
-            var vm = new UserCreateViewModel
+            return new UserCreateViewModel
             {
-                FullName = dto?.FullName ?? string.Empty,
-                Contact = dto?.Contact,
-                Email = dto?.Email ?? string.Empty,
-                Designation = dto?.Designation,
-                Region = dto?.Region,
-                ReportToUserId = dto?.ReportToUserId.HasValue == true ? dto.ReportToUserId.Value.ToString() : dto?.ReportToUserId?.ToString(),
-                RoleId = dto != null ? dto.RoleId.ToString() : null,
-                // Do not populate password fields for security reasons
+                FullName = model?.FullName ?? string.Empty,
+                Contact = model?.Contact,
+                Email = model?.Email ?? string.Empty,
+                Designation = model?.Designation,
+                Region = model?.Region,
+                ReportToUserId = model?.ReportToUserId,
+                RoleId = model?.RoleId,
                 Password = string.Empty,
                 ConfirmPassword = string.Empty,
-                IsActive = dto?.IsActive ?? true,
+                IsActive = model?.IsActive ?? true,
                 Roles = roles,
                 Users = users
             };
-
-            return vm;
         }
-
-        //private async Task PopulateEditViewBags(string id)
-        //{
-        //    var dto = await _user_service.GetByIdAsync(id);
-
-        //    var roles = (await _role_service.GetAllAsync())
-        //                .Select(r => new SelectListItem
-        //                {
-        //                    Value = r.Id.ToString(),
-        //                    Text = r.RoleName
-        //                }).ToList();
-
-        //    var users = (await _user_service.GetAllAsync())
-        //                .Select(u => new SelectListItem
-        //                {
-        //                    Value = u.Id,
-        //                    Text = u.UserName ?? u.Email
-        //                }).ToList();
-
-        //    ViewBag.AllRoles = roles;
-        //    ViewBag.UserRoles = dto?.Roles ?? new List<string>();
-        //    ViewBag.Users = users;
-        //    ViewBag.User = dto;
-        //}
     }
 }
