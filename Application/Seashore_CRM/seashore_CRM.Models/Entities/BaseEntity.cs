@@ -17,6 +17,6 @@ namespace seashore_CRM.Models.Entities
 
         // Concurrency token (prevents overwrite issues)
         [Timestamp]
-        public byte[]? RowVersion { get; set; }
+        public byte[] RowVersion { get; set; } = null!;
     }
 }

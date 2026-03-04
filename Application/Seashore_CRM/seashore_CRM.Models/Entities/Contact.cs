@@ -3,7 +3,7 @@ namespace seashore_CRM.Models.Entities
     public class Contact : BaseEntity
     {
         public int? CompanyId { get; set; }
-        public string Contact_Name { get; set; }
+        public string? Contact_Name { get; set; }
         public string? Email { get; set; }
         public string? Phone { get; set; }
 

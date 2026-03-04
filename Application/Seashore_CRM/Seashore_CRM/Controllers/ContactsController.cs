@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using seashore_CRM.BLL.Services.Service_Interfaces;
 using seashore_CRM.Models.DTOs;
+using Seashore_CRM.ViewModels.Contact;
 
 namespace Seashore_CRM.Controllers
 {
@@ -21,11 +22,89 @@ namespace Seashore_CRM.Controllers
         // ===============================
         // INDEX
         // ===============================
-        public async Task<IActionResult> Index()
-        
+        //public async Task<IActionResult> Index()
+
+        //{
+        //    var contactsDto = await _contactService.GetAllAsync();
+
+        //    var contactsVM = contactsDto.Select(c => new ContactListViewModel
+        //    {
+        //        Id = c.Id,
+        //        CompanyName = c.CompanyName,
+        //        ContactName = c.ContactName,
+        //        Email = c.Email,
+        //        Phone = c.Phone,
+        //        Mobile = c.Mobile,
+        //        Designation = c.Designation,
+        //        IsActive = c.IsActive
+        //    }).ToList();
+        //     return View(contactsVM);     
+        //}
+
+        public async Task<IActionResult> Index(
+            string? q,
+            int? companyId,
+            bool? isActive,
+            int page = 1,
+            int pageSize = 20)
         {
-            var contacts = await _contactService.GetAllAsync();
-            return View(contacts);
+            var dtos = await _contactService.GetAllAsync();
+
+            //  Search filter
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                dtos = dtos.Where(c =>
+                    (c.ContactName != null && c.ContactName.Contains(q, StringComparison.OrdinalIgnoreCase)) ||
+                    (c.Email != null && c.Email.Contains(q, StringComparison.OrdinalIgnoreCase)) ||
+                    (c.Phone != null && c.Phone.Contains(q, StringComparison.OrdinalIgnoreCase))
+                );
+            }
+
+            //  Company filter
+            if (companyId.HasValue)
+            {
+                dtos = dtos.Where(c => c.CompanyId == companyId.Value);
+            }
+
+            //  Status filter
+            if (isActive.HasValue)
+            {
+                dtos = dtos.Where(c => c.IsActive == isActive);
+            }
+
+            //  Pagination
+            var totalCount = dtos.Count();
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+            var pagedDtos = dtos
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            //  DTO → ViewModel mapping
+            var viewModels = pagedDtos.Select(c => new ContactListViewModel
+            {
+                Id = c.Id,
+                ContactName = c.ContactName,
+                Email = c.Email,
+                Phone = c.Phone,
+                CompanyName = c.CompanyName,
+                IsActive = c.IsActive,
+                CompanyId = c.CompanyId
+            }).ToList();
+
+            // ViewBag values
+            ViewBag.Query = q;
+            ViewBag.CompanyId = companyId;
+            ViewBag.IsActive = isActive;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.TotalPages = totalPages;
+
+            await LoadCompanies();
+
+            return View(viewModels);
         }
 
         // ===============================
@@ -37,7 +116,19 @@ namespace Seashore_CRM.Controllers
             if (contact == null)
                 return NotFound();
 
-            return View(contact);
+            var vm = new ContactDetailsViewModel
+            {
+                Id = contact.Id,
+                CompanyName = contact.CompanyName,
+                ContactName = contact.ContactName,
+                Email = contact.Email,
+                Phone = contact.Phone,
+                Mobile = contact.Mobile,
+                Designation = contact.Designation,
+                IsActive = contact.IsActive
+            };
+
+            return View(vm);
         }
 
         // ===============================
@@ -46,7 +137,7 @@ namespace Seashore_CRM.Controllers
         public async Task<IActionResult> Create()
         {
             await LoadCompanies();
-            return View(new ContactCreateDto());
+            return View();
         }
 
         // ===============================
@@ -54,13 +145,23 @@ namespace Seashore_CRM.Controllers
         // ===============================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ContactCreateDto dto)
+        public async Task<IActionResult> Create(ContactCreateViewModel cvm)
         {
             if (!ModelState.IsValid)
             {
                 await LoadCompanies();
-                return View(dto);
+                return View(cvm);
             }
+
+            var dto = new ContactCreateDto
+            {
+                ContactName = cvm.ContactName,
+                Email = cvm.Email,
+                Phone = cvm.Phone,
+                Mobile = cvm.Mobile,
+                Designation = cvm.Designation,
+                CompanyId = cvm.CompanyId
+            };
 
             await _contactService.CreateAsync(dto);
             return RedirectToAction(nameof(Index));
@@ -75,15 +176,15 @@ namespace Seashore_CRM.Controllers
             if (contact == null)
                 return NotFound();
 
-            var dto = new ContactUpdateDto
-            {
-                Id = contact.Id,
-                CompanyId = contact.CompanyId,
+            var dto = new ContactUpdateViewModel
+                {
+                ContactId = contact.Id,
                 ContactName = contact.ContactName,
                 Email = contact.Email,
                 Phone = contact.Phone,
                 Mobile = contact.Mobile,
                 Designation = contact.Designation,
+                CompanyId = contact.CompanyId,
                 IsActive = contact.IsActive,
                 RowVersion = contact.RowVersion
             };
@@ -97,13 +198,26 @@ namespace Seashore_CRM.Controllers
         // ===============================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ContactUpdateDto dto)
+        public async Task<IActionResult> Edit(ContactUpdateViewModel cvm)
         {
             if (!ModelState.IsValid)
             {
                 await LoadCompanies();
-                return View(dto);
+                return View(cvm);
             }
+
+            var dto = new ContactUpdateDto
+            {
+                Id = cvm.ContactId,
+                ContactName = cvm.ContactName,
+                Email = cvm.Email,
+                Phone = cvm.Phone,
+                Mobile = cvm.Mobile,
+                Designation = cvm.Designation,
+                CompanyId = cvm.CompanyId,
+                IsActive = cvm.IsActive,
+                RowVersion = cvm.RowVersion
+            };
 
             await _contactService.UpdateAsync(dto);
             return RedirectToAction(nameof(Index));
@@ -135,7 +249,12 @@ namespace Seashore_CRM.Controllers
         private async Task LoadCompanies()
         {
             var companies = await _companyService.GetAllAsync();
-            ViewBag.Companies = new SelectList(companies, "Id", "CompanyName");
+            ViewBag.Companies = new SelectList(
+                companies,
+                "Id",
+                "CompanyName",
+                ViewBag.CompanyId   // preserve selection
+            );
         }
     }
 }

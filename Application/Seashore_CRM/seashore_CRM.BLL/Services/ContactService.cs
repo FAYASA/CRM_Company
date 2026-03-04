@@ -21,7 +21,7 @@ namespace seashore_CRM.BLL.Services
         // ===============================
         // GET ALL CONTACTS
         // ===============================
-        public async Task<IEnumerable<ContactListDto>> GetAllAsync()
+        public async Task<IEnumerable <ContactListDto>> GetAllAsync()
         {
             var contacts = await _uow.Contacts.GetAllAsync();
             return contacts.Select(c => new ContactListDto
@@ -33,7 +33,8 @@ namespace seashore_CRM.BLL.Services
                 Mobile = c.Mobile,
                 Designation = c.Designation,
                 CompanyName = c.Company?.CompanyName,
-                IsActive = c.IsActive
+                IsActive = c.IsActive,
+                CompanyId = c.CompanyId
             });
         }
 
@@ -93,8 +94,14 @@ namespace seashore_CRM.BLL.Services
             if (entity == null) throw new KeyNotFoundException("Contact not found");
 
             // Concurrency check
-            if (!entity.RowVersion.SequenceEqual(dto.RowVersion))
-                throw new InvalidOperationException("The contact has been modified by another user.");
+            if (dto.RowVersion == null ||
+                entity.RowVersion == null ||
+                !entity.RowVersion.SequenceEqual(dto.RowVersion))
+            {
+                throw new InvalidOperationException(
+                    "The contact has been modified by another user."
+                );
+            }
 
             entity.CompanyId = dto.CompanyId;
             entity.Contact_Name = dto.ContactName;

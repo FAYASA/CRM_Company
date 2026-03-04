@@ -15,8 +15,7 @@ namespace seashore_CRM.Models.DTOs
         [StringLength(150)]
         public string ContactName { get; set; } = null!;
 
-        [Required]
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
 
         [EmailAddress]
         [StringLength(150)]
@@ -43,7 +42,6 @@ namespace seashore_CRM.Models.DTOs
         [StringLength(150)]
         public string ContactName { get; set; } = null!;
 
-        [Required]
         public int? CompanyId { get; set; }
 
         [EmailAddress]
@@ -73,6 +71,7 @@ namespace seashore_CRM.Models.DTOs
         public string? Designation { get; set; }
 
         public bool IsActive { get; set; }
+        public int? CompanyId { get; set; }
     }
 
     /// ContactDetailDto

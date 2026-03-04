@@ -1,4 +1,4 @@
-@model seashore_CRM.Models.DTOs.ContactUpdateDto
+@model Seashore_CRM.ViewModels.Contact.ContactUpdateViewModel
 
 @{
     ViewData["Title"] = "Edit Contact";
@@ -21,7 +21,7 @@
         <div class="card-body">
             <form asp-action="Edit" method="post" id="contactForm">
                 @Html.AntiForgeryToken()
-                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ContactId" />
                 <input type="hidden" asp-for="RowVersion" />
 
                 <!-- Validation Summary -->
