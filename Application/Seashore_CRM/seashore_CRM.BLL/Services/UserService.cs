@@ -61,9 +61,9 @@ namespace seashore_CRM.BLL.Services
             await _uow.CommitAsync();
         }
 
-        public async Task<IEnumerable<UserListDto>> GetAllAsync()
+        public IQueryable <UserListDto> GetAllAsync()
         {
-            var users = await _uow.Users.GetAllAsync();
+            var users = _uow.Users.GetAllAsync();
             return users.Select(u => new UserListDto
             {
                 Id = u.Id,
@@ -78,7 +78,7 @@ namespace seashore_CRM.BLL.Services
                 // populate PasswordHash and RoleId for login and controller needs
                 PasswordHash = u.PasswordHash,
                 RoleId = u.RoleId
-            }).ToList();
+            });
         }
 
         public async Task<UserDetailDto?> GetByIdAsync(int id)
@@ -127,21 +127,21 @@ namespace seashore_CRM.BLL.Services
         public async Task<bool> IsEmailTakenAsync(string email, int? excludeId = null)
         {
             if (string.IsNullOrWhiteSpace(email)) return false;
-            var all = await _uow.Users.GetAllAsync();
+            var all = _uow.Users.GetAllAsync();
             return all.Any(u => u.Email.ToLower().Trim() == email.ToLower().Trim() && (!excludeId.HasValue || u.Id != excludeId.Value));
         }
 
         public async Task<bool> IsFullNameTakenAsync(string fullName, int? excludeId = null)
         {
             if (string.IsNullOrWhiteSpace(fullName)) return false;
-            var all = await _uow.Users.GetAllAsync();
+            var all = _uow.Users.GetAllAsync();
             return all.Any(u => u.FullName.ToLower().Trim() == fullName.ToLower().Trim() && (!excludeId.HasValue || u.Id != excludeId.Value));
         }
 
         public async Task<bool> IsContactTakenAsync(string contact, int? excludeId = null)
         {
             if (string.IsNullOrWhiteSpace(contact)) return false;
-            var all = await _uow.Users.GetAllAsync();
+            var all = _uow.Users.GetAllAsync();
             return all.Any(u => !string.IsNullOrWhiteSpace(u.Contact) && u.Contact!.ToLower().Trim() == contact.ToLower().Trim() && (!excludeId.HasValue || u.Id != excludeId.Value));
         }
 

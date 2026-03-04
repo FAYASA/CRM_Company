@@ -21,9 +21,9 @@ namespace seashore_CRM.BLL.Services
         // ===============================
         // GET ALL CONTACTS
         // ===============================
-        public async Task<IEnumerable <ContactListDto>> GetAllAsync()
+        public IQueryable<ContactListDto> GetAllAsync()
         {
-            var contacts = await _uow.Contacts.GetAllAsync();
+            var contacts =  _uow.Contacts.GetAllAsync();
             return contacts.Select(c => new ContactListDto
             {
                 Id = c.Id,
@@ -32,7 +32,7 @@ namespace seashore_CRM.BLL.Services
                 Phone = c.Phone,
                 Mobile = c.Mobile,
                 Designation = c.Designation,
-                CompanyName = c.Company?.CompanyName,
+                CompanyName = c.Company.CompanyName,
                 IsActive = c.IsActive,
                 CompanyId = c.CompanyId
             });

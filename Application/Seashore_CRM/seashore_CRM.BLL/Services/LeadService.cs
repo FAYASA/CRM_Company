@@ -161,14 +161,114 @@ namespace seashore_CRM.BLL.Services
         {
             var lead = await _uow.Leads.GetByIdAsync(leadId);
             if (lead == null) return null;
+            if (lead.IsConverted) return null; // already converted
 
-            // mark converted
+            // Ensure we have company/contact according to LeadType
+            Company? company = null;
+            Contact? contact = null;
+
+            if (string.Equals(lead.LeadType, "Corporate", StringComparison.OrdinalIgnoreCase))
+            {
+                if (lead.CompanyId.HasValue)
+                {
+                    company = await _uow.Companies.GetByIdAsync(lead.CompanyId.Value);
+                }
+                else
+                {
+                    // Create a new Company using minimal data from lead
+                    company = new Company
+                    {
+                        CompanyName = $"Company from Lead {lead.Id}",
+                        IsActive = true
+                    };
+                    await _uow.Companies.AddAsync(company);
+                    await _uow.CommitAsync();
+                    lead.CompanyId = company.Id;
+                }
+
+                // Optionally create a primary contact if missing
+                if (lead.ContactId.HasValue)
+                {
+                    contact = await _uow.Contacts.GetByIdAsync(lead.ContactId.Value);
+                }
+            }
+            else // Individual
+            {
+                if (lead.ContactId.HasValue)
+                {
+                    contact = await _uow.Contacts.GetByIdAsync(lead.ContactId.Value);
+                }
+                else
+                {
+                    contact = new Contact
+                    {
+                        Contact_Name = $"Contact from Lead {lead.Id}",
+                        IsActive = true
+                    };
+                    await _uow.Contacts.AddAsync(contact);
+                    await _uow.CommitAsync();
+                    lead.ContactId = contact.Id;
+                }
+            }
+
+            // Compute estimated value from lead items if any
+            var items = (await _uow.LeadItems.FindAsync(li => li.LeadId == lead.Id)).ToList();
+            decimal estimatedValue = 0M;
+            if (items.Any())
+            {
+                estimatedValue = items.Sum(i => i.LineTotal);
+            }
+
+            // Create Opportunity
+            var opp = new Opportunity
+            {
+                LeadId = lead.Id,
+                Stage = "Prospecting",
+                EstimatedValue = estimatedValue,
+                Probability = lead.Probability ?? 0,
+                ExpectedCloseDate = lead.ExpectedClosureDate ?? lead.DecisionDate
+            };
+
+            if (company != null) opp.LeadId = lead.Id; // Lead relation already set
+            await _uow.Opportunities.AddAsync(opp);
+
+            // mark lead converted
             lead.IsConverted = true;
             _uow.Leads.Update(lead);
 
-            var opp = _mapper.Map<Opportunity>(lead);
-            opp.LeadId = lead.Id; // ensure relation
-            await _uow.Opportunities.AddAsync(opp);
+            // Persist changes
+            await _uow.CommitAsync();
+
+            // Transfer activities/comments: link to company/contact as CustomerId where appropriate
+            var activities = (await _uow.Activities.FindAsync(a => a.LeadId == lead.Id)).ToList();
+            foreach (var a in activities)
+            {
+                if (company != null)
+                {
+                    a.CustomerId = company.Id;
+                }
+                else if (contact != null && contact.CompanyId.HasValue)
+                {
+                    a.CustomerId = contact.CompanyId.Value;
+                }
+                // optionally clear LeadId or keep for history; we keep it but set NextFollowUpDate unchanged
+                _uow.Activities.Update(a);
+            }
+
+            var comments = (await _uow.Comments.FindAsync(c => c.LeadId == lead.Id)).ToList();
+            foreach (var c in comments)
+            {
+                if (company != null)
+                {
+                    c.CustomerId = company.Id;
+                }
+                else if (contact != null && contact.CompanyId.HasValue)
+                {
+                    c.CustomerId = contact.CompanyId.Value;
+                }
+                _uow.Comments.Update(c);
+            }
+
             await _uow.CommitAsync();
 
             return opp.Id;

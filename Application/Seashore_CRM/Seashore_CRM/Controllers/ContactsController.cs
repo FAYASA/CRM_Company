@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using seashore_CRM.BLL.Services.Service_Interfaces;
 using seashore_CRM.Models.DTOs;
 using Seashore_CRM.ViewModels.Contact;
@@ -22,25 +23,6 @@ namespace Seashore_CRM.Controllers
         // ===============================
         // INDEX
         // ===============================
-        //public async Task<IActionResult> Index()
-
-        //{
-        //    var contactsDto = await _contactService.GetAllAsync();
-
-        //    var contactsVM = contactsDto.Select(c => new ContactListViewModel
-        //    {
-        //        Id = c.Id,
-        //        CompanyName = c.CompanyName,
-        //        ContactName = c.ContactName,
-        //        Email = c.Email,
-        //        Phone = c.Phone,
-        //        Mobile = c.Mobile,
-        //        Designation = c.Designation,
-        //        IsActive = c.IsActive
-        //    }).ToList();
-        //     return View(contactsVM);     
-        //}
-
         public async Task<IActionResult> Index(
             string? q,
             int? companyId,
@@ -48,15 +30,15 @@ namespace Seashore_CRM.Controllers
             int page = 1,
             int pageSize = 20)
         {
-            var dtos = await _contactService.GetAllAsync();
+            var dtos =  _contactService.GetAllAsync();
 
             //  Search filter
             if (!string.IsNullOrWhiteSpace(q))
             {
                 dtos = dtos.Where(c =>
-                    (c.ContactName != null && c.ContactName.Contains(q, StringComparison.OrdinalIgnoreCase)) ||
-                    (c.Email != null && c.Email.Contains(q, StringComparison.OrdinalIgnoreCase)) ||
-                    (c.Phone != null && c.Phone.Contains(q, StringComparison.OrdinalIgnoreCase))
+                    EF.Functions.Like(c.ContactName, $"%{q}%") ||
+                    EF.Functions.Like(c.Email, $"%{q}%") ||
+                    EF.Functions.Like(c.Phone, $"%{q}%")
                 );
             }
 
@@ -88,6 +70,8 @@ namespace Seashore_CRM.Controllers
                 ContactName = c.ContactName,
                 Email = c.Email,
                 Phone = c.Phone,
+                Mobile = c.Mobile,
+                Designation = c.Designation,
                 CompanyName = c.CompanyName,
                 IsActive = c.IsActive,
                 CompanyId = c.CompanyId
@@ -248,7 +232,7 @@ namespace Seashore_CRM.Controllers
         // ===============================
         private async Task LoadCompanies()
         {
-            var companies = await _companyService.GetAllAsync();
+            var companies = _companyService.GetAllAsync();
             ViewBag.Companies = new SelectList(
                 companies,
                 "Id",

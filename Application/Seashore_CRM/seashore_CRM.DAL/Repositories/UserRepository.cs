@@ -22,11 +22,10 @@ namespace seashore_CRM.DAL.Repositories
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public IQueryable <User> GetAllAsync()
         {
-            return await _context.Users.IgnoreQueryFilters()
-                .Include(u => u.Role) 
-                .ToListAsync();
+            return _context.Users.IgnoreQueryFilters()
+                .Include(u => u.Role);
         }
 
         public async Task<IEnumerable<User>> FindAsync(Expression<Func<User, bool>> predicate)

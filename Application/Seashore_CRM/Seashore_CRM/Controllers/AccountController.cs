@@ -1,16 +1,17 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
-using seashore_CRM.Models.Identity;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using seashore_CRM.BLL.Services.Service_Interfaces;
-using System.Linq;
-using seashore_CRM.Models.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using seashore_CRM.BLL.Services.Service_Interfaces;
+using seashore_CRM.Models.Entities;
+using seashore_CRM.Models.Identity;
 using Seashore_CRM.ViewModels.Login;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Seashore_CRM.Controllers
 {
@@ -47,8 +48,12 @@ namespace Seashore_CRM.Controllers
                 return View(model);
 
             // Authenticate against the application Users table (custom users)
-            var users = await _userService.GetAllAsync();
-            var appUser = users.FirstOrDefault(u => string.Equals(u.Email?.Trim(), model.Email?.Trim(), System.StringComparison.OrdinalIgnoreCase));
+            var users = _userService.GetAllAsync();
+            var normalizedEmail = model.Email?.Trim().ToLower();
+
+            var appUser = await _userService.GetAllAsync()
+                .Where(u => u.Email != null && u.Email.Trim().ToLower() == normalizedEmail)
+                .FirstOrDefaultAsync();
 
             if (appUser == null || !appUser.IsActive)
             {

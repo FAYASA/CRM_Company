@@ -9,14 +9,17 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
     {
         Task<Company?> GetByIdAsync(int id);
 
-        Task<List<Company>> GetAllAsync();
+        //Task<List<Company>> GetAllAsync();
+        IQueryable<Company> GetAllAsync();
 
-        Task<List<Company>> SearchAsync(string? query);
+        //Task<List<Company>> SearchAsync(string? query);
+        IQueryable<Company> SearchAsync(string? query);
 
         Task AddAsync(Company company);
 
         void Update(Company company);
 
         void SoftDelete(Company company);
+       // IQueryable<Company> SearchAsync(string query);
     }
 }

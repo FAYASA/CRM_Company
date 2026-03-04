@@ -1,0 +1,65 @@
+@page
+@model Seashore_CRM.Pages.Leads.ConvertModel
+@{
+    ViewData["Title"] = "Convert Lead";
+}
+
+<div class="card mx-auto" style="max-width:800px;">
+    <div class="card-body">
+        <h4>Convert Lead</h4>
+        <p class="text-muted">Review the conversion details below and confirm to create Company/Contact and an Opportunity.</p>
+
+        <dl class="row">
+            <dt class="col-sm-3">Lead</dt>
+            <dd class="col-sm-9">@Model.Lead?.LeadType (ID: @Model.Lead?.Id)</dd>
+
+            <dt class="col-sm-3">Company</dt>
+            <dd class="col-sm-9">
+                @if (Model.Lead?.CompanyId != null)
+                {
+                    <span>Existing (ID: @Model.Lead.CompanyId)</span>
+                }
+                else if (Model.IsCorporate)
+                {
+                    <input asp-for="CompanyName" class="form-control form-control-sm" />
+                }
+                else
+                {
+                    <em>Not applicable</em>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Contact</dt>
+            <dd class="col-sm-9">
+                @if (Model.Lead?.ContactId != null)
+                {
+                    <span>Existing (ID: @Model.Lead.ContactId)</span>
+                }
+                else
+                {
+                    <input asp-for="ContactName" class="form-control form-control-sm" />
+                }
+            </dd>
+
+            <dt class="col-sm-3">Estimated Value</dt>
+            <dd class="col-sm-9">@Model.EstimatedValue.ToString("N2")</dd>
+
+            <dt class="col-sm-3">Create Opportunity Stage</dt>
+            <dd class="col-sm-9">
+                <select asp-for="SelectedStage" class="form-select form-select-sm">
+                    <option>Prospecting</option>
+                    <option>Negotiation</option>
+                    <option>Proposal</option>
+                </select>
+            </dd>
+        </dl>
+
+        <form method="post">
+            <input type="hidden" asp-for="LeadId" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Confirm Conversion</button>
+                <a asp-page="/Leads/Details" asp-route-id="@Model.LeadId" class="btn btn-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

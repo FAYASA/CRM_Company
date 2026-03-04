@@ -30,7 +30,7 @@ namespace Seashore_CRM.Controllers
         // ====================
         public async Task<IActionResult> Index()
         {
-            var dtos = await _userService.GetAllAsync();
+            var dtos =  _userService.GetAllAsync();
 
             var model = dtos.Select(d => new UserListViewModel
             {
@@ -124,7 +124,7 @@ namespace Seashore_CRM.Controllers
             var roles = (await _roleService.GetAllAsync())
                 .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.RoleName }).ToList();
 
-            var users = (await _userService.GetAllAsync())
+            var users = (_userService.GetAllAsync())
                 .Where(u => u.Id != id)
                 .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.FullName ?? u.Email }).ToList();
 
@@ -219,7 +219,7 @@ namespace Seashore_CRM.Controllers
             model.Roles = (await _roleService.GetAllAsync())
                 .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.RoleName }).ToList();
 
-            model.Users = (await _userService.GetAllAsync())
+            model.Users = (_userService.GetAllAsync())
                 .Where(u => u.Id != model.Id)
                 .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.FullName ?? u.Email }).ToList();
 
@@ -270,7 +270,7 @@ namespace Seashore_CRM.Controllers
             var roles = (await _roleService.GetAllAsync())
                 .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.RoleName }).ToList();
 
-            var users = (await _userService.GetAllAsync())
+            var users = (_userService.GetAllAsync())
                 .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.FullName ?? u.Email }).ToList();
 
             return new UserCreateViewModel

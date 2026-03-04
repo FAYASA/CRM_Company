@@ -14,27 +14,18 @@ namespace seashore_CRM.DAL.Repositories
             _context = context;
         }
 
-        public async Task<List<Company>> GetAllAsync()
+        public IQueryable<Company> GetAllAsync()
         {
-            // to see all companies, including inactive ones and bypass any global query filters
-            return await _context.Companies
-                                 .IgnoreQueryFilters()
-                                 .AsNoTracking()
-                                 .ToListAsync();
-
+            return _context.Companies.IgnoreQueryFilters().AsNoTracking();
         }
 
         public async Task<Company?> GetByIdAsync(int id)
         {
-            // to view all companies (including inactive) bypassing global filters
-            return await _context.Companies
-                                 .IgnoreQueryFilters()
-                                 .FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Companies.IgnoreQueryFilters().FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<List<Company>> SearchAsync(string? query)
+        public IQueryable<Company> SearchAsync(string query)
         {
-            // to see all companies, including deleted/inactive ones, bypass global filters
             IQueryable<Company> companies = _context.Companies.IgnoreQueryFilters();
 
             if (!string.IsNullOrWhiteSpace(query))
@@ -43,12 +34,11 @@ namespace seashore_CRM.DAL.Repositories
 
                 companies = companies.Where(c =>
                     c.CompanyName.ToLower().Contains(query) ||
-                    c.City!.ToLower().Contains(query) ||
-                    //c.Country!.ToLower().Contains(query) ||
-                    c.Email!.ToLower().Contains(query));
+                    (c.City != null && c.City.ToLower().Contains(query)) ||
+                    (c.Email != null && c.Email.ToLower().Contains(query)));
             }
 
-            return await companies.AsNoTracking().ToListAsync();
+            return companies.AsNoTracking();
         }
 
         public async Task AddAsync(Company company)

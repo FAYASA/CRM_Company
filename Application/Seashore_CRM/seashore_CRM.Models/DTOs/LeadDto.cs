@@ -28,6 +28,9 @@ namespace seashore_CRM.Models.DTOs
         public int? QualifiedById { get; set; }
         public string? QualificationNotes { get; set; }
 
+        // Mark if lead already converted
+        public bool IsConverted { get; set; }
+
         // Opportunity related
         public decimal? Budget { get; set; }
         public DateTime? DecisionDate { get; set; }

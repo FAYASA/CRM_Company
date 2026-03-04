@@ -37,12 +37,11 @@ public class ContactRepository : IContactRepository
         _context.Contacts.Remove(entity);
     }
 
-    public async Task<IEnumerable<Contact>> GetAllAsync()
+    public IQueryable<Contact> GetAllAsync()
     {
-        return await _context.Contacts
+        return  _context.Contacts
             .IgnoreQueryFilters()
-    .Include(c => c.Company)
-    .ToListAsync();
+    .Include(c => c.Company);
     }
 
     public async Task<IEnumerable<Contact>> FindAsync(Expression<Func<Contact, bool>> predicate)

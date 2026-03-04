@@ -24,8 +24,8 @@ namespace Seashore_CRM.Controllers
         public async Task<IActionResult> Index(string q, string sortBy = "CompanyName", string sortOrder = "asc")
         {
             var companiesDto = string.IsNullOrWhiteSpace(q)
-                ? await _service.GetAllAsync()
-                : await _service.SearchAsync(q);
+                ? _service.GetAllAsync()
+                : _service.SearchAsync(q);
 
             // Map DTOs to ListViewModel
             var companies = companiesDto.Select(c => new CompanyListViewModel

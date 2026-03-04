@@ -50,7 +50,7 @@ namespace Seashore_CRM.Controllers
 
         public async Task<IActionResult> Create(int? opportunityId)
         {
-            var companies = await _companyService.GetAllAsync();
+            var companies = _companyService.GetAllAsync();
             var products = await _productService.GetAllAsync();
             ViewBag.Companies = new SelectList(companies, "Id", "CompanyName");
             ViewBag.Products = products.Select(p => new SelectListItem(p.ProductName, p.Id.ToString())).ToList();
@@ -91,7 +91,7 @@ namespace Seashore_CRM.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var companies = await _companyService.GetAllAsync();
+                var companies = _companyService.GetAllAsync();
                 var products = await _productService.GetAllAsync();
                 ViewBag.Companies = new SelectList(companies, "Id", "CompanyName", sale.CustomerId);
                 ViewBag.Products = products.Select(p => new SelectListItem(p.ProductName, p.Id.ToString())).ToList();

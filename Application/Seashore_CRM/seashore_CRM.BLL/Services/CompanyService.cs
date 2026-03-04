@@ -16,9 +16,9 @@ namespace seashore_CRM.BLL.Services
             _uow = uow;
         }
 
-        public async Task<List<CompanyListDto>> GetAllAsync()
+        public IQueryable <CompanyListDto> GetAllAsync()
         {
-            var companies = await _uow.Companies.GetAllAsync();
+            var companies = _uow.Companies.GetAllAsync();
 
             return companies.Select(c => new CompanyListDto
             {
@@ -31,7 +31,7 @@ namespace seashore_CRM.BLL.Services
                 IsActive = c.IsActive,
                 Address = c.Address,
                 AddressPost = c.AddressPost
-            }).ToList();
+            });
         }
 
         public async Task<CompanyDetailDto?> GetByIdAsync(int id)
@@ -66,7 +66,6 @@ namespace seashore_CRM.BLL.Services
                 City = dto.City,
                 Address = dto.Address,
                 AddressPost = dto.AddressPost,
-                CreatedBy = "System",
                 Phone = dto.Phone,
                 Website = dto.Website,
                 Industry = dto.Industry,
@@ -112,11 +111,11 @@ namespace seashore_CRM.BLL.Services
             await _uow.CommitAsync();
         }
 
-        public async Task<List<CompanyListDto>> SearchAsync(string? query)
+        public IQueryable <CompanyListDto> SearchAsync(string? query)
         {
             var companies = string.IsNullOrWhiteSpace(query)
-                ? await _uow.Companies.GetAllAsync()
-                : await _uow.Companies.SearchAsync(query);
+                ? _uow.Companies.GetAllAsync()
+                : _uow.Companies.SearchAsync(query);
 
             return companies.Select(c => new CompanyListDto
             {
@@ -129,7 +128,7 @@ namespace seashore_CRM.BLL.Services
                 IsActive = c.IsActive,
                 Address = c.Address,
                 AddressPost = c.AddressPost
-            }).ToList();
+            });
         }
 
         // =========================
@@ -138,7 +137,7 @@ namespace seashore_CRM.BLL.Services
         public async Task<bool> IsEmailTakenAsync(string email, int? excludeId = null)
         {
             if (string.IsNullOrWhiteSpace(email)) return false;
-            var all = await _uow.Companies.GetAllAsync();
+            var all =  _uow.Companies.GetAllAsync();
             return all.Any(c => !string.IsNullOrWhiteSpace(c.Email)
                                 && c.Email!.ToLower() == email.Trim().ToLower()
                                 && (!excludeId.HasValue || c.Id != excludeId.Value));
@@ -147,7 +146,7 @@ namespace seashore_CRM.BLL.Services
         public async Task<bool> IsCompanyNameTakenAsync(string companyName, int? excludeId = null)
         {
             if (string.IsNullOrWhiteSpace(companyName)) return false;
-            var all = await _uow.Companies.GetAllAsync();
+            var all = _uow.Companies.GetAllAsync();
             return all.Any(c => c.CompanyName.ToLower() == companyName.Trim().ToLower()
                                 && (!excludeId.HasValue || c.Id != excludeId.Value));
         }
@@ -155,7 +154,7 @@ namespace seashore_CRM.BLL.Services
         public async Task<bool> IsCompanyPhoneTakenAsync(string companyPhone, int? excludeId = null)
         {
             if (string.IsNullOrWhiteSpace(companyPhone)) return false;
-            var all = await _uow.Companies.GetAllAsync();
+            var all = _uow.Companies.GetAllAsync();
             return all.Any(c => !string.IsNullOrWhiteSpace(c.Phone)
                                 && c.Phone!.ToLower() == companyPhone.Trim().ToLower()
                                 && (!excludeId.HasValue || c.Id != excludeId.Value));

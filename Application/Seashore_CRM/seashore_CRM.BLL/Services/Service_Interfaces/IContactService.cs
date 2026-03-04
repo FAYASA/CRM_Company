@@ -7,7 +7,8 @@ namespace seashore_CRM.BLL.Services.Service_Interfaces
 {
     public interface IContactService
     {
-        Task<IEnumerable<ContactListDto>> GetAllAsync();
+        IQueryable<ContactListDto> GetAllAsync();
+        //Task<IEnumerable<ContactListDto>> GetAllAsync();
         Task<ContactDetailDto?> GetByIdAsync(int id);
         Task<int> CreateAsync(ContactCreateDto dto);
         Task UpdateAsync(ContactUpdateDto dto);

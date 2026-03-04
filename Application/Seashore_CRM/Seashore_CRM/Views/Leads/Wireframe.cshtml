@@ -1,0 +1,133 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Leads Wireframe";
+}
+
+<link rel="stylesheet" href="~/css/leads-wireframe.css" />
+
+<div class="container-fluid leads-wireframe">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Filters & Quick Actions</h5>
+                    <div class="filter-group mb-2">
+                        <label class="form-label">Pipeline</label>
+                        <select class="form-select">
+                            <option>All</option>
+                            <option>My Leads</option>
+                            <option>Unassigned</option>
+                        </select>
+                    </div>
+                    <div class="filter-group mb-2">
+                        <label class="form-label">Status</label>
+                        <select class="form-select">
+                            <option>All</option>
+                            <option>New</option>
+                            <option>Contacted</option>
+                            <option>Qualified</option>
+                            <option>Lost</option>
+                        </select>
+                    </div>
+
+                    <div class="quick-actions d-grid gap-2 mb-3">
+                        <button class="btn btn-primary">+ New Lead</button>
+                        <button class="btn btn-outline-secondary">Import</button>
+                        <button class="btn btn-outline-secondary">Export</button>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h6>Saved Views</h6>
+                        <ul class="small">
+                            <li>Recently Updated</li>
+                            <li>Hot Leads</li>
+                            <li>Needs Followup</li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-section mt-3">
+                        <h6>Top Suggestions</h6>
+                        <ol class="small">
+                            <li>Call within 24h</li>
+                            <li>Send product brochure</li>
+                            <li>Schedule demo</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h4 class="mb-1">Leads Pipeline</h4>
+                            <div class="controls d-flex gap-2">
+                                <input class="form-control form-control-sm" placeholder="Search leads..." style="width:260px;" />
+                                <button class="btn btn-sm btn-primary">Filter</button>
+                                <button class="btn btn-sm btn-outline-secondary">Board View</button>
+                                <button class="btn btn-sm btn-outline-secondary">List View</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="pipeline-board mb-3">
+                        <div class="d-flex" style="gap:12px;overflow-x:auto;padding-bottom:8px;">
+                            <div class="column">
+                                <h6>New</h6>
+                                <div class="card mb-2"><div class="card-body p-2">Acme - Request info <span class="meta">2d</span></div></div>
+                                <div class="card mb-2"><div class="card-body p-2">Beta Corp - Website lead <span class="meta">1d</span></div></div>
+                            </div>
+                            <div class="column">
+                                <h6>Contacted</h6>
+                                <div class="card mb-2"><div class="card-body p-2">Gamma LLC - Demo scheduled <span class="meta">3d</span></div></div>
+                            </div>
+                            <div class="column">
+                                <h6>Qualified</h6>
+                                <div class="card mb-2 border-start border-3 border-warning"><div class="card-body p-2">Delta Co - High value <span class="meta">5d</span></div></div>
+                            </div>
+                            <div class="column">
+                                <h6>Proposal</h6>
+                                <div class="card mb-2"><div class="card-body p-2">Epsilon - Sent quote <span class="meta">7d</span></div></div>
+                            </div>
+                            <div class="column">
+                                <h6>Closed</h6>
+                                <div class="card mb-2 text-muted"><div class="card-body p-2">Zeta - Lost <span class="meta">10d</span></div></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="timeline-panel">
+                        <h5>Activity Timeline</h5>
+                        <div class="list-group list-group-flush mt-2">
+                            <div class="list-group-item d-flex">
+                                <div class="time me-3 text-muted" style="width:120px;">Today, 09:00</div>
+                                <div class="event">Call logged with Acme — <strong>Left voicemail</strong></div>
+                            </div>
+                            <div class="list-group-item d-flex">
+                                <div class="time me-3 text-muted" style="width:120px;">Yesterday</div>
+                                <div class="event">Email sent to Beta Corp — <strong>Intro & brochure</strong></div>
+                            </div>
+                            <div class="list-group-item d-flex text-muted">
+                                <div class="time me-3" style="width:120px;">2 days ago</div>
+                                <div class="event">Meeting scheduled with Gamma — <strong>Zoom</strong></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h6>Annotations</h6>
+                    <ul class="small mb-0">
+                        <li><strong>Sidebar</strong> — quick filters, saved views, and common actions.</li>
+                        <li><strong>Pipeline board</strong> — Kanban-style columns; cards can be dragged between columns.</li>
+                        <li><strong>Timeline</strong> — recent activities for selected lead or filtered set.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

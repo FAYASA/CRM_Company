@@ -1,0 +1,60 @@
+/*
+Scoped wireframe CSS for Leads UI mockup - scoped under .leads-wireframe to avoid overriding Bootstrap globals
+*/
+.leads-wireframe {
+  font-family: Inter, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+/* Sidebar card spacing (uses Bootstrap card) */
+.leads-wireframe .sidebar-section ul,
+.leads-wireframe .sidebar-section ol {
+  padding-left: 18px;
+  margin-bottom: 0;
+}
+
+/* Pipeline board layout: allow horizontal scrolling for columns */
+.leads-wireframe .pipeline-board > .d-flex {
+  gap: 12px;
+}
+.leads-wireframe .pipeline-board .column {
+  min-width: 220px;
+  max-width: 320px;
+}
+.leads-wireframe .pipeline-board .column h6 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+/* Card tweaks for small inner cards inside pipeline columns */
+.leads-wireframe .pipeline-board .card {
+  border-radius: 6px;
+  box-shadow: none;
+}
+.leads-wireframe .pipeline-board .card .meta {
+  float: right;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+/* Highlight/closed states */
+.leads-wireframe .border-warning {
+  border-left-width: .5rem !important;
+}
+.leads-wireframe .text-muted .card-body {
+  opacity: 0.8;
+}
+
+/* Timeline adjustments */
+.leads-wireframe .time {
+  color: #6b7280;
+}
+
+/* Small responsive fix: make pipeline columns stack on very small screens */
+@media (max-width: 768px) {
+  .leads-wireframe .pipeline-board > .d-flex {
+    flex-direction: column;
+  }
+  .leads-wireframe .pipeline-board .column {
+    width: 100%;
+  }
+}

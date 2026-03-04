@@ -37,6 +37,12 @@ namespace Seashore_CRM.Controllers
             return View(leads.ToList());
         }
 
+        // Static UI wireframe view (pipeline board + sidebar + timeline)
+        public IActionResult Wireframe()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Details(int id)
         {
             var lead = await _leadService.GetLeadByIdAsync(id);
@@ -331,11 +337,11 @@ namespace Seashore_CRM.Controllers
 
         private async Task PopulateSelectListsAsync(LeadDto? model = null)
         {
-            var companies = await _uow.Companies.GetAllAsync();
-            var contacts = await _uow.Contacts.GetAllAsync();
+            var companies = _uow.Companies.GetAllAsync();
+            var contacts = _uow.Contacts.GetAllAsync();
             var sources = await _uow.LeadSources.GetAllAsync();
             var statuses = await _uow.LeadStatuses.GetAllAsync();
-            var users = await _uow.Users.GetAllAsync();
+            var users = _uow.Users.GetAllAsync();
             var products = await _uow.Products.GetAllAsync();
             var categories = await _uow.Categories.GetAllAsync();
 

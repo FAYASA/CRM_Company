@@ -9,7 +9,8 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
 
         Task<Contact?> GetWithCompanyAsync(int id);   // include Company
 
-        Task<IEnumerable<Contact>> GetAllAsync();
+        //Task<IEnumerable<Contact>> GetAllAsync();
+        IQueryable<Contact> GetAllAsync();
 
         Task<IEnumerable<Contact>> GetAllWithCompanyAsync();  // include Company
 
