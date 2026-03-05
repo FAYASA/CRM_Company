@@ -72,7 +72,6 @@
                 <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Leads" ? "active" : "") d-flex justify-content-between align-items-center"
                    asp-controller="Leads" asp-action="Index">
                     <span><i class="bi bi-person-lines-fill me-2"></i> Leads</span>
-                    @* <span class="badge bg-danger rounded-pill">3</span> *@
                 </a>
             </li>
             <!-- Wireframe quick link for Leads (new) -->
@@ -80,6 +79,33 @@
                 <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Wireframe" && ViewContext.RouteData.Values["controller"]?.ToString() == "Leads" ? "active" : "")"
                    asp-controller="Leads" asp-action="Wireframe">
                     <i class="bi bi-diagram-3 me-2"></i> Leads Wireframe
+                </a>
+            </li>
+
+            <!-- Sales -->
+            <li class="nav-item text-uppercase text-muted small mt-3">Sales</li>
+            <li class="nav-item">
+                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Opportunities" ? "active" : "")"
+                   asp-controller="Opportunities" asp-action="Index">
+                    <i class="bi bi-briefcase me-2"></i> Opportunities
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Quotes" ? "active" : "")"
+                   asp-controller="Quotes" asp-action="Index">
+                    <i class="bi bi-card-text me-2"></i> Quotes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contracts" ? "active" : "")"
+                   asp-controller="Contracts" asp-action="Index">
+                    <i class="bi bi-file-earmark-text me-2"></i> Contracts
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Invoices" ? "active" : "")"
+                   asp-controller="Invoices" asp-action="Index">
+                    <i class="bi bi-receipt me-2"></i> Invoices
                 </a>
             </li>
 
@@ -91,16 +117,21 @@
                     <i class="bi bi-box-seam me-2"></i> Products
                 </a>
             </li>
+
+            <!-- Support / Customer Success -->
+            <li class="nav-item text-uppercase text-muted small mt-3">Support</li>
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Opportunities" ? "active" : "") d-flex justify-content-between align-items-center"
-                   asp-controller="Opportunities" asp-action="Index">
-                    <span><i class="bi bi-briefcase me-2"></i> Opportunities</span>
-                    @* <span class="badge bg-warning text-dark rounded-pill">5</span> *@
+                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Tickets" ? "active" : "")"
+                   asp-controller="Tickets" asp-action="Index">
+                    <i class="bi bi-life-preserver me-2"></i> Tickets
                 </a>
             </li>
+
+            <!-- Analytics & Reports -->
+            <li class="nav-item text-uppercase text-muted small mt-3">Analytics</li>
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reports" ? "active" : "")"
-                   asp-controller="Reports" asp-action="Index">
+                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Analytics" ? "active" : "")"
+                   asp-controller="Analytics" asp-action="Index">
                     <i class="bi bi-bar-chart-line me-2"></i> Reports
                 </a>
             </li>

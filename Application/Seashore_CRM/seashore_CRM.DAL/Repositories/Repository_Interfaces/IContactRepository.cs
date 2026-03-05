@@ -12,11 +12,13 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
         //Task<IEnumerable<Contact>> GetAllAsync();
         IQueryable<Contact> GetAllAsync();
 
+        IQueryable<Contact> GetAllIndAsync();
+
         Task<IEnumerable<Contact>> GetAllWithCompanyAsync();  // include Company
 
         Task<IEnumerable<Contact>> FindAsync(Expression<Func<Contact, bool>> predicate);
 
-        Task<IEnumerable<Contact>> GetByCompanyIdAsync(int companyId);
+        Task<IEnumerable<Contact>> GetByCompanyIdAsync(int? companyId);
 
         Task AddAsync(Contact entity);
 

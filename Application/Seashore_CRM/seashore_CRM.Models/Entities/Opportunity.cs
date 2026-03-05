@@ -9,7 +9,8 @@ namespace seashore_CRM.Models.Entities
         public decimal EstimatedValue { get; set; }
         public int Probability { get; set; }
         public DateTime? ExpectedCloseDate { get; set; }
-
+        public decimal? Budget { get; set; }
+        public DateTime? DecisionDate { get; set; }
         public Lead? Lead { get; set; }
     }
 }

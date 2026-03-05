@@ -35,7 +35,7 @@ namespace seashore_CRM.DAL.Data
         public DbSet<Payment> Payments => Set<Payment>();
         public DbSet<Activity> Activities => Set<Activity>();
         public DbSet<Comment> Comments => Set<Comment>();
-        public DbSet<LeadItem> LeadItems => Set<LeadItem>();
+        public DbSet<OpportunityItem> LeadItems => Set<OpportunityItem>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -123,10 +123,10 @@ namespace seashore_CRM.DAL.Data
             modelBuilder.Entity<Opportunity>()
                 .HasIndex(o => o.LeadId);
 
-            modelBuilder.Entity<LeadItem>()
+            modelBuilder.Entity<OpportunityItem>()
                 .HasIndex(li => li.LeadId);
 
-            modelBuilder.Entity<LeadItem>()
+            modelBuilder.Entity<OpportunityItem>()
                 .HasIndex(li => li.ProductId);
 
             // Index for report-to relationship
@@ -249,13 +249,13 @@ namespace seashore_CRM.DAL.Data
                 .OnDelete(DeleteBehavior.SetNull);
 
             // LeadItem relations
-            modelBuilder.Entity<LeadItem>()
+            modelBuilder.Entity<OpportunityItem>()
                 .HasOne(li => li.Lead)
                 .WithMany()
                 .HasForeignKey(li => li.LeadId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<LeadItem>()
+            modelBuilder.Entity<OpportunityItem>()
                 .HasOne(li => li.Product)
                 .WithMany()
                 .HasForeignKey(li => li.ProductId)

@@ -39,6 +39,28 @@ namespace seashore_CRM.BLL.Services
         }
 
         // ===============================
+        // GET ALL CONTACTS BY COMPANY ID
+        // ===============================
+
+        public async Task<IQueryable<ContactListDto>> GetAllByCompanyIdAsync(int companyId)
+        {
+            var contacts = await _uow.Contacts.GetByCompanyIdAsync(companyId);
+
+            return contacts.Select(c => new ContactListDto
+            {
+                Id = c.Id,
+                ContactName = c.Contact_Name,
+                Email = c.Email,
+                Phone = c.Phone,
+                Mobile = c.Mobile,
+                Designation = c.Designation,
+                CompanyName = c.Company.CompanyName,
+                IsActive = c.IsActive,
+                CompanyId = c.CompanyId
+            }).AsQueryable();
+        }
+
+        // ===============================
         // GET CONTACT BY ID
         // ===============================
         public async Task<ContactDetailDto?> GetByIdAsync(int id)

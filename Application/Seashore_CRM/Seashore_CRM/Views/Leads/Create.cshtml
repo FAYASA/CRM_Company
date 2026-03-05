@@ -44,9 +44,20 @@
                         </select>
                     </div>
 
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold text-muted text-uppercase">Contact <a href="@Url.Action("Create","Contacts")" target="_blank" class="ms-2 small text-primary">+ New</a></label>
-                        <select asp-for="ContactId" class="form-select form-select-sm shadow-sm" asp-items="ViewBag.Contacts">
+                    <div class="col-md-2" id="corporateContactDiv">
+                        <label class="form-label small fw-bold text-muted text-uppercase">
+                            Contact <a href="@Url.Action("Create", "Contacts")" target="_blank" class="ms-2 small text-primary">+ New</a>
+                        </label>
+                        <select asp-for="ContactId" class="form-select form-select-sm shadow-sm" asp-items="ViewBag.Contacts" id="corporateContactSelect">
+                            <option value="">-- Select Contact --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2" id="individualContactDiv" style="display:none;">
+                        <label class="form-label small fw-bold text-muted text-uppercase">
+                            Contact <a href="@Url.Action("Create", "Contacts")" target="_blank" class="ms-2 small text-primary">+ New</a>
+                        </label>
+                        <select asp-for="ContactId" class="form-select form-select-sm shadow-sm" asp-items="ViewBag.ContactForIndv" id="individualContactSelect">
                             <option value="">-- Select Contact --</option>
                         </select>
                     </div>
@@ -255,9 +266,35 @@
 
             // 1. Lead Type Logic
             function toggleCompany() {
-                $('#companySelect').prop('disabled', !$('#leadCorporate').is(':checked')).val("");
+                const isCorporate = $('#leadCorporate').is(':checked');
+                $('#companySelect').prop('disabled', !isCorporate);
+
+                if (!isCorporate) {
+                    // individual: show individual contact select and enable
+                    $('#corporateContactDiv').hide();
+                    $('#individualContactDiv').show();
+                    $('#individualContactSelect').prop('disabled', false);
+
+                    // clear corporate contact select
+                    $('#corporateContactSelect').empty().append('<option value="">-- Select Contact --</option>').prop('disabled', true);
+                } else {
+                    // corporate: show corporate contact select
+                    $('#corporateContactDiv').show();
+                    $('#individualContactDiv').hide();
+                    $('#individualContactSelect').prop('disabled', true);
+
+                    // if no company selected, keep corporate contact empty/disabled
+                    if (!$('#companySelect').val()) {
+                        $('#corporateContactSelect').empty().append('<option value="">-- Select Contact --</option>').prop('disabled', true);
+                    } else {
+                        // trigger change to load contacts for selected company
+                        $('#companySelect').trigger('change');
+                    }
+                }
             }
             $('input[name="LeadType"]').on('change', toggleCompany);
+
+            // Initial call
             toggleCompany();
 
             // 2. Priority Button Group
@@ -389,6 +426,46 @@
                     $(this).val("");
                 }
             });
+
+            // 7. Load contacts for selected company via AJAX
+            $('#companySelect').on('change', function () {
+                var companyId = $(this).val();
+                var $contactSelect = $('#corporateContactSelect');
+
+                // If no company selected, clear and disable contact list
+                if (!companyId) {
+                    $contactSelect.empty().append('<option value="">-- Select Contact --</option>').prop('disabled', true);
+                    return;
+                }
+
+                // fetch contacts
+                $.ajax({
+                    url: '@Url.Action("ContactsByCompany", "Leads")',
+                    data: { companyId: companyId },
+                    method: 'GET',
+                    success: function (data) {
+                        $contactSelect.empty();
+                        $contactSelect.append('<option value="">-- Select Contact --</option>');
+                        if (data && data.length) {
+                            data.forEach(function (c) {
+                                $contactSelect.append('<option value="' + c.id + '">' + c.name + '</option>');
+                            });
+                            $contactSelect.prop('disabled', false);
+                        } else {
+                            $contactSelect.prop('disabled', true);
+                        }
+                    },
+                    error: function () {
+                        // graceful fallback: disable contact select
+                        $contactSelect.empty().append('<option value="">-- Select Contact --</option>').prop('disabled', true);
+                    }
+                });
+            });
+
+            // Trigger change on load if a company is preselected
+            if ($('#companySelect').val()) {
+                $('#companySelect').trigger('change');
+            }
         });
     </script>
 }

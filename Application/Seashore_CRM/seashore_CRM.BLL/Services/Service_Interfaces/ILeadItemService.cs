@@ -6,10 +6,10 @@ namespace seashore_CRM.BLL.Services.Service_Interfaces
 {
     public interface ILeadItemService
     {
-        Task<IEnumerable<LeadItem>> GetAllAsync();
-        Task<LeadItem?> GetByIdAsync(int id);
-        Task<int> AddAsync(LeadItem entity);
-        Task UpdateAsync(LeadItem entity);
+        Task<IEnumerable<OpportunityItem>> GetAllAsync();
+        Task<OpportunityItem?> GetByIdAsync(int id);
+        Task<int> AddAsync(OpportunityItem entity);
+        Task UpdateAsync(OpportunityItem entity);
         Task DeleteAsync(int id);
     }
 }
