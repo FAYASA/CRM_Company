@@ -218,13 +218,240 @@
 </form>
 
 @section Scripts {
-    @* Keep existing page scripts (product rows, activity mapping, AJAX contact load) *@
     <script>
-        $(function(){
-            // Initialize existing behaviors: load contacts, product rows, activities mapping etc.
-            // Trigger existing handlers if present
-            $('#companySelect').trigger('change');
-            $('#statusSelect').trigger('change');
+        $(document).ready(function () {
+            let idx = 1;
+            const productsMap = @Html.Raw(ViewBag.ProductsJson ?? "{}");
+            let statusMapping = @Html.Raw(ViewBag.StatusActivitiesJson ?? "{}");
+
+            // function to render suggested activities for currently selected status
+            function renderSuggestedActivities() {
+                const area = $('#suggestedActivitiesArea');
+                area.empty();
+                const statusText = $('#statusSelect option:selected').text();
+                if (!statusText || statusText === '-- Select Status --') {
+                    area.append('<p class="text-muted small mb-0">Select a lead status to view suggestions.</p>');
+                    return;
+                }
+                const acts = statusMapping[statusText];
+                if (acts && acts.length) {
+                    acts.forEach(a => {
+                        const idSafe = 'act_' + a.replace(/[^a-z0-9]/gi, '_');
+                        area.append(`<div class="form-check form-check-inline">
+                            <input type="checkbox" class="btn-check activity-chk" id="${idSafe}" value="${a}">
+                            <label class="btn btn-outline-primary btn-sm rounded-pill px-3 mb-2" for="${idSafe}">${a}</label>
+                        </div>`);
+                    });
+                } else {
+                    area.append('<p class="text-muted small">No suggestions.</p>');
+                }
+            }
+
+            // initial render
+            renderSuggestedActivities();
+
+            // 1. Lead Type Logic
+            function toggleCompany() {
+                const isCorporate = $('#leadCorporate').is(':checked');
+                $('#companySelect').prop('disabled', !isCorporate);
+
+                if (!isCorporate) {
+                    // individual: show individual contact select and enable
+                    $('#corporateContactDiv').hide();
+                    $('#individualContactDiv').show();
+                    $('#individualContactSelect').prop('disabled', false);
+
+                    // clear corporate contact select
+                    $('#corporateContactSelect').empty().append('<option value="">-- Select Contact --</option>').prop('disabled', true);
+                } else {
+                    // corporate: show corporate contact select
+                    $('#corporateContactDiv').show();
+                    $('#individualContactDiv').hide();
+                    $('#individualContactSelect').prop('disabled', true);
+
+                    // if no company selected, keep corporate contact empty/disabled
+                    if (!$('#companySelect').val()) {
+                        $('#corporateContactSelect').empty().append('<option value="">-- Select Contact --</option>').prop('disabled', true);
+                    } else {
+                        // trigger change to load contacts for selected company
+                        $('#companySelect').trigger('change');
+                    }
+                }
+            }
+            $('input[name="LeadType"]').on('change', toggleCompany);
+
+            // Initial call
+            toggleCompany();
+
+            // 2. Priority Button Group
+            $('.priority-btn').click(function () {
+                $('.priority-btn').removeClass('active btn-danger btn-warning btn-success').addClass('btn-outline-secondary');
+                const val = $(this).data('val');
+                $(this).addClass('active');
+                if(val === 'Hot') $(this).removeClass('btn-outline-secondary').addClass('btn-danger');
+                if(val === 'Warm') $(this).removeClass('btn-outline-secondary').addClass('btn-warning');
+                if(val === 'Cold') $(this).removeClass('btn-outline-secondary').addClass('btn-success');
+                $('#priorityHidden').val(val);
+            });
+
+            // 3. Dynamic Row Addition
+            $('#addProduct').on('click', function () {
+                const row = $('.product-row').first().clone();
+                row.find('input').val(0);
+                row.find('select').val("");
+                row.find('[name]').each(function() {
+                    $(this).attr('name', $(this).attr('name').replace(/\[\d+\]/, `[${idx}]`));
+                });
+                $('#productBody').append(row);
+                idx++;
+            });
+
+            $(document).on('click', '.remove-row', function () {
+                if ($('.product-row').length > 1) $(this).closest('tr').remove();
+            });
+
+            // 4. Calculations
+            $(document).on('change', '.product-select', function () {
+                const tr = $(this).closest('tr');
+                const p = productsMap[$(this).val()];
+                if (p) {
+                    tr.find('.unitprice').val(p.unitPrice);
+                    tr.find('.cost').val(p.cost);
+                    tr.find('.taxpct').val(p.tax);
+                    tr.find('.category-select').val(p.categoryId || '');
+                }
+                recalc(tr);
+            });
+
+            $(document).on('input change', '.qty, .unitprice, .taxpct, .cost', function () {
+                recalc($(this).closest('tr'));
+            });
+
+            function recalc(tr) {
+                const q = parseFloat(tr.find('.qty').val() || 0);
+                const u = parseFloat(tr.find('.unitprice').val() || 0);
+                const tP = parseFloat(tr.find('.taxpct').val() || 0);
+                const c = parseFloat(tr.find('.cost').val() || 0);
+
+                const s = q * u;
+                const tV = s * (tP / 100);
+                const g = s + tV;
+                const p = s - (c * q);
+
+                tr.find('.salevalue').val(s.toFixed(2));
+                tr.find('.taxvalue').val(tV.toFixed(2));
+                tr.find('.gtotal').val(g.toFixed(2));
+                tr.find('.grossprofit').val(p.toFixed(2));
+            }
+
+            // 5. Activities
+            $('#statusSelect').on('change', function () {
+                renderSuggestedActivities();
+            });
+
+            $(document).on('change', '.activity-chk', function() {
+                $('#selectedActivitiesContainer').empty();
+                $('.activity-chk:checked').each(function() {
+                    $('#selectedActivitiesContainer').append(`<input type="hidden" name="SelectedActivities" value="${$(this).val()}" />`);
+                });
+            });
+
+            // open modal and prefill status name
+            $('#addStatusActivityBtn').on('click', function(e){
+                e.preventDefault();
+                const statusText = $('#statusSelect option:selected').text();
+                $('#modalStatusName').val(statusText);
+                var modal = new bootstrap.Modal(document.getElementById('addActivityModal'));
+                modal.show();
+            });
+
+            // save new activity via AJAX
+            $('#saveActivityBtn').on('click', function(){
+                const statusName = $('#modalStatusName').val();
+                const activityName = $('#newActivityName').val();
+                if (!statusName || statusName === '-- Select Status --') {
+                    alert('Please select a status first.');
+                    return;
+                }
+                if (!activityName || !activityName.trim()) {
+                    alert('Enter activity name.');
+                    return;
+                }
+
+                const token = $('input[name="__RequestVerificationToken"]').first().val();
+
+                $.ajax({
+                    url: '@Url.Action("AddStatusActivity","Leads")',
+                    method: 'POST',
+                    data: { statusName: statusName, activityName: activityName, __RequestVerificationToken: token },
+                    success: function(resp) {
+                        if (resp && resp.success) {
+                            statusMapping = resp.mapping; // update local mapping
+                            renderSuggestedActivities();
+                            // close modal
+                            var modalEl = document.getElementById('addActivityModal');
+                            var bsModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                            bsModal.hide();
+                            $('#newActivityName').val('');
+                        } else {
+                            alert('Failed to add activity');
+                        }
+                    },
+                    error: function() {
+                        alert('Error while adding activity');
+                    }
+                });
+            });
+
+            // 6. Comments
+            $('#commentTemplate').on('change', function () {
+                const txt = $(this).find("option:selected").text();
+                if ($(this).val()) {
+                    const box = $('#comments');
+                    box.val((box.val() ? box.val() + "\n" : "") + txt);
+                    $(this).val("");
+                }
+            });
+
+            // 7. Load contacts for selected company via AJAX
+            $('#companySelect').on('change', function () {
+                var companyId = $(this).val();
+                var $contactSelect = $('#corporateContactSelect');
+
+                // If no company selected, clear and disable contact list
+                if (!companyId) {
+                    $contactSelect.empty().append('<option value="">-- Select Contact --</option>').prop('disabled', true);
+                    return;
+                }
+
+                // fetch contacts
+                $.ajax({
+                    url: '@Url.Action("ContactsByCompany", "Leads")',
+                    data: { companyId: companyId },
+                    method: 'GET',
+                    success: function (data) {
+                        $contactSelect.empty();
+                        $contactSelect.append('<option value="">-- Select Contact --</option>');
+                        if (data && data.length) {
+                            data.forEach(function (c) {
+                                $contactSelect.append('<option value="' + c.id + '">' + c.name + '</option>');
+                            });
+                            $contactSelect.prop('disabled', false);
+                        } else {
+                            $contactSelect.prop('disabled', true);
+                        }
+                    },
+                    error: function () {
+                        // graceful fallback: disable contact select
+                        $contactSelect.empty().append('<option value="">-- Select Contact --</option>').prop('disabled', true);
+                    }
+                });
+            });
+
+            // Trigger change on load if a company is preselected
+            if ($('#companySelect').val()) {
+                $('#companySelect').trigger('change');
+            }
         });
     </script>
 }
