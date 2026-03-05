@@ -2,9 +2,10 @@ using System;
 
 namespace seashore_CRM.Models.Entities
 {
-    public class OpportunityItem : BaseEntity
+    public class LeadItem : BaseEntity
     {
-        public int OpportunityId { get; set; }
+        // Use LeadId for lead items (table is LeadItems) — matches repository and migrations
+        public int LeadId { get; set; }
         public int ProductId { get; set; }
 
         public int Quantity { get; set; }
@@ -12,7 +13,7 @@ namespace seashore_CRM.Models.Entities
         public decimal TaxPercentage { get; set; }
         public decimal LineTotal { get; set; }
 
-        public Opportunity? Opportunity { get; set; } = null;
+        public Lead? Lead { get; set; } = null;
         public Product? Product { get; set; }
     }
 }

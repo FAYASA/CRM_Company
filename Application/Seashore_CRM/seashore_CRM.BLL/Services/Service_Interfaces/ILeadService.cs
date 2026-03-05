@@ -12,7 +12,7 @@ namespace seashore_CRM.BLL.Services.Service_Interfaces
         Task<int> AddLeadAsync(LeadDto leadDto);
         Task UpdateLeadAsync(LeadDto leadDto);
         Task DeleteLeadAsync(int id);
-        Task QualifyLeadAsync(LeadDto dto);
+        Task<int?> QualifyLeadAsync(LeadDto dto);
         Task<int?> ConvertToOpportunityAsync(int leadId);
     }
 }

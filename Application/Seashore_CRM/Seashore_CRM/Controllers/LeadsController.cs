@@ -197,7 +197,7 @@ namespace Seashore_CRM.Controllers
                 foreach (var pi in lead.ProductItems.Where(x => x.ProductId.HasValue))
                 {
                     var lineTotal = pi.Quantity * pi.UnitPrice * (1 + (pi.TaxPercentage / 100M));
-                    var li = new OpportunityItem
+                    var li = new LeadItem
                     {
                         LeadId = leadId,
                         ProductId = pi.ProductId.Value,
@@ -323,7 +323,21 @@ namespace Seashore_CRM.Controllers
                 return View(lead);
             }
 
-            await _leadService.QualifyLeadAsync(lead);
+            var oppId = await _leadService.QualifyLeadAsync(lead);
+
+            // If this is an AJAX request (X-Requested-With header) return JSON for client-side handling
+            var isAjax = string.Equals(Request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.OrdinalIgnoreCase);
+            if (isAjax)
+            {
+                return Json(new { success = true, opportunityId = oppId });
+            }
+
+            if (oppId.HasValue)
+            {
+                // Redirect to newly created opportunity details when conversion occurred
+                return RedirectToAction("Details", "Opportunities", new { id = oppId.Value });
+            }
+
             return RedirectToAction("Details", new { id = lead.Id });
         }
 
@@ -357,7 +371,7 @@ namespace Seashore_CRM.Controllers
 
             var result = contacts.Select(c => new {
                 id = c.Id,
-                name = !string.IsNullOrWhiteSpace(c.Contact_Name) ? c.Contact_Name : (c.Email ?? c.Mobile ?? "(no name)")
+                name = !string.IsNullOrWhiteSpace(c.ContactName) ? c.ContactName : (c.Email ?? c.Mobile ?? "(no name)")
             }).ToList();
 
             return Json(result);
@@ -384,8 +398,8 @@ namespace Seashore_CRM.Controllers
             var categories = await _uow.Categories.GetAllAsync(); // Task<IEnumerable<Category>>
 
             ViewBag.Companies = new SelectList(companies, "Id", "CompanyName", model?.CompanyId);
-            ViewBag.Contacts = new SelectList(contacts, "Id", "Contact_Name", model?.ContactId);
-            ViewBag.ContactForIndv = new SelectList(Indcontacts, "Id", "Contact_Name", model?.ContactId);   
+            ViewBag.Contacts = new SelectList(contacts, "Id", "ContactName", model?.ContactId);
+            ViewBag.ContactForIndv = new SelectList(Indcontacts, "Id", "ContactName", model?.ContactId);   
             ViewBag.Sources = new SelectList(sources, "Id", "SourceName", model?.SourceId);
             ViewBag.Statuses = new SelectList(statuses, "Id", "StatusName", model?.StatusId);
             ViewBag.Users = new SelectList(users, "Id", "FullName", model?.AssignedUserId);

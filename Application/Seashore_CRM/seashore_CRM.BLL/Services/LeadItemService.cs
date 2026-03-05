@@ -15,7 +15,7 @@ namespace seashore_CRM.BLL.Services
             _uow = uow;
         }
 
-        public async Task<int> AddAsync(OpportunityItem entity)
+        public async Task<int> AddAsync(LeadItem entity)
         {
             await _uow.LeadItems.AddAsync(entity);
             await _uow.CommitAsync();
@@ -30,17 +30,17 @@ namespace seashore_CRM.BLL.Services
             await _uow.CommitAsync();
         }
 
-        public async Task<IEnumerable<OpportunityItem>> GetAllAsync()
+        public async Task<IEnumerable<LeadItem>> GetAllAsync()
         {
             return await _uow.LeadItems.GetAllAsync();
         }
 
-        public async Task<OpportunityItem?> GetByIdAsync(int id)
+        public async Task<LeadItem?> GetByIdAsync(int id)
         {
             return await _uow.LeadItems.GetByIdAsync(id);
         }
 
-        public async Task UpdateAsync(OpportunityItem entity)
+        public async Task UpdateAsync(LeadItem entity)
         {
             _uow.LeadItems.Update(entity);
             await _uow.CommitAsync();

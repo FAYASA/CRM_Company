@@ -124,7 +124,7 @@ namespace seashore_CRM.DAL.Data
                 .HasIndex(o => o.LeadId);
 
             modelBuilder.Entity<OpportunityItem>()
-                .HasIndex(li => li.LeadId);
+                .HasIndex(li => li.OpportunityId);
 
             modelBuilder.Entity<OpportunityItem>()
                 .HasIndex(li => li.ProductId);
@@ -250,9 +250,9 @@ namespace seashore_CRM.DAL.Data
 
             // LeadItem relations
             modelBuilder.Entity<OpportunityItem>()
-                .HasOne(li => li.Lead)
+                .HasOne(li => li.Opportunity)
                 .WithMany()
-                .HasForeignKey(li => li.LeadId)
+                .HasForeignKey(li => li.OpportunityId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<OpportunityItem>()

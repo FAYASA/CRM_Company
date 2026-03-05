@@ -297,7 +297,6 @@ F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.AssemblyInfoInputs.cache
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.AssemblyInfo.cs
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.csproj.CoreCompileInputs.cache
-F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.MvcApplicationPartsAssemblyInfo.cs
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.MvcApplicationPartsAssemblyInfo.cache
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.RazorAssemblyInfo.cache
 F:\CRM\GIT_App\CRM_Company\Application\Seashore_CRM\Seashore_CRM\obj\Debug\net8.0\Seashore_CRM.RazorAssemblyInfo.cs

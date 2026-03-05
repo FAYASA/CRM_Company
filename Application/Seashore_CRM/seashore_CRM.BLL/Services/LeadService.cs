@@ -139,10 +139,10 @@ namespace seashore_CRM.BLL.Services
             await _uow.CommitAsync();
         }
 
-        public async Task QualifyLeadAsync(LeadDto dto)
+        public async Task<int?> QualifyLeadAsync(LeadDto dto)
         {
             var lead = await _uow.Leads.GetByIdAsync(dto.Id);
-            if (lead == null) return;
+            if (lead == null) return null;
 
             lead.IsQualified = dto.IsQualified;
             lead.QualifiedOn = dto.QualifiedOn ?? DateTime.UtcNow;
@@ -155,6 +155,15 @@ namespace seashore_CRM.BLL.Services
 
             _uow.Leads.Update(lead);
             await _uow.CommitAsync();
+
+            // After qualification, convert lead into Opportunity (creates company/contact as needed)
+            if (lead.IsQualified)
+            {
+                var oppId = await ConvertToOpportunityAsync(lead.Id);
+                return oppId;
+            }
+
+            return null;
         }
 
         public async Task<int?> ConvertToOpportunityAsync(int leadId)
@@ -202,7 +211,7 @@ namespace seashore_CRM.BLL.Services
                 {
                     contact = new Contact
                     {
-                        Contact_Name = $"Contact from Lead {lead.Id}",
+                        ContactName = $"Contact from Lead {lead.Id}",
                         IsActive = true
                     };
                     await _uow.Contacts.AddAsync(contact);

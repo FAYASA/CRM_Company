@@ -27,7 +27,7 @@ namespace seashore_CRM.BLL.Services
             return contacts.Select(c => new ContactListDto
             {
                 Id = c.Id,
-                ContactName = c.Contact_Name,
+                ContactName = c.ContactName,
                 Email = c.Email,
                 Phone = c.Phone,
                 Mobile = c.Mobile,
@@ -49,7 +49,7 @@ namespace seashore_CRM.BLL.Services
             return contacts.Select(c => new ContactListDto
             {
                 Id = c.Id,
-                ContactName = c.Contact_Name,
+                ContactName = c.ContactName,
                 Email = c.Email,
                 Phone = c.Phone,
                 Mobile = c.Mobile,
@@ -71,7 +71,7 @@ namespace seashore_CRM.BLL.Services
             return new ContactDetailDto
             {
                 Id = c.Id,
-                ContactName = c.Contact_Name,
+                ContactName = c.ContactName,
                 Email = c.Email,
                 Phone = c.Phone,
                 Mobile = c.Mobile,
@@ -92,7 +92,7 @@ namespace seashore_CRM.BLL.Services
             var entity = new Contact
             {
                 CompanyId = dto.CompanyId,
-                Contact_Name = dto.ContactName,
+                ContactName = dto.ContactName,
                 Email = dto.Email,
                 Phone = dto.Phone,
                 Mobile = dto.Mobile,
@@ -126,7 +126,7 @@ namespace seashore_CRM.BLL.Services
             }
 
             entity.CompanyId = dto.CompanyId;
-            entity.Contact_Name = dto.ContactName;
+            entity.ContactName = dto.ContactName;
             entity.Email = dto.Email;
             entity.Phone = dto.Phone;
             entity.Mobile = dto.Mobile;

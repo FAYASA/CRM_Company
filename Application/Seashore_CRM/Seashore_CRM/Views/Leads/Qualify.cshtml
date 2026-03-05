@@ -9,7 +9,8 @@
 <div class="card mx-auto" style="max-width:1000px;">
     <div class="card-body">
         <h4 class="mb-3">Qualify Lead</h4>
-        <form asp-action="Qualify" method="post">
+        <form id="qualifyForm" asp-action="Qualify" method="post">
+            @Html.AntiForgeryToken()
             <input type="hidden" asp-for="Id" />
 
             <div class="mb-3 form-check">
@@ -67,3 +68,57 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        (function() {
+            var form = document.getElementById('qualifyForm');
+            if (!form) return;
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) submitBtn.disabled = true;
+
+                var formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: form.method || 'POST',
+                    body: formData,
+                    credentials: 'same-origin',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(function(response) {
+                    if (!response.ok) throw new Error('Request failed');
+                    // response.url will be the final URL after any server redirect
+                    var finalUrl = response.url || window.location.href;
+
+                    if (finalUrl.indexOf('/Opportunities/Details') !== -1) {
+                        // open opportunity in new tab and show success message
+                        window.open(finalUrl, '_blank');
+                        var alertDiv = document.createElement('div');
+                        alertDiv.className = 'alert alert-success mt-3';
+                        alertDiv.innerText = 'Lead qualified and converted to an Opportunity. The opportunity has been opened in a new tab.';
+                        form.parentNode.insertBefore(alertDiv, form);
+                        // option: redirect to lead details after short delay
+                        setTimeout(function() {
+                            window.location.href = '/Leads/Details/' + formData.get('Id');
+                        }, 2000);
+                    } else {
+                        // navigate to returned page (likely lead details)
+                        window.location.href = finalUrl;
+                    }
+                })
+                .catch(function(err) {
+                    if (submitBtn) submitBtn.disabled = false;
+                    console.error(err);
+                    var alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger mt-3';
+                    alertDiv.innerText = 'Unable to save qualification. Please try again.';
+                    form.parentNode.insertBefore(alertDiv, form);
+                });
+            });
+        })();
+    </script>
+}
