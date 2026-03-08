@@ -4,7 +4,7 @@ using seashore_CRM.DAL.Repositories;
 using seashore_CRM.BLL.Services;
 using AutoMapper;
 using FluentValidation;
-using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.DTOs;
 using seashore_CRM.BLL.Validators;
 using seashore_CRM.DAL.Repositories.Repository_Interfaces;
 using seashore_CRM.BLL.Services.Service_Interfaces;
@@ -113,8 +113,8 @@ builder.Services.AddAutoMapper(typeof(seashore_CRM.BLL.Mapping.AutoMapperProfile
 
 // FluentValidation
 builder.Services.AddTransient<IValidator<LeadDto>, LeadDtoValidator>();
-builder.Services.AddTransient<IValidator<seashore_CRM.Models.DTOs.UserCreateDto>, seashore_CRM.BLL.Validators.UserCreateDtoValidator>();
-builder.Services.AddTransient<IValidator<seashore_CRM.Models.DTOs.UserUpdateDto>, seashore_CRM.BLL.Validators.UserUpdateDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.BLL.DTOs.UserCreateDto>, seashore_CRM.BLL.Validators.UserCreateDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.BLL.DTOs.UserUpdateDto>, seashore_CRM.BLL.Validators.UserUpdateDtoValidator>();
 
 var app = builder.Build();
 

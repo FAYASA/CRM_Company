@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using seashore_CRM.BLL.Services.Service_Interfaces;
-using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.DTOs;
 using seashore_CRM.Common.Constants;
 using System.Threading.Tasks;
 using System.Collections.Generic;

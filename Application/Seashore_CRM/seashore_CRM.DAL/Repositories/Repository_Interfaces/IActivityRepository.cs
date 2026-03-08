@@ -7,7 +7,7 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
 {
     public interface IActivityRepository
     {
-        Task<Activity?> GetByIdAsync(int id);
+        Task<Activity?> GetByIdAsync(int? id);
         Task<IEnumerable<Activity>> GetAllAsync();
         Task<IEnumerable<Activity>> FindAsync(Expression<Func<Activity, bool>> predicate);
         Task AddAsync(Activity entity);

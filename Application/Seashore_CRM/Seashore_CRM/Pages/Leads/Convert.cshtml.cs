@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using seashore_CRM.BLL.Services.Service_Interfaces;
-using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.DTOs;
 using System.Threading.Tasks;
 using System.Linq;
 using System;

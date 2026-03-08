@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using seashore_CRM.BLL.Services.Service_Interfaces;
-using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.DTOs;
 using seashore_CRM.Models.Entities;
 using Seashore_CRM.ViewModels.Company;
 using System.Collections.Generic;

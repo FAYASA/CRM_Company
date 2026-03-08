@@ -8600,9 +8600,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.Models.csproj",
-      "projectName": "seashore_CRM.Models",
-      "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.Models.csproj",
+      "projectUniqueName": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModelLayer.csproj",
+      "projectName": "seashore_CRM.DomainModelLayer",
+      "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModelLayer.csproj",
       "packagesPath": "C:\\Users\\Fayas\\.nuget\\packages\\",
       "outputPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\obj\\",
       "projectStyle": "PackageReference",

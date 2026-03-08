@@ -7,7 +7,7 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
 {
     public interface ILeadRepository
     {
-        Task<Lead?> GetByIdAsync(int id);
+        Task<Lead?> GetByIdAsync(int? id);
         Task<IEnumerable<Lead>> GetAllAsync();
         Task<IEnumerable<Lead>> FindAsync(Expression<Func<Lead, bool>> predicate);
         Task AddAsync(Lead entity);

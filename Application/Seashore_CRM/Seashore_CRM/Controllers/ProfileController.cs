@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using seashore_CRM.BLL.Services.Service_Interfaces;
-using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.DTOs;
 using System.Security.Claims;
 
 namespace Seashore_CRM.Controllers

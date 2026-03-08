@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using seashore_CRM.BLL.Services.Service_Interfaces;
-using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.DTOs;
 using Seashore_CRM.ViewModels.Contact;
 
 namespace Seashore_CRM.Controllers

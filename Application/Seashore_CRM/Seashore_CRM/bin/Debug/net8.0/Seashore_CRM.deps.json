@@ -14,9 +14,9 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.0",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
-          "seashore_CRM.BLL": "1.0.0",
+          "seashore_CRM.ApplicationLayer": "1.0.0",
           "seashore_CRM.Common": "1.0.0",
-          "seashore_CRM.DAL": "1.0.0"
+          "seashore_CRM.DataLayer": "1.0.0"
         },
         "runtime": {
           "Seashore_CRM.dll": {}
@@ -1844,7 +1844,7 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "seashore_CRM.BLL/1.0.0": {
+      "seashore_CRM.ApplicationLayer/1.0.0": {
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
           "BCrypt.Net-Next": "4.1.0",
@@ -1852,11 +1852,12 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
           "Portable.BouncyCastle": "1.9.0",
-          "seashore_CRM.DAL": "1.0.0",
-          "seashore_CRM.Models": "1.0.0"
+          "seashore_CRM.Common": "1.0.0",
+          "seashore_CRM.DataLayer": "1.0.0",
+          "seashore_CRM.DomainModelLayer": "1.0.0"
         },
         "runtime": {
-          "seashore_CRM.BLL.dll": {
+          "seashore_CRM.ApplicationLayer.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -1875,23 +1876,23 @@
           }
         }
       },
-      "seashore_CRM.DAL/1.0.0": {
+      "seashore_CRM.DataLayer/1.0.0": {
         "dependencies": {
           "BCrypt.Net-Next": "4.1.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
           "Microsoft.EntityFrameworkCore.Design": "8.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
-          "seashore_CRM.Models": "1.0.0"
+          "seashore_CRM.DomainModelLayer": "1.0.0"
         },
         "runtime": {
-          "seashore_CRM.DAL.dll": {
+          "seashore_CRM.DataLayer.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
       },
-      "seashore_CRM.Models/1.0.0": {
+      "seashore_CRM.DomainModelLayer/1.0.0": {
         "dependencies": {
           "BCrypt.Net-Next": "4.1.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
@@ -1901,7 +1902,7 @@
           "seashore_CRM.Common": "1.0.0"
         },
         "runtime": {
-          "seashore_CRM.Models.dll": {
+          "seashore_CRM.DomainModelLayer.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -3238,7 +3239,7 @@
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
-    "seashore_CRM.BLL/1.0.0": {
+    "seashore_CRM.ApplicationLayer/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -3248,12 +3249,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "seashore_CRM.DAL/1.0.0": {
+    "seashore_CRM.DataLayer/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "seashore_CRM.Models/1.0.0": {
+    "seashore_CRM.DomainModelLayer/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

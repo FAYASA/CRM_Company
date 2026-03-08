@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36930.0 d17.14
+VisualStudioVersion = 17.14.36930.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seashore_CRM", "Seashore_CRM\Seashore_CRM.csproj", "{7E2ACA94-0802-42F0-9A90-43113FAE4330}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seashore_CRM.BLL", "seashore_CRM.BLL\seashore_CRM.BLL.csproj", "{BA4B5D76-1D60-461C-B256-C7A5062739D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seashore_CRM.ApplicationLayer", "seashore_CRM.BLL\seashore_CRM.ApplicationLayer.csproj", "{BA4B5D76-1D60-461C-B256-C7A5062739D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seashore_CRM.DAL", "seashore_CRM.DAL\seashore_CRM.DAL.csproj", "{CA6A19B3-FF69-4D43-8823-AC85BE873E66}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seashore_CRM.DataLayer", "seashore_CRM.DAL\seashore_CRM.DataLayer.csproj", "{CA6A19B3-FF69-4D43-8823-AC85BE873E66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seashore_CRM.Models", "seashore_CRM.Models\seashore_CRM.Models.csproj", "{B1581374-EC7D-4D23-86B3-7939D09B06BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seashore_CRM.DomainModelLayer", "seashore_CRM.Models\seashore_CRM.DomainModelLayer.csproj", "{B1581374-EC7D-4D23-86B3-7939D09B06BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seashore_CRM.Common", "seashore_CRM.Common\seashore_CRM.Common.csproj", "{92104553-0D59-4032-8D89-8C7F3EB3E9D0}"
 EndProject

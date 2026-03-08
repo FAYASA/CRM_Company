@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Http; // for user logn 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using seashore_CRM.DomainModelLayer.Entities;
+using seashore_CRM.Models.Entities;
+using seashore_CRM.Models.Identity;
 using System.Linq.Expressions;
 using System.Reflection;
-using seashore_CRM.Models.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http; // for user logn 
-using seashore_CRM.Models.Identity;
 using System.Security.Claims;
 
 namespace seashore_CRM.DAL.Data
@@ -267,6 +268,17 @@ namespace seashore_CRM.DAL.Data
                 .WithMany(s => s.Activities)
                 .HasForeignKey(a => a.LeadStatusId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // UserLeadRights relations
+            modelBuilder.Entity<UserLeadRights>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId);
+
+            modelBuilder.Entity<UserLeadRights>()
+                .HasOne(r => r.Lead)
+                .WithMany()
+                .HasForeignKey(r => r.LeadId);
         }
 
 

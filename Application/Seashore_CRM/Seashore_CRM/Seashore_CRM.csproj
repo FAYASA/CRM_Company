@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\seashore_CRM.DAL\seashore_CRM.DAL.csproj" />
-    <ProjectReference Include="..\seashore_CRM.BLL\seashore_CRM.BLL.csproj" />
+    <ProjectReference Include="..\seashore_CRM.DAL\seashore_CRM.DataLayer.csproj" />
+    <ProjectReference Include="..\seashore_CRM.BLL\seashore_CRM.ApplicationLayer.csproj" />
     <ProjectReference Include="..\seashore_CRM.Common\seashore_CRM.Common.csproj" />
   </ItemGroup>
 

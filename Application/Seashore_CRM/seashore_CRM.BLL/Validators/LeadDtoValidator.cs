@@ -1,5 +1,5 @@
 using FluentValidation;
-using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.DTOs;
 
 namespace seashore_CRM.BLL.Validators
 {

@@ -4,12 +4,12 @@
     "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\Seashore_CRM\\Seashore_CRM.csproj": {}
   },
   "projects": {
-    "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.BLL.csproj": {
+    "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.ApplicationLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.BLL.csproj",
-        "projectName": "seashore_CRM.BLL",
-        "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.BLL.csproj",
+        "projectUniqueName": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.ApplicationLayer.csproj",
+        "projectName": "seashore_CRM.ApplicationLayer",
+        "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.ApplicationLayer.csproj",
         "packagesPath": "C:\\Users\\Fayas\\.nuget\\packages\\",
         "outputPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\obj\\",
         "projectStyle": "PackageReference",
@@ -33,11 +33,14 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DAL.csproj": {
-                "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DAL.csproj"
+              "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj": {
+                "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj"
               },
-              "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.Models.csproj": {
-                "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.Models.csproj"
+              "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DataLayer.csproj": {
+                "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DataLayer.csproj"
+              },
+              "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModelLayer.csproj": {
+                "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModelLayer.csproj"
               }
             }
           }
@@ -195,12 +198,12 @@
         }
       }
     },
-    "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DAL.csproj": {
+    "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DataLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DAL.csproj",
-        "projectName": "seashore_CRM.DAL",
-        "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DAL.csproj",
+        "projectUniqueName": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DataLayer.csproj",
+        "projectName": "seashore_CRM.DataLayer",
+        "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DataLayer.csproj",
         "packagesPath": "C:\\Users\\Fayas\\.nuget\\packages\\",
         "outputPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\obj\\",
         "projectStyle": "PackageReference",
@@ -224,8 +227,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.Models.csproj": {
-                "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.Models.csproj"
+              "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModelLayer.csproj": {
+                "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModelLayer.csproj"
               }
             }
           }
@@ -293,12 +296,12 @@
         }
       }
     },
-    "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.Models.csproj": {
+    "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModelLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.Models.csproj",
-        "projectName": "seashore_CRM.Models",
-        "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.Models.csproj",
+        "projectUniqueName": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModelLayer.csproj",
+        "projectName": "seashore_CRM.DomainModelLayer",
+        "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModelLayer.csproj",
         "packagesPath": "C:\\Users\\Fayas\\.nuget\\packages\\",
         "outputPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\obj\\",
         "projectStyle": "PackageReference",
@@ -420,14 +423,14 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.BLL.csproj": {
-                "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.BLL.csproj"
+              "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.ApplicationLayer.csproj": {
+                "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.ApplicationLayer.csproj"
               },
               "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj": {
                 "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj"
               },
-              "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DAL.csproj": {
-                "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DAL.csproj"
+              "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DataLayer.csproj": {
+                "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DataLayer.csproj"
               }
             }
           }

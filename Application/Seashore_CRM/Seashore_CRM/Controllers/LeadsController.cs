@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.DTOs;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
@@ -248,6 +248,7 @@ namespace Seashore_CRM.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var lead = await _leadService.GetLeadByIdAsync(id);
@@ -377,31 +378,58 @@ namespace Seashore_CRM.Controllers
             return Json(result);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ActivitiesByStatus(int statusId)
+        {
+            if (statusId <= 0)
+                return Json(new List<object>());
+
+            var activities = await _uow.LeadStatusActivities
+                .FindAsync(a => a.LeadStatusId == statusId);
+
+            var result = activities.Select(a => new
+            {
+                id = a.Id,
+                name = a.ActivityName
+            }).ToList();
+
+            return Json(result);
+        }
+
         private async Task PopulateSelectListsAsync(LeadDto? model = null)
         {
-            var companiesQueryable = _uow.Companies.GetAllAsync(); // IQueryable<Company>
+            var companiesQueryable = _uow.Companies.GetAllAsync(); 
             var companies = await companiesQueryable.ToListAsync();
 
             var contactsEn = await _uow.Contacts.GetByCompanyIdAsync(model?.CompanyId);
             var contacts = contactsEn.ToList();
 
-            var IndcontactsQueryable = _uow.Contacts.GetAllIndAsync(); // IQueryable<Contact>
+            var SAvtivitiesEn = await _uow.LeadStatusActivities.GetByIdAsync(model?.StatusId);
+
+            var SActivities = new List<LeadStatusActivity>();
+            if (SAvtivitiesEn != null)
+            {
+                SActivities.Add(SAvtivitiesEn);
+            }
+
+            var IndcontactsQueryable = _uow.Contacts.GetAllIndAsync();
             var Indcontacts = await IndcontactsQueryable.ToListAsync();
 
-            var sources = await _uow.LeadSources.GetAllAsync(); // Task<IEnumerable<LeadSource>>
-            var statuses = await _uow.LeadStatuses.GetAllAsync(); // Task<IEnumerable<LeadStatus>>
+            var sources = await _uow.LeadSources.GetAllAsync();
+            var statuses = await _uow.LeadStatuses.GetAllAsync();
 
-            var usersQueryable = _uow.Users.GetAllAsync(); // IQueryable<User>
+            var usersQueryable = _uow.Users.GetAllAsync(); 
             var users = await usersQueryable.ToListAsync();
 
-            var products = await _uow.Products.GetAllAsync(); // Task<IEnumerable<Product>>
-            var categories = await _uow.Categories.GetAllAsync(); // Task<IEnumerable<Category>>
+            var products = await _uow.Products.GetAllAsync(); 
+            var categories = await _uow.Categories.GetAllAsync(); 
 
             ViewBag.Companies = new SelectList(companies, "Id", "CompanyName", model?.CompanyId);
             ViewBag.Contacts = new SelectList(contacts, "Id", "ContactName", model?.ContactId);
             ViewBag.ContactForIndv = new SelectList(Indcontacts, "Id", "ContactName", model?.ContactId);   
             ViewBag.Sources = new SelectList(sources, "Id", "SourceName", model?.SourceId);
             ViewBag.Statuses = new SelectList(statuses, "Id", "StatusName", model?.StatusId);
+            ViewBag.StatusActivities = new SelectList(SActivities, "Id", "ActivityName", model?.ActivityId);
             ViewBag.Users = new SelectList(users, "Id", "FullName", model?.AssignedUserId);
             ViewBag.ProductList = products.Select(p => new SelectListItem(p.ProductName, p.Id.ToString())).ToList();
             ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");

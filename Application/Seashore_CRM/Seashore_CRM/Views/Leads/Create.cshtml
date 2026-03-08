@@ -1,4 +1,5 @@
-@model seashore_CRM.Models.DTOs.LeadDto
+﻿@using Seashore_CRM.ViewModels.Lead
+@model seashore_CRM.BLL.DTOs.LeadDto
 @{
     ViewData["Title"] = "Lead Capture";
 }
@@ -7,215 +8,624 @@
 
 <form asp-action="Create" method="post" enctype="multipart/form-data" class="mt-3 pb-5">
     @Html.AntiForgeryToken()
-
-    <!-- Pipeline progress bar -->
-    <div class="mb-3">
-        <div class="d-flex align-items-center">
-            <div class="w-100">
-                <ul class="list-inline mb-0 d-flex justify-content-between align-items-center" style="list-style:none;padding:0;margin:0;">
-                    <li class="text-center flex-fill">
-                        <div class="rounded-circle bg-primary text-white mx-auto" style="width:28px;height:28px;line-height:28px;">1</div>
-                        <small class="d-block">Capture</small>
-                    </li>
-                    <li class="text-center flex-fill">
-                        <div class="rounded-circle bg-primary text-white mx-auto" style="width:28px;height:28px;line-height:28px;">2</div>
-                        <small class="d-block">Qualify</small>
-                    </li>
-                    <li class="text-center flex-fill">
-                        <div class="rounded-circle bg-light text-muted mx-auto" style="width:28px;height:28px;line-height:28px;">3</div>
-                        <small class="d-block">Develop</small>
-                    </li>
-                    <li class="text-center flex-fill">
-                        <div class="rounded-circle bg-light text-muted mx-auto" style="width:28px;height:28px;line-height:28px;">4</div>
-                        <small class="d-block">Propose</small>
-                    </li>
-                    <li class="text-center flex-fill">
-                        <div class="rounded-circle bg-light text-muted mx-auto" style="width:28px;height:28px;line-height:28px;">5</div>
-                        <small class="d-block">Close</small>
-                    </li>
-                </ul>
+    <div class="container-fluid px-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+            <div>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm px-3 me-2">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-sm px-4 fw-bold shadow-sm">Save Lead</button>
             </div>
         </div>
-    </div>
 
-    <div class="container-fluid px-0">
-        <div class="card">
-            <div class="card-body p-3">
-                <ul class="nav nav-tabs mb-3" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#summaryTab" role="tab">Summary</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#detailsTab" role="tab">Details</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#filesTab" role="tab">Files</a>
-                    </li>
-                </ul>
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs mb-3" id="leadTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#generalTab" type="button" role="tab" aria-controls="generalTab" aria-selected="true">General Info</button>
+            </li>
 
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="summaryTab" role="tabpanel">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="product-tab" data-bs-toggle="tab" data-bs-target="#productTab" type="button" role="tab" aria-controls="productTab" aria-selected="false">Products</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="Rights-tab" data-bs-toggle="tab" data-bs-target="#RightsTab" type="button" role="tab" aria-controls="RightsTab" aria-selected="false">View / Edit Rights</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#commentsTab" type="button" role="tab" aria-controls="commentsTab" aria-selected="false">Comments & Notes</button>
+            </li>
+        </ul>
+
+        <!-- Tabs Content -->
+        <div class="tab-content" id="leadTabsContent">
+
+            <!-- General Information Tab -->
+            <!-- General Information Tab -->
+            <div class="tab-pane fade show active" id="generalTab" role="tabpanel">
+
+                <div class="card shadow-sm border-0 mb-4">
+
+                    <div class="card-header bg-white py-3">
+                        <h6 class="text-uppercase fw-bold text-secondary mb-0 small">
+                            General Information
+                        </h6>
+                    </div>
+
+                    <div class="card-body">
+
                         <div class="row g-4">
-                            <div class="col-lg-4">
-                                <!-- Contact card -->
-                                <div class="card mb-3">
-                                    <div class="card-header bg-white">Contact</div>
-                                    <div class="card-body">
-                                        <div class="mb-2">
-                                            <label class="form-label small">Lead Topic</label>
-                                            <input asp-for="QualificationNotes" class="form-control form-control-sm" />
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-6 mb-2">
-                                                <label class="form-label small">First / Contact</label>
-                                                <select asp-for="ContactId" class="form-select form-select-sm" asp-items="ViewBag.Contacts"></select>
-                                            </div>
-                                            <div class="col-6 mb-2">
-                                                <label class="form-label small">Company</label>
-                                                <select asp-for="CompanyId" class="form-select form-select-sm" asp-items="ViewBag.Companies"></select>
-                                            </div>
-                                        </div>
 
-                                        <div class="row mt-2">
-                                            <div class="col-12 mb-2">
-                                                <label class="form-label small">Business Phone</label>
-                                                <input type="text" class="form-control form-control-sm" />
-                                            </div>
-                                            <div class="col-12 mb-2">
-                                                <label class="form-label small">Mobile Phone</label>
-                                                <input type="text" class="form-control form-control-sm" />
-                                            </div>
-                                            <div class="col-12 mb-0">
-                                                <label class="form-label small">Email</label>
-                                                <input type="email" class="form-control form-control-sm" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Lead Type -->
+                            <div class="col-lg-3">
+                                <label class="form-label fw-semibold small text-muted">Lead Type</label>
 
-                                <!-- Company card -->
-                                <div class="card">
-                                    <div class="card-header bg-white">Company</div>
-                                    <div class="card-body">
-                                        <div class="mb-2">
-                                            <label class="form-label small">Company Name</label>
-                                            <select asp-for="CompanyId" class="form-select form-select-sm" asp-items="ViewBag.Companies"></select>
-                                        </div>
-                                        <div class="mb-2">
-                                            <label class="form-label small">Website</label>
-                                            <input type="text" class="form-control form-control-sm" />
-                                        </div>
-                                        <div class="mb-0">
-                                            <label class="form-label small">Address</label>
-                                            <input type="text" class="form-control form-control-sm" />
-                                        </div>
+                                <div class="border rounded p-2 d-flex gap-3 align-items-center">
+
+                                    <div class="form-check mb-0">
+                                        <input class="form-check-input" type="radio" asp-for="LeadType" value="Corporate" id="leadCorporate" checked>
+                                        <label class="form-check-label small" for="leadCorporate">
+                                            <i class="bi bi-building text-primary me-1"></i> Corporate
+                                        </label>
                                     </div>
+
+                                    <div class="form-check mb-0">
+                                        <input class="form-check-input" type="radio" asp-for="LeadType" value="Individual" id="leadIndividual">
+                                        <label class="form-check-label small" for="leadIndividual">
+                                            <i class="bi bi-person text-success me-1"></i> Individual
+                                        </label>
+                                    </div>
+
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
-                                <!-- Up next -->
-                                <div class="card mb-3">
-                                    <div class="card-header bg-white">Up next</div>
-                                    <div class="card-body text-muted">Upcoming activities will appear here</div>
-                                </div>
 
-                                <!-- Timeline -->
-                                <div class="card mb-3">
-                                    <div class="card-header bg-white">Timeline</div>
-                                    <div class="card-body text-center text-muted" style="min-height:150px;">Almost there<br/><small>Select Save to see your timeline.</small></div>
-                                </div>
+                            <!-- Company -->
+                            <div class="col-lg-3" id="companySelectDiv">
+                                <label class="form-label fw-semibold small text-muted">
+                                    Company
+                                    <a href="@Url.Action("Create", "Companies")" target="_blank" class="ms-1 small text-primary">+ New</a>
+                                </label>
 
-                                <!-- Qualification quick actions -->
-                                <div class="card">
-                                    <div class="card-header bg-white">Qualification</div>
-                                    <div class="card-body">
-                                        <div class="form-check mb-2">
-                                            <input asp-for="IsQualified" class="form-check-input" />
-                                            <label asp-for="IsQualified" class="form-check-label">Qualified</label>
-                                        </div>
-                                        <div class="mb-2">
-                                            <label class="form-label small">Budget</label>
-                                            <input asp-for="Budget" class="form-control form-control-sm" />
-                                        </div>
-                                        <div class="mb-2">
-                                            <label class="form-label small">Decision Date</label>
-                                            <input asp-for="DecisionDate" class="form-control form-control-sm" type="date" />
-                                        </div>
-                                        <div>
-                                            <label class="form-label small">Probability</label>
-                                            <input asp-for="Probability" class="form-control form-control-sm" type="number" min="0" max="100" />
-                                        </div>
-                                    </div>
-                                </div>
+                                <select asp-for="CompanyId"
+                                        class="form-select form-select-sm"
+                                        asp-items="ViewBag.Companies"
+                                        id="companySelect">
+
+                                    <option value="">Select Company</option>
+
+                                </select>
                             </div>
 
-                            <div class="col-lg-4">
-                                <!-- Who Knows Whom -->
-                                <div class="card mb-3">
-                                    <div class="card-header bg-white">Who Knows Whom</div>
-                                    <div class="card-body text-muted">No connections found</div>
-                                </div>
 
-                                <!-- Assistant -->
-                                <div class="card mb-3">
-                                    <div class="card-header bg-white">Assistant</div>
-                                    <div class="card-body text-muted">This record hasn't been created yet. To enable this content, create the record.</div>
-                                </div>
+                            <!-- Corporate Contact -->
+                            <div class="col-lg-3" id="corporateContactDiv">
 
-                                <!-- Quick details card -->
-                                <div class="card">
-                                    <div class="card-header bg-white">Quick Info</div>
-                                    <div class="card-body">
-                                        <p class="mb-1"><strong>Status:</strong> <span>@Model.StatusId</span></p>
-                                        <p class="mb-0"><strong>Assigned To:</strong> <span>@Model.AssignedUserName</span></p>
-                                    </div>
-                                </div>
+                                <label class="form-label fw-semibold small text-muted">
+                                    Contact
+                                    <a href="@Url.Action("Create", "Contacts")" target="_blank" class="ms-1 small text-primary">+ New</a>
+                                </label>
+
+                                <select asp-for="ContactId"
+                                        class="form-select form-select-sm"
+                                        asp-items="ViewBag.Contacts"
+                                        id="corporateContactSelect">
+
+                                    <option value="">Select Contact</option>
+
+                                </select>
+
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="tab-pane fade" id="detailsTab" role="tabpanel">
-                        <!-- Put detailed edit fields here (reuse existing form block) -->
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <!-- reuse the original general information block -->
-                                        @* For brevity reuse existing inputs shown on capture area; full details can be added here as needed *@
-                                        <div class="mb-3">
-                                            <label class="form-label">Priority</label>
-                                            <input asp-for="Priority" class="form-control form-control-sm" />
+
+                            <!-- Individual Contact -->
+                            <div class="col-lg-3" id="individualContactDiv" style="display:none;">
+
+                                <label class="form-label fw-semibold small text-muted">
+                                    Contact
+                                    <a href="@Url.Action("Create", "Contacts")" target="_blank" class="ms-1 small text-primary">+ New</a>
+                                </label>
+
+                                <select asp-for="ContactId"
+                                        class="form-select form-select-sm"
+                                        asp-items="ViewBag.ContactForIndv"
+                                        id="individualContactSelect">
+
+                                    <option value="">Select Contact</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Source -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">Source</label>
+
+                                <select asp-for="SourceId"
+                                        class="form-select form-select-sm"
+                                        asp-items="ViewBag.Sources">
+
+                                    <option value="">Select Source</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Status -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">Status</label>
+
+                                <select asp-for="StatusId"
+                                        class="form-select form-select-sm"
+                                        asp-items="ViewBag.Statuses"
+                                        id="statusSelect">
+
+                                    <option value="">Select Status</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Activity -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">
+                                    Activity
+                                    <a href="#" id="addStatusActivityBtn" class="ms-1 small text-primary">+ New</a>
+                                </label>
+
+                                <select asp-for="ActivityId"
+                                        class="form-select form-select-sm"
+                                        asp-items="ViewBag.StatusActivities"
+                                        id="StatusActivitySelect">
+
+                                    <option value="">Select Activity</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Assigned User -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">Assigned User</label>
+
+                                <select asp-for="AssignedUserId"
+                                        class="form-select form-select-sm"
+                                        asp-items="ViewBag.Users">
+
+                                    <option value="">Select User</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Attach Files -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">Attach Files</label>
+
+                                <input type="file"
+                                       name="files"
+                                       class="form-control form-control-sm"
+                                       multiple>
+
+                            </div>
+
+
+                            <!-- Priority -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">Priority</label>
+
+                                <div class="btn-group w-100" role="group">
+
+                                    <button type="button"
+                                            class="btn btn-outline-danger btn-sm priority-btn"
+                                            data-val="Hot">
+                                        🔥 Hot
+                                    </button>
+
+                                    <button type="button"
+                                            class="btn btn-outline-warning btn-sm priority-btn"
+                                            data-val="Warm">
+                                        ☀ Warm
+                                    </button>
+
+                                    <button type="button"
+                                            class="btn btn-outline-success btn-sm priority-btn"
+                                            data-val="Cold">
+                                        ❄ Cold
+                                    </button>
+
+                                </div>
+
+                                <input asp-for="Priority" type="hidden" id="priorityHidden" />
+
+                            </div>
+
+
+                            <!-- Activity Type -->
+                            <div class="col-12">
+
+                                <label class="form-label fw-semibold small text-muted">Activity Type</label>
+
+                                <div class="d-flex flex-wrap gap-2">
+
+                                    <input type="radio" class="btn-check" id="catPhone" value="Phone" asp-for="ActivityType">
+                                    <label class="btn btn-outline-danger btn-sm" for="catPhone">
+                                        <i class="bi bi-telephone-fill me-1"></i> Phone
+                                    </label>
+
+                                    <input type="radio" class="btn-check" id="catEmail" value="Email" asp-for="ActivityType">
+                                    <label class="btn btn-outline-primary btn-sm" for="catEmail">
+                                        <i class="bi bi-envelope-fill me-1"></i> Email
+                                    </label>
+
+                                    <input type="radio" class="btn-check" id="catMeeting" value="Meeting" asp-for="ActivityType">
+                                    <label class="btn btn-outline-success btn-sm" for="catMeeting">
+                                        <i class="bi bi-people-fill me-1"></i> Meeting
+                                    </label>
+
+                                    <input type="radio" class="btn-check" id="catDemo" value="Demo" asp-for="ActivityType">
+                                    <label class="btn btn-outline-info btn-sm" for="catDemo">
+                                        <i class="bi bi-play-fill me-1"></i> Demo
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Follow Up Section -->
+                            <div class="col-12 border-top pt-4">
+
+                                <div class="row g-4">
+
+                                    <div class="col-lg-4">
+
+                                        <label class="form-label fw-semibold small text-muted">
+                                            Follow Up <span class="text-danger">*</span>
+                                        </label>
+
+                                        <input asp-for="FollowUpDate"
+                                               type="date"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+
+                                    <div class="col-lg-4">
+
+                                        <label class="form-label fw-semibold small text-muted">Time</label>
+
+                                        <input asp-for="FollowUpTime"
+                                               type="time"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+
+                                    <div class="col-lg-4">
+
+                                        <label class="form-label fw-semibold small text-muted">Expected Closure</label>
+
+                                        <input asp-for="ExpectedClosureDate"
+                                               type="date"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Qualification Section -->
+                            <div class="col-12 border-top pt-4">
+
+                                <div class="row g-4">
+
+                                    <div class="col-lg-2">
+
+                                        <div class="form-check mt-4">
+
+                                            <input asp-for="IsQualified"
+                                                   class="form-check-input"
+                                                   type="checkbox">
+
+                                            <label class="form-check-label fw-semibold small">
+                                                Qualified
+                                            </label>
+
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Attachments</label>
-                                            <input type="file" name="files" class="form-control form-control-sm" multiple />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="mb-1"><strong>Created:</strong> N/A</p>
-                                        <p class="mb-0"><strong>Updated:</strong> @(Model.UpdatedDate?.ToString() ?? "N/A")</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="tab-pane fade" id="filesTab" role="tabpanel">
-                        <div class="card">
-                            <div class="card-body text-muted">Files will appear here once uploaded.</div>
+                                    </div>
+
+
+                                    <div class="col-lg-4">
+
+                                        <label class="form-label fw-semibold small text-muted">
+                                            Qualification Notes
+                                        </label>
+
+                                        <input asp-for="QualificationNotes"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+
+                                    <div class="col-lg-2">
+
+                                        <label class="form-label fw-semibold small text-muted">
+                                            Budget
+                                        </label>
+
+                                        <input asp-for="Budget"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+
+                                    <div class="col-lg-2">
+
+                                        <label class="form-label fw-semibold small text-muted">
+                                            Decision Date
+                                        </label>
+
+                                        <input asp-for="DecisionDate"
+                                               type="date"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+
+                                    <div class="col-lg-2">
+
+                                        <label class="form-label fw-semibold small text-muted">
+                                            Probability %
+                                        </label>
+
+                                        <input asp-for="Probability"
+                                               type="number"
+                                               min="0"
+                                               max="100"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <!-- Comments & Notes Tab -->
+            <div class="tab-pane fade" id="commentsTab" role="tabpanel" aria-labelledby="comments-tab">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
+                        <span class="small fw-bold text-muted text-uppercase">Comments & Notes</span>
+                        <select id="commentTemplate" class="form-select form-select-sm w-auto border-0 text-primary fw-bold">
+                            <option value="">Quick Templates</option>
+                            @foreach (var t in (ViewBag.CommentTemplates as SelectList ?? new SelectList(Enumerable.Empty<SelectListItem>())))
+                            {
+                                <option value="@t.Value">@t.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="card-body p-0">
+                        <textarea id="comments" name="Comments" class="form-control border-0 rounded-0" rows="8" placeholder="Type notes here..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments & Notes Tab -->
+            <div class="tab-pane fade" id="commentsTab" role="tabpanel" aria-labelledby="comments-tab">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
+                        <span class="small fw-bold text-muted text-uppercase">Comments & Notes</span>
+                        <select id="commentTemplate" class="form-select form-select-sm w-auto border-0 text-primary fw-bold">
+                            <option value="">Quick Templates</option>
+                            @foreach (var t in (ViewBag.CommentTemplates as SelectList ?? new SelectList(Enumerable.Empty<SelectListItem>())))
+                            {
+                                <option value="@t.Value">@t.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="card-body p-0">
+                        <textarea id="comments" name="Comments" class="form-control border-0 rounded-0" rows="8" placeholder="Type notes here..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- for user right -->
+            <div class="tab-pane fade" id="RightsTab" role="tabpanel">
+
+                <h6 class="text-uppercase fw-bold text-secondary mb-3">User Rights</h6>
+
+                <!-- Add User Rights -->
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body">
+
+                        <div class="row g-2 align-items-end">
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Select User</label>
+                                <select id="userSelect" class="form-select form-select-sm"
+                                        asp-items="ViewBag.Users">
+                                    <option value="">Select User</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-check mt-4">
+                                    <input class="form-check-input" type="checkbox" id="canView">
+                                    <label class="form-check-label">View</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-check mt-4">
+                                    <input class="form-check-input" type="checkbox" id="canEdit">
+                                    <label class="form-check-label">Edit</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary btn-sm mt-3" id="addUserRight">
+                                    Add
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Rights Table -->
+                <table class="table table-sm table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>User</th>
+                            <th>Can View</th>
+                            <th>Can Edit</th>
+                            <th width="100">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="rightsTableBody">
+
+                        @foreach (var item in (ViewBag.UserLeadRights as List<UserLeadRightsViewModel> ?? new List<UserLeadRightsViewModel>()))
+                        {
+                            <tr>
+                                <td>@item.UserName</td>
+                                <td>@(item.CanView ? "✔️" : "❌")</td>
+                                <td>@(item.CanEdit ? "✔️" : "❌")</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger remove-right">
+                                        Remove
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Product Details Tab -->
+            <div class="tab-pane fade" id="productTab" role="tabpanel" aria-labelledby="product-tab">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="text-uppercase fw-bold text-secondary mb-0" style="font-size: 0.8rem; letter-spacing: 1px;">Product Details</h6>
+                    <button type="button" class="btn btn-success btn-sm px-3 shadow-sm" id="addProduct">
+                        <i class="bi bi-plus-lg"></i> Add Row
+                    </button>
+                </div>
+
+                <div class="table-responsive shadow-sm rounded border bg-white mb-4">
+                    <table class="table table-sm table-hover align-middle mb-0" id="productTable" style="min-width: 1200px;">
+                        <thead class="bg-light text-muted small text-uppercase">
+                            <tr>
+                                <th class="ps-3" style="width: 140px;">Category</th>
+                                <th style="width: 180px;">Product Name</th>
+                                <th class="text-center" style="width: 70px;">Qty</th>
+                                <th class="text-end" style="width: 100px;">Price</th>
+                                <th class="text-end" style="width: 100px;">Sale Val</th>
+                                <th class="text-center" style="width: 80px;">Tax %</th>
+                                <th class="text-end" style="width: 100px;">Tax Val</th>
+                                <th class="text-end" style="width: 110px;">Total</th>
+                                <th class="text-end" style="width: 100px;">Cost</th>
+                                <th class="text-end" style="width: 100px;">Profit</th>
+                                <th style="width: 40px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="productBody" class="border-top-0">
+                            <tr class="product-row">
+                                <td class="ps-3">
+                                    <select class="form-select form-select-sm border-0 bg-transparent category-select" name="ProductItems[0].CategoryId">
+                                        <option value="">--</option>
+                                        @foreach (var c in ViewBag.Categories as SelectList)
+                                        {
+                                            <option value="@c.Value">@c.Text</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm border-0 bg-transparent product-select fw-bold text-primary" name="ProductItems[0].ProductId">
+                                        <option value="">-- Select --</option>
+                                        @foreach (var p in ViewBag.ProductList)
+                                        {
+                                            <option value="@p.Value">@p.Text</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control form-control-sm border-0 bg-transparent text-center qty" name="ProductItems[0].Quantity" value="1" /></td>
+                                <td><input type="number" class="form-control form-control-sm border-0 bg-transparent text-end unitprice" name="ProductItems[0].UnitPrice" value="0" /></td>
+                                <td><input type="text" class="form-control form-control-sm border-0 bg-light text-end salevalue" name="ProductItems[0].SaleValue" readonly /></td>
+                                <td>
+                                    <select class="form-select form-select-sm border-0 bg-transparent text-center taxpct" name="ProductItems[0].TaxPercentage">
+                                        <option value="0">0</option>
+                                        <option value="5">5</option>
+                                        <option value="15">15</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" class="form-control form-control-sm border-0 bg-light text-end taxvalue" name="ProductItems[0].TaxValue" readonly /></td>
+                                <td><input type="text" class="form-control form-control-sm border-0 bg-light text-end fw-bold gtotal" name="ProductItems[0].GrossTotal" readonly /></td>
+                                <td><input type="number" class="form-control form-control-sm border-0 bg-transparent text-end cost" name="ProductItems[0].Cost" value="0" /></td>
+                                <td><input type="text" class="form-control form-control-sm border-0 bg-light text-end fw-bold grossprofit" name="ProductItems[0].GrossProfit" readonly /></td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-link text-danger p-0 remove-row"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Hidden container for selected activities (will be populated by JS) -->
+        <div id="selectedActivitiesContainer"></div>
+
+    </div>
+</form>
+
+<!-- Modal to create a new activity name for selected status -->
+<div class="modal fade" id="addActivityModal" tabindex="-1" aria-labelledby="addActivityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addActivityModalLabel">Add Activity for Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <input type="text" id="modalStatusName" class="form-control" readonly />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Activity Name</label>
+                    <input type="text" id="newActivityName" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="saveActivityBtn" class="btn btn-primary">Save Activity</button>
             </div>
         </div>
     </div>
-</form>
+</div>
 
 @section Scripts {
     <script>
@@ -258,6 +668,8 @@
                 if (!isCorporate) {
                     // individual: show individual contact select and enable
                     $('#corporateContactDiv').hide();
+                    $('#companySelect').val("");
+                    $('#companySelectDiv').hide();
                     $('#individualContactDiv').show();
                     $('#individualContactSelect').prop('disabled', false);
 
@@ -267,6 +679,7 @@
                     // corporate: show corporate contact select
                     $('#corporateContactDiv').show();
                     $('#individualContactDiv').hide();
+                    $('#companySelectDiv').show();
                     $('#individualContactSelect').prop('disabled', true);
 
                     // if no company selected, keep corporate contact empty/disabled
@@ -297,10 +710,19 @@
             // 3. Dynamic Row Addition
             $('#addProduct').on('click', function () {
                 const row = $('.product-row').first().clone();
-                row.find('input').val(0);
+                // reset inputs/selects properly
+                row.find('input').each(function () {
+                    if ($(this).hasClass('qty')) $(this).val(1);
+                    else if ($(this).hasClass('unitprice') || $(this).hasClass('cost')) $(this).val(0);
+                    else $(this).val('');
+                });
                 row.find('select').val("");
+                // update name indexes
                 row.find('[name]').each(function() {
-                    $(this).attr('name', $(this).attr('name').replace(/\[\d+\]/, `[${idx}]`));
+                    const name = $(this).attr('name');
+                    if (name) {
+                        $(this).attr('name', name.replace(/\[\d+\]/, `[${idx}]`));
+                    }
                 });
                 $('#productBody').append(row);
                 idx++;
@@ -315,9 +737,9 @@
                 const tr = $(this).closest('tr');
                 const p = productsMap[$(this).val()];
                 if (p) {
-                    tr.find('.unitprice').val(p.unitPrice);
-                    tr.find('.cost').val(p.cost);
-                    tr.find('.taxpct').val(p.tax);
+                    tr.find('.unitprice').val(p.unitPrice ?? 0);
+                    tr.find('.cost').val(p.cost ?? 0);
+                    tr.find('.taxpct').val(p.tax ?? 0);
                     tr.find('.category-select').val(p.categoryId || '');
                 }
                 recalc(tr);
@@ -338,17 +760,13 @@
                 const g = s + tV;
                 const p = s - (c * q);
 
-                tr.find('.salevalue').val(s.toFixed(2));
-                tr.find('.taxvalue').val(tV.toFixed(2));
-                tr.find('.gtotal').val(g.toFixed(2));
-                tr.find('.grossprofit').val(p.toFixed(2));
+                tr.find('.salevalue').val(isNaN(s) ? '' : s.toFixed(2));
+                tr.find('.taxvalue').val(isNaN(tV) ? '' : tV.toFixed(2));
+                tr.find('.gtotal').val(isNaN(g) ? '' : g.toFixed(2));
+                tr.find('.grossprofit').val(isNaN(p) ? '' : p.toFixed(2));
             }
 
-            // 5. Activities
-            $('#statusSelect').on('change', function () {
-                renderSuggestedActivities();
-            });
-
+            // 5. Activities checkbox -> selectedActivities hidden inputs
             $(document).on('change', '.activity-chk', function() {
                 $('#selectedActivitiesContainer').empty();
                 $('.activity-chk:checked').each(function() {
@@ -381,7 +799,7 @@
                 const token = $('input[name="__RequestVerificationToken"]').first().val();
 
                 $.ajax({
-                    url: '@Url.Action("AddStatusActivity","Leads")',
+                    url: '@Url.Action("AddStatusActivity", "Leads")',
                     method: 'POST',
                     data: { statusName: statusName, activityName: activityName, __RequestVerificationToken: token },
                     success: function(resp) {
@@ -403,7 +821,7 @@
                 });
             });
 
-            // 6. Comments
+            // 6. Comments quick template insertion
             $('#commentTemplate').on('change', function () {
                 const txt = $(this).find("option:selected").text();
                 if ($(this).val()) {
@@ -448,9 +866,99 @@
                 });
             });
 
-            // Trigger change on load if a company is preselected
+            // 8. Load Activities for selected status via AJAX and refresh suggestions
+            $('#statusSelect').on('change', function () {
+
+                var statusId = $(this).val();
+                var $activitySelect = $('#StatusActivitySelect');
+
+                renderSuggestedActivities(); // update suggested activities area
+
+                if (!statusId) {
+                    $activitySelect.empty()
+                        .append('<option value="">-- Select Activities --</option>')
+                        .prop('disabled', true);
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("ActivitiesByStatus", "Leads")',
+                    type: 'GET',
+                    data: { statusId: statusId },
+
+                    success: function (data) {
+
+                        $activitySelect.empty();
+                        $activitySelect.append('<option value="">-- Select Activities --</option>');
+
+                        if (data && data.length > 0) {
+
+                            $.each(data, function (i, a) {
+                                $activitySelect.append(
+                                    '<option value="' + a.id + '">' + a.name + '</option>'
+                                );
+                            });
+
+                            $activitySelect.prop('disabled', false);
+
+                        } else {
+                            $activitySelect.prop('disabled', true);
+                        }
+                    },
+
+                    error: function () {
+                        console.log("Activity load failed");
+                    }
+                });
+
+            });
+
+            // for user rights
+                $('#addUserRight').click(function () {
+
+                const userId = $('#userSelect').val();
+                const userName = $('#userSelect option:selected').text();
+
+                const canView = $('#canView').is(':checked');
+                const canEdit = $('#canEdit').is(':checked');
+
+                if (!userId) {
+                    alert("Please select a user");
+                    return;
+                }
+
+                const row = `
+                    <tr>
+                        <td>${userName}
+                            <input type="hidden" name="UserRights[].UserId" value="${userId}" />
+                            <input type="hidden" name="UserRights[].CanView" value="${canView}" />
+                            <input type="hidden" name="UserRights[].CanEdit" value="${canEdit}" />
+                        </td>
+                        <td>${canView ? "✔️" : "❌"}</td>
+                        <td>${canEdit ? "✔️" : "❌"}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-danger remove-right">
+                                Remove
+                            </button>
+                        </td>
+                    </tr>
+                `;
+
+                $('#rightsTableBody').append(row);
+
+            });
+
+            //Remove Row Script
+            $(document).on('click', '.remove-right', function () {
+            $(this).closest('tr').remove();
+            });
+
+            // Trigger change on load if a company or status is preselected
             if ($('#companySelect').val()) {
                 $('#companySelect').trigger('change');
+            }
+            if ($('#statusSelect').val()) {
+                $('#statusSelect').trigger('change');
             }
         });
     </script>

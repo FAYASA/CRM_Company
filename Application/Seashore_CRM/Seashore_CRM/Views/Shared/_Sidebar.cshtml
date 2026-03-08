@@ -13,15 +13,15 @@
                 </a>
             </li>
 
-            <!-- Companies with sub-menu -->
+            <!-- Companies -->
             <li class="nav-item">
                 <a class="nav-link text-white d-flex justify-content-between align-items-center"
-                   data-bs-toggle="collapse" href="#companiesMenu" role="button"
-                   aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Companies")"
-                   aria-controls="companiesMenu">
+                   data-bs-toggle="collapse"
+                   href="#companiesMenu"
+                   aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Companies")">
                     <span><i class="bi bi-building me-2"></i> Companies</span>
-                    <i class="bi bi-caret-down-fill"></i>
                 </a>
+
                 <div class="collapse @(ViewContext.RouteData.Values["controller"]?.ToString() == "Companies" ? "show" : "")" id="companiesMenu">
                     <ul class="nav flex-column ms-3">
                         <li class="nav-item">
@@ -40,15 +40,15 @@
                 </div>
             </li>
 
-            <!-- Contacts with sub-menu -->
+            <!-- Contacts -->
             <li class="nav-item">
                 <a class="nav-link text-white d-flex justify-content-between align-items-center"
-                   data-bs-toggle="collapse" href="#contactsMenu" role="button"
-                   aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Contacts")"
-                   aria-controls="contactsMenu">
+                   data-bs-toggle="collapse"
+                   href="#contactsMenu"
+                   aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Contacts")">
                     <span><i class="bi bi-people me-2"></i> Contacts</span>
-                    <i class="bi bi-caret-down-fill"></i>
                 </a>
+
                 <div class="collapse @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contacts" ? "show" : "")" id="contactsMenu">
                     <ul class="nav flex-column ms-3">
                         <li class="nav-item">
@@ -69,39 +69,55 @@
 
             <!-- Leads -->
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Leads" ? "active" : "") d-flex justify-content-between align-items-center"
-                   asp-controller="Leads" asp-action="Index">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse"
+                   href="#leadsMenu"
+                   aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Leads")">
                     <span><i class="bi bi-person-lines-fill me-2"></i> Leads</span>
                 </a>
-            </li>
-            <!-- Wireframe quick link for Leads (new) -->
-            <li class="nav-item ms-3">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Wireframe" && ViewContext.RouteData.Values["controller"]?.ToString() == "Leads" ? "active" : "")"
-                   asp-controller="Leads" asp-action="Wireframe">
-                    <i class="bi bi-diagram-3 me-2"></i> Leads Wireframe
-                </a>
+
+                <div class="collapse @(ViewContext.RouteData.Values["controller"]?.ToString() == "Leads" ? "show" : "")" id="leadsMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                               asp-controller="Leads" asp-action="Index">
+                                <i class="bi bi-list-ul me-2"></i> All Leads
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")"
+                               asp-controller="Leads" asp-action="Create">
+                                <i class="bi bi-person-plus-fill me-2"></i> Lead Capture
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
             <!-- Sales -->
             <li class="nav-item text-uppercase text-muted small mt-3">Sales</li>
+
             <li class="nav-item">
                 <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Opportunities" ? "active" : "")"
                    asp-controller="Opportunities" asp-action="Index">
                     <i class="bi bi-briefcase me-2"></i> Opportunities
                 </a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Quotes" ? "active" : "")"
                    asp-controller="Quotes" asp-action="Index">
                     <i class="bi bi-card-text me-2"></i> Quotes
                 </a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contracts" ? "active" : "")"
                    asp-controller="Contracts" asp-action="Index">
                     <i class="bi bi-file-earmark-text me-2"></i> Contracts
                 </a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Invoices" ? "active" : "")"
                    asp-controller="Invoices" asp-action="Index">
@@ -111,6 +127,7 @@
 
             <!-- General -->
             <li class="nav-item text-uppercase text-muted small mt-3">General</li>
+
             <li class="nav-item">
                 <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Products" ? "active" : "")"
                    asp-controller="Products" asp-action="Index">
@@ -118,8 +135,9 @@
                 </a>
             </li>
 
-            <!-- Support / Customer Success -->
+            <!-- Support -->
             <li class="nav-item text-uppercase text-muted small mt-3">Support</li>
+
             <li class="nav-item">
                 <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Tickets" ? "active" : "")"
                    asp-controller="Tickets" asp-action="Index">
@@ -127,8 +145,9 @@
                 </a>
             </li>
 
-            <!-- Analytics & Reports -->
+            <!-- Analytics -->
             <li class="nav-item text-uppercase text-muted small mt-3">Analytics</li>
+
             <li class="nav-item">
                 <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Analytics" ? "active" : "")"
                    asp-controller="Analytics" asp-action="Index">
@@ -136,8 +155,9 @@
                 </a>
             </li>
 
-            <!-- Account -->
+            <!-- Profile -->
             <li class="nav-item text-uppercase text-muted small mt-3">Account</li>
+
             <li class="nav-item">
                 <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Profile" ? "active" : "")"
                    asp-controller="Profile" asp-action="Index">
@@ -145,27 +165,28 @@
                 </a>
             </li>
 
-            <!-- Admin-only Users section -->
+            <!-- Admin Users -->
             @if (User?.IsInRole(RoleNames.Administrator) == true)
             {
                 <li class="nav-item mt-3">
                     <a class="nav-link text-white d-flex justify-content-between align-items-center"
-                       data-bs-toggle="collapse" href="#usersMenu" role="button"
-                       aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Users")"
-                       aria-controls="usersMenu">
+                       data-bs-toggle="collapse"
+                       href="#usersMenu"
+                       aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Users")">
                         <span><i class="bi bi-people-fill me-2"></i> Users</span>
-                        <i class="bi bi-caret-down-fill"></i>
                     </a>
+
                     <div class="collapse @(ViewContext.RouteData.Values["controller"]?.ToString() == "Users" ? "show" : "")" id="usersMenu">
                         <ul class="nav flex-column ms-3">
                             <li class="nav-item">
-                                <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                                <a class="nav-link text-white"
                                    asp-controller="Users" asp-action="Index">
                                     <i class="bi bi-list-ul me-2"></i> All Users
                                 </a>
                             </li>
+
                             <li class="nav-item">
-                                <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")"
+                                <a class="nav-link text-white"
                                    asp-controller="Users" asp-action="Create">
                                     <i class="bi bi-person-plus-fill me-2"></i> Add User
                                 </a>
@@ -174,15 +195,7 @@
                     </div>
                 </li>
             }
+
         </ul>
     </nav>
-
-    @* <!-- Sidebar user profile -->
-    <div class="sidebar-user p-3 mt-auto d-flex align-items-center border-top">
-        <img src="~/img/avatar.png" class="rounded-circle me-2" alt="user" style="width:40px;height:40px;object-fit:cover;" />
-        <div>
-            <div class="small text-white-50">@User.Identity?.Name</div>
-            <div class="text-success small">● Online</div>
-        </div>
-    </div> *@
 </div>

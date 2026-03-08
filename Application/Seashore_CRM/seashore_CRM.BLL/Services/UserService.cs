@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Crypto.Generators;
 using seashore_CRM.BLL.Services.Service_Interfaces;
 using seashore_CRM.DAL.Repositories.Repository_Interfaces;
-using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.DTOs;
 using seashore_CRM.Models.Entities;
 using System.Collections.Generic;
 using System.Linq;

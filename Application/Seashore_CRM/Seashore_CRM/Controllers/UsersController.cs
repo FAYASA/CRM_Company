@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using seashore_CRM.BLL.Services.Service_Interfaces;
 using seashore_CRM.Common.Constants;
-using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.DTOs;
 using Seashore_CRM.ViewModels.User;
 using System.Linq;
 using System.Threading.Tasks;

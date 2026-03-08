@@ -1,5 +1,5 @@
 using seashore_CRM.Models.Entities;
-using seashore_CRM.Models.DTOs;
+using seashore_CRM.BLL.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

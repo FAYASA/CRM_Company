@@ -155,6 +155,35 @@ namespace seashore_CRM.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("seashore_CRM.DomainModelLayer.Entities.UserLeadRights", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("CanEdit")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanView")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LeadId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeadId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLeadRights");
+                });
+
             modelBuilder.Entity("seashore_CRM.Models.Entities.Activity", b =>
                 {
                     b.Property<int>("Id")
@@ -197,6 +226,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -244,6 +274,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -291,6 +322,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -359,6 +391,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -387,9 +420,9 @@ namespace seashore_CRM.DAL.Migrations
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Contact_Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ContactName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Contact_Name");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -418,6 +451,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -467,6 +501,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -566,6 +601,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -596,68 +632,6 @@ namespace seashore_CRM.DAL.Migrations
                     b.ToTable("Leads");
                 });
 
-            modelBuilder.Entity("seashore_CRM.Models.Entities.LeadItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<int>("LeadId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("LineTotal")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<decimal>("TaxPercentage")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LeadId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("LeadItems");
-                });
-
             modelBuilder.Entity("seashore_CRM.Models.Entities.LeadSource", b =>
                 {
                     b.Property<int>("Id")
@@ -681,6 +655,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -722,6 +697,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -770,6 +746,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -794,6 +771,10 @@ namespace seashore_CRM.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal?>("Budget")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -801,6 +782,9 @@ namespace seashore_CRM.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<DateTime?>("DecisionDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("EstimatedValue")
                         .HasPrecision(18, 2)
@@ -822,6 +806,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -840,6 +825,69 @@ namespace seashore_CRM.DAL.Migrations
                     b.HasIndex("LeadId");
 
                     b.ToTable("Opportunities");
+                });
+
+            modelBuilder.Entity("seashore_CRM.Models.Entities.OpportunityItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<decimal>("LineTotal")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("OpportunityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<decimal>("TaxPercentage")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OpportunityId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("LeadItems");
                 });
 
             modelBuilder.Entity("seashore_CRM.Models.Entities.Payment", b =>
@@ -884,6 +932,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -936,6 +985,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -987,6 +1037,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -1037,6 +1088,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -1099,6 +1151,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -1178,6 +1231,7 @@ namespace seashore_CRM.DAL.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -1315,6 +1369,25 @@ namespace seashore_CRM.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("seashore_CRM.DomainModelLayer.Entities.UserLeadRights", b =>
+                {
+                    b.HasOne("seashore_CRM.Models.Entities.Lead", "Lead")
+                        .WithMany()
+                        .HasForeignKey("LeadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("seashore_CRM.Models.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lead");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("seashore_CRM.Models.Entities.Activity", b =>
                 {
                     b.HasOne("seashore_CRM.Models.Entities.User", "CreatedBy")
@@ -1418,25 +1491,6 @@ namespace seashore_CRM.DAL.Migrations
                     b.Navigation("Status");
                 });
 
-            modelBuilder.Entity("seashore_CRM.Models.Entities.LeadItem", b =>
-                {
-                    b.HasOne("seashore_CRM.Models.Entities.Lead", "Lead")
-                        .WithMany()
-                        .HasForeignKey("LeadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("seashore_CRM.Models.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Lead");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("seashore_CRM.Models.Entities.LeadStatusActivity", b =>
                 {
                     b.HasOne("seashore_CRM.Models.Entities.LeadStatus", "LeadStatus")
@@ -1457,6 +1511,25 @@ namespace seashore_CRM.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Lead");
+                });
+
+            modelBuilder.Entity("seashore_CRM.Models.Entities.OpportunityItem", b =>
+                {
+                    b.HasOne("seashore_CRM.Models.Entities.Opportunity", "Opportunity")
+                        .WithMany()
+                        .HasForeignKey("OpportunityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("seashore_CRM.Models.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Opportunity");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("seashore_CRM.Models.Entities.Payment", b =>
