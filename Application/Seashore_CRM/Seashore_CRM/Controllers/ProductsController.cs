@@ -20,7 +20,7 @@ namespace Seashore_CRM.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var products = await _uow.Products.GetAllAsync();
+            var products = _uow.Products.GetAllAsync();
             return View(products.ToList());
         }
 
@@ -53,7 +53,7 @@ namespace Seashore_CRM.Controllers
         //    await _uow.CommitAsync();
         //    return RedirectToAction(nameof(Index));
         //}
-
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var model = new ProductViewModel();

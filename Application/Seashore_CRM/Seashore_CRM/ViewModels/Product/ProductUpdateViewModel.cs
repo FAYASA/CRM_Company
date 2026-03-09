@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Seashore_CRM.ViewModels.Product
 {
-    public class ProductViewModel
+    public class ProductUpdateViewModel
     {
         public int Id { get; set; }
 
@@ -21,8 +21,7 @@ namespace Seashore_CRM.ViewModels.Product
         [Display(Name = "Tax %")]
         public decimal TaxPercentage { get; set; }
 
-        // for IsActive
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
 
         public IEnumerable<SelectListItem>? Categories { get; set; }
 

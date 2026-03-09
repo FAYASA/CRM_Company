@@ -1,109 +1,123 @@
-@model Seashore_CRM.ViewModels.Product.ProductViewModel
+@model Seashore_CRM.ViewModels.Product.ProductCreateViewModel
 
-<div class="card shadow-sm mx-auto" style="max-width:900px;">
-    <div class="card-body">
+@{
+    ViewData["Title"] = "Create Product";
+}
 
-        <form asp-action="Create" method="post">
-            @Html.AntiForgeryToken()
+<div class="container-fluid px-3">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center py-3">
+        <div>
+            <nav aria-label="breadcrumb" class="small mb-2">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a asp-action="Index" class="text-decoration-none">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="Index" class="text-decoration-none">Products</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Create Product</li>
+                </ol>
+            </nav>
+            <h1 class="h4 fw-bold mb-0 text-dark">
+                <i class="bi bi-box-seam me-2"></i> Create Product
+            </h1>
+            <p class="small text-muted mb-0">Fill in the details below to add a new product.</p>
+        </div>
+    </div>
 
-            <div class="row g-3">
+    <!-- Product Form -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="Create" method="post" class="row g-3">
 
                 <div class="col-md-6">
-                    <label asp-for="ProductName" class="form-label fw-semibold"></label>
+                    <label asp-for="ProductName" class="form-label fw-semibold">
+                        <i class="bi bi-tag me-1"></i> Product Name
+                    </label>
                     <input asp-for="ProductName" class="form-control" />
-                    <span asp-validation-for="ProductName" class="text-danger small"></span>
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6">
-                    <label asp-for="CategoryId" class="form-label fw-semibold"></label>
-                    <select asp-for="CategoryId"
-                            asp-items="Model.Categories"
-                            class="form-select"
-                            id="categorySelect">
-                        <option value="">Select Category</option>
+                    <label asp-for="CategoryId" class="form-label fw-semibold">
+                        <i class="bi bi-diagram-3 me-1"></i> Category
+                    </label>
+                    <select asp-for="CategoryId" class="form-select" id="categorySelect">
+                        <option value="">-- Select Category --</option>
+                        @foreach (var item in Model.Categories)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
                     </select>
-                    <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6">
-                    <label asp-for="ProductGroupId" class="form-label fw-semibold"></label>
-                    <select asp-for="ProductGroupId"
-                            class="form-select"
-                            id="groupSelect">
-                        <option value="">Select Group</option>
+                    <label asp-for="ProductGroupId" class="form-label fw-semibold">
+                        <i class="bi bi-collection me-1"></i> Product Group
+                    </label>
+                    <select asp-for="ProductGroupId" class="form-select" id="groupSelect">
+                        <option value="">-- Select Product Group --</option>
+                        @foreach (var item in Model.ProductGroups)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
                     </select>
-                    <span asp-validation-for="ProductGroupId" class="text-danger small"></span>
+                    <span asp-validation-for="ProductGroupId" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-3">
-                    <label asp-for="Cost" class="form-label fw-semibold"></label>
+                    <label asp-for="Cost" class="form-label fw-semibold">
+                        <i class="bi bi-currency-dollar me-1"></i> Cost
+                    </label>
                     <input asp-for="Cost" class="form-control" />
-                    <span asp-validation-for="Cost" class="text-danger small"></span>
+                    <span asp-validation-for="Cost" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-3">
-                    <label asp-for="TaxPercentage" class="form-label fw-semibold"></label>
+                    <label asp-for="TaxPercentage" class="form-label fw-semibold">
+                        <i class="bi bi-percent me-1"></i> Tax %
+                    </label>
                     <input asp-for="TaxPercentage" class="form-control" />
-                    <span asp-validation-for="TaxPercentage" class="text-danger small"></span>
+                    <span asp-validation-for="TaxPercentage" class="text-danger"></span>
                 </div>
 
-            </div>
+                <div class="col-12 form-check mt-3">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label fw-semibold">
+                        <i class="bi bi-toggle-on me-1"></i> Active
+                    </label>
+                </div>
 
-            <div class="mt-4 d-flex gap-2">
-                <button type="submit" class="btn btn-primary px-4">
-                    Create
-                </button>
-
-                <a asp-action="Index" class="btn btn-outline-secondary">
-                    Cancel
-                </a>
-            </div>
-
-        </form>
-
+                <div class="col-12 mt-4">
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-check-circle me-1"></i> Create
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary px-4">
+                        <i class="bi bi-x-circle me-1"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
-
-    <partial name="_ValidationScriptsPartial" />
-
     <script>
-
         $(document).ready(function () {
-
             $("#categorySelect").change(function () {
-
                 var categoryId = $(this).val();
+                $("#groupSelect").empty();
+                $("#groupSelect").append('<option value="">-- Select Product Group --</option>');
+                if (!categoryId) return;
 
-                if (!categoryId) {
-                    $("#groupSelect").html('<option value="">Select Group</option>');
-                    return;
-                }
-
-                $.get('@Url.Action("GetGroups", "Products")',
-                    { categoryId: categoryId },
-                    function (data) {
-
-                        $("#groupSelect").empty();
-
-                        $("#groupSelect").append(
-                            '<option value="">Select Group</option>'
-                        );
-
-                        $.each(data, function (i, item) {
-
-                            $("#groupSelect").append(
-                                '<option value="' + item.id + '">' + item.name + '</option>'
-                            );
-
-                        });
-
+                $.getJSON('/Products/GetGroups', { categoryId: categoryId }, function (data) {
+                    $.each(data, function (i, item) {
+                        $("#groupSelect").append('<option value="' + item.value + '">' + item.text + '</option>');
                     });
-
+                });
             });
-
         });
-
     </script>
 }

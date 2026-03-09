@@ -30,9 +30,9 @@ namespace seashore_CRM.BLL.Services
             await _uow.CommitAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
+       public IQueryable <Product> GetAllAsync()
         {
-            return await _uow.Products.GetAllAsync();
+            return _uow.Products.GetAllAsync();
         }
 
         public async Task<Product?> GetByIdAsync(int id)
