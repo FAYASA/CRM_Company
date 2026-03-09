@@ -177,7 +177,6 @@ namespace Seashore_CRM.Controllers
                     var prod = new Product
                     {
                         ProductName = pi.ProductName,
-                        UnitPrice = pi.UnitPrice,
                         TaxPercentage = pi.TaxPercentage,
                         IsActive = true
                     };
@@ -438,8 +437,7 @@ namespace Seashore_CRM.Controllers
             var prodMap = products.Select(p => new {
                 id = p.Id,
                 name = p.ProductName,
-                unitPrice = p.UnitPrice,
-                cost = p.CostPrice,
+                cost = p.Cost,
                 tax = p.TaxPercentage,
                 categoryId = p.CategoryId
             }).ToDictionary(x => x.id.ToString(), x => x);

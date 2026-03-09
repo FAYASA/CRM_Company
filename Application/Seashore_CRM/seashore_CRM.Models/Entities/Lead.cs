@@ -1,3 +1,4 @@
+using seashore_CRM.DomainModelLayer.Entities;
 using System;
 
 namespace seashore_CRM.Models.Entities
@@ -7,14 +8,12 @@ namespace seashore_CRM.Models.Entities
         public string LeadType { get; set; } = null!; // Corporate / Individual
 
         public int? CompanyId { get; set; } 
-        public int? ContactId { get; set; } 
-
+        public int? ContactId { get; set; }
+        public int? IndividualCustomerId { get; set; }
         public int? SourceId { get; set; }
         public int? StatusId { get; set; } 
-
         public string? Priority { get; set; } 
         public int? AssignedUserId { get; set; } 
-
         public DateTime? ExpectedClosureDate { get; set; } 
         public DateTime? FollowUpDate { get; set; }
 
@@ -33,6 +32,8 @@ namespace seashore_CRM.Models.Entities
         public int? Probability { get; set; }
 
         public Company? Company { get; set; }
+
+        public IndividualCustomer? IndividualCustomer { get; set; }
         public Contact? Contact { get; set; }
         public LeadSource? Source { get; set; }
         public LeadStatus? Status { get; set; }

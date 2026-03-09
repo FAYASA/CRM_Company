@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using seashore_CRM.DataLayer.Repositories.Repository_Interfaces;
 using seashore_CRM.Models.Entities;
 
 namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
@@ -14,6 +15,7 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
 
         IProductRepository Products { get; }
         ICategoryRepository Categories { get; }
+        IProductGroupRepository ProductGroups { get; }
 
         ILeadRepository Leads { get; }
         ILeadItemRepository LeadItems { get; }

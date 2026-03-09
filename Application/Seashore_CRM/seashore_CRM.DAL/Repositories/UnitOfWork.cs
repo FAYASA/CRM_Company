@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using seashore_CRM.DAL.Data;
 using seashore_CRM.DAL.Repositories.Repository_Interfaces;
+using seashore_CRM.DataLayer.Repositories.Repository_Interfaces;
 using seashore_CRM.Models.Entities;
 
 namespace seashore_CRM.DAL.Repositories
@@ -32,6 +33,8 @@ namespace seashore_CRM.DAL.Repositories
         public IOpportunityRepository Opportunities { get; }
         public IRoleRepository Roles { get; }
 
+        public IProductGroupRepository ProductGroups { get; }
+
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
@@ -44,6 +47,7 @@ namespace seashore_CRM.DAL.Repositories
 
             Products = new ProductRepository(context);
             Categories = new CategoryRepository(context);
+            ProductGroups = new ProductGroupRepository(context);
 
             Leads = new LeadRepository(context);
             LeadItems = new LeadItemRepository(context);

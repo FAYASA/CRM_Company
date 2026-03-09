@@ -1,49 +1,109 @@
-@model seashore_CRM.Models.Entities.Product
+@model Seashore_CRM.ViewModels.Product.ProductViewModel
 
-@{
-    ViewData["Title"] = "Create Product";
-}
-
-@await Html.PartialAsync("_PageHeader")
-
-<div class="card mx-auto" style="max-width:900px;">
+<div class="card shadow-sm mx-auto" style="max-width:900px;">
     <div class="card-body">
+
         <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+
             <div class="row g-3">
+
                 <div class="col-md-6">
-                    <label asp-for="ProductName" class="form-label"></label>
-                    <input asp-for="ProductName" class="form-control form-control-lg" />
+                    <label asp-for="ProductName" class="form-label fw-semibold"></label>
+                    <input asp-for="ProductName" class="form-control" />
+                    <span asp-validation-for="ProductName" class="text-danger small"></span>
                 </div>
+
                 <div class="col-md-6">
-                    <label asp-for="CategoryId" class="form-label"></label>
-                    <select asp-for="CategoryId" class="form-select form-select-lg" asp-items="ViewBag.Categories">
-                        <option value="">-- Select Category --</option>
+                    <label asp-for="CategoryId" class="form-label fw-semibold"></label>
+                    <select asp-for="CategoryId"
+                            asp-items="Model.Categories"
+                            class="form-select"
+                            id="categorySelect">
+                        <option value="">Select Category</option>
                     </select>
+                    <span asp-validation-for="CategoryId" class="text-danger small"></span>
                 </div>
-                <div class="col-md-4">
-                    <label asp-for="UnitPrice" class="form-label"></label>
-                    <input asp-for="UnitPrice" class="form-control" />
+
+                <div class="col-md-6">
+                    <label asp-for="ProductGroupId" class="form-label fw-semibold"></label>
+                    <select asp-for="ProductGroupId"
+                            class="form-select"
+                            id="groupSelect">
+                        <option value="">Select Group</option>
+                    </select>
+                    <span asp-validation-for="ProductGroupId" class="text-danger small"></span>
                 </div>
-                <div class="col-md-4">
-                    <label asp-for="CostPrice" class="form-label"></label>
-                    <input asp-for="CostPrice" class="form-control" />
+
+                <div class="col-md-3">
+                    <label asp-for="Cost" class="form-label fw-semibold"></label>
+                    <input asp-for="Cost" class="form-control" />
+                    <span asp-validation-for="Cost" class="text-danger small"></span>
                 </div>
-                <div class="col-md-4">
-                    <label asp-for="TaxPercentage" class="form-label"></label>
+
+                <div class="col-md-3">
+                    <label asp-for="TaxPercentage" class="form-label fw-semibold"></label>
                     <input asp-for="TaxPercentage" class="form-control" />
+                    <span asp-validation-for="TaxPercentage" class="text-danger small"></span>
                 </div>
-                <div class="col-12">
-                    <div class="form-check">
-                        <input asp-for="IsActive" class="form-check-input" />
-                        <label asp-for="IsActive" class="form-check-label"></label>
-                    </div>
-                </div>
+
             </div>
 
             <div class="mt-4 d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Create</button>
-                <a asp-action="Index" class="btn btn-link">Cancel</a>
+                <button type="submit" class="btn btn-primary px-4">
+                    Create
+                </button>
+
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    Cancel
+                </a>
             </div>
+
         </form>
+
     </div>
 </div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#categorySelect").change(function () {
+
+                var categoryId = $(this).val();
+
+                if (!categoryId) {
+                    $("#groupSelect").html('<option value="">Select Group</option>');
+                    return;
+                }
+
+                $.get('@Url.Action("GetGroups", "Products")',
+                    { categoryId: categoryId },
+                    function (data) {
+
+                        $("#groupSelect").empty();
+
+                        $("#groupSelect").append(
+                            '<option value="">Select Group</option>'
+                        );
+
+                        $.each(data, function (i, item) {
+
+                            $("#groupSelect").append(
+                                '<option value="' + item.id + '">' + item.name + '</option>'
+                            );
+
+                        });
+
+                    });
+
+            });
+
+        });
+
+    </script>
+}

@@ -1,44 +1,41 @@
-@model IEnumerable<seashore_CRM.Models.Entities.Product>
+@model IEnumerable<Seashore_CRM.ViewModels.Product.ProductViewModel>
 
 @{
     ViewData["Title"] = "Products";
 }
 
-@await Html.PartialAsync("_PageHeader")
+<h3>Products</h3>
 
-<div class="card">
-    <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0">Products</h5>
-            <a asp-action="Create" class="btn btn-primary">+ New Product</a>
-        </div>
+<a asp-action="Create" class="btn btn-primary mb-3">+ New Product</a>
 
-        <div class="table-responsive">
-            <table class="table table-borderless align-middle">
-                <thead>
-                    <tr class="text-muted small">
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach (var p in Model)
-                {
-                    <tr>
-                        <td>@p.ProductName</td>
-                        <td>@p.Category?.CategoryName</td>
-                        <td>@p.UnitPrice</td>
-                        <td class="text-end">
-                            <a asp-action="Details" asp-route-id="@p.Id" class="text-decoration-none">Details</a> |
-                            <a asp-action="Edit" asp-route-id="@p.Id" class="text-decoration-none">Edit</a> |
-                            <a asp-action="Delete" asp-route-id="@p.Id" class="text-decoration-none text-danger">Delete</a>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Product Group</th>
+            <th>Cost</th>
+            <th>Tax %</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.ProductName</td>
+                <td>@p.CategoryName</td>
+                <td>@p.ProductGroupName</td>
+                <td>@p.Cost.ToString("0.00")</td>
+                <td>@p.TaxPercentage.ToString("0.00")</td>
+                <td>@(p.IsActive ? "Active" : "Inactive")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@p.Id" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

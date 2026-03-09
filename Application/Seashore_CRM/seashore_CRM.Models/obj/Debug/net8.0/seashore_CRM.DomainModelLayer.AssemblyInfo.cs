@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("seashore_CRM.DomainModelLayer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a18404e8bb761e34d6066f10d6812eee97d3fc3f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bf62bff2532b562156d845270dd1a22ab64575f6")]
 [assembly: System.Reflection.AssemblyProductAttribute("seashore_CRM.DomainModelLayer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("seashore_CRM.DomainModelLayer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

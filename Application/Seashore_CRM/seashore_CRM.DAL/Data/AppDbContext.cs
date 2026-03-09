@@ -37,6 +37,8 @@ namespace seashore_CRM.DAL.Data
         public DbSet<Activity> Activities => Set<Activity>();
         public DbSet<Comment> Comments => Set<Comment>();
         public DbSet<OpportunityItem> LeadItems => Set<OpportunityItem>();
+        public DbSet<IndividualCustomer> IndividualCustomers => Set<IndividualCustomer>();
+        public DbSet<ProductGroup> ProductGroups => Set<ProductGroup>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -279,6 +281,34 @@ namespace seashore_CRM.DAL.Data
                 .HasOne(r => r.Lead)
                 .WithMany()
                 .HasForeignKey(r => r.LeadId);
+
+            // IndividualCustomer relations
+            modelBuilder.Entity<Lead>()
+                .HasOne(l => l.IndividualCustomer)
+                .WithMany()
+                .HasForeignKey(l => l.IndividualCustomerId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // ProductGroup -> Category
+            modelBuilder.Entity<ProductGroup>()
+                .HasOne(pg => pg.Category)
+                .WithMany(c => c.ProductGroups)
+                .HasForeignKey(pg => pg.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Product -> Category and ProductGroup
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany()
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Product -> ProductGroup
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.ProductGroup)
+                .WithMany()
+                .HasForeignKey(p => p.ProductGroupId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
 
