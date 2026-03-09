@@ -18,7 +18,7 @@ namespace Seashore_CRM.Controllers
             _uow = uow;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var products = _uow.Products.GetAllAsync();
             return View(products.ToList());

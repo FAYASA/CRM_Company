@@ -22,13 +22,13 @@ namespace seashore_CRM.BLL.Services
             return entity.Id;
         }
 
-        public async Task DeleteAsync(int id)
-        {
-            var e = await _uow.Products.GetByIdAsync(id);
-            if (e == null) return;
-            _uow.Products.Remove(e);
-            await _uow.CommitAsync();
-        }
+        //public async Task DeleteAsync(int id)
+        //{
+        //    var e = await _uow.Products.GetByIdAsync(id);
+        //    if (e == null) return;
+        //    _uow.Products.Remove(e);
+        //    await _uow.CommitAsync();
+        //}
 
        public IQueryable <Product> GetAllAsync()
         {

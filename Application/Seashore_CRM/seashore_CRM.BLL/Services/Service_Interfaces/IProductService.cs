@@ -6,11 +6,11 @@ namespace seashore_CRM.BLL.Services.Service_Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetAllAsync();
+        IQueryable<Product> GetAllAsync();
         Task<Product?> GetByIdAsync(int id);
         Task<int> AddAsync(Product entity);
         Task UpdateAsync(Product entity);
-        Task DeleteAsync(int id);
+        //Task DeleteAsync(int id);
         Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId);
     }
 }
