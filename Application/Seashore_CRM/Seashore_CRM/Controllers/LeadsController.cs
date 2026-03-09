@@ -420,7 +420,7 @@ namespace Seashore_CRM.Controllers
             var usersQueryable = _uow.Users.GetAllAsync(); 
             var users = await usersQueryable.ToListAsync();
 
-            var products = await _uow.Products.GetAllAsync(); 
+            var products =  _uow.Products.GetAllAsync(); 
             var categories = await _uow.Categories.GetAllAsync(); 
 
             ViewBag.Companies = new SelectList(companies, "Id", "CompanyName", model?.CompanyId);

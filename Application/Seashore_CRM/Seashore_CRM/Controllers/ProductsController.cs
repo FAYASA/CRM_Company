@@ -18,10 +18,23 @@ namespace Seashore_CRM.Controllers
             _uow = uow;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var products = _uow.Products.GetAllAsync();
-            return View(products.ToList());
+
+            var viewModel = products.Select(p => new ProductViewModel
+            {
+                Id = p.Id,
+                ProductName = p.ProductName,
+                CategoryId = p.CategoryId,
+                ProductGroupId = p.ProductGroupId,
+                Cost = p.Cost,
+                TaxPercentage = p.TaxPercentage,
+                IsActive = p.IsActive
+            }).ToList();
+
+            return View(viewModel);
+
         }
 
         public async Task<IActionResult> Details(int id)
