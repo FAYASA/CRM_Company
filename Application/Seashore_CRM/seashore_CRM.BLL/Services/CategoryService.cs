@@ -23,6 +23,7 @@ namespace seashore_CRM.BLL.Services
 
         public async Task AddCategoryAsync(Category category)
         {
+            category.IsActive = true;
             await _unitOfWork.Categories.AddAsync(category);
             await _unitOfWork.CommitAsync();
         }
@@ -31,13 +32,17 @@ namespace seashore_CRM.BLL.Services
         {
             var e = await _unitOfWork.Categories.GetByIdAsync(id);
             if (e == null) return;
-            _unitOfWork.Categories.Remove(e);
+            // soft-delete
+            e.IsActive = false;
+            _unitOfWork.Categories.Update(e);
             await _unitOfWork.CommitAsync();
         }
 
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
-            return await _unitOfWork.Categories.GetAllAsync();
+            var all = await _unitOfWork.Categories.GetAllAsync();
+            // default behaviour: only active categories
+            return all.Where(c => c.IsActive).ToList();
         }
 
         public async Task<Category> GetCategoryByIdAsync(int id)
@@ -49,6 +54,7 @@ namespace seashore_CRM.BLL.Services
 
         public async Task UpdateCategoryAsync(Category category)
         {
+            category.UpdatedDate = DateTime.UtcNow;
             _unitOfWork.Categories.Update(category);
             await _unitOfWork.CommitAsync();
         }

@@ -1,0 +1,149 @@
+@model IEnumerable<Seashore_CRM.ViewModels.ProductGroup.ProGroupListViewModel>
+
+@{
+    ViewData["Title"] = "Product Groups";
+}
+
+<div class="container-fluid px-3">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center py-3 flex-wrap gap-2">
+
+        <div>
+            <nav aria-label="breadcrumb" class="small mb-2">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a asp-action="Index" class="text-decoration-none">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active">Product Groups</li>
+                </ol>
+            </nav>
+
+            <h1 class="h4 fw-bold mb-0 text-dark">
+                <i class="bi bi-collection me-2"></i>
+                Product Groups
+
+                <span class="badge bg-light text-muted fw-normal ms-2 fs-6">
+                    @(Model?.Count() ?? 0) total
+                </span>
+            </h1>
+
+            <p class="small text-muted mb-0">
+                Manage all product groups in the system
+            </p>
+        </div>
+
+        <div>
+            <a asp-action="Create" class="btn btn-primary btn-sm px-3 shadow-sm">
+                <i class="bi bi-plus-lg me-1"></i>
+                New Group
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- Table Card -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light small text-uppercase">
+                        <tr>
+                            <th>
+                                <i class="bi bi-box me-1"></i> Group Name
+                            </th>
+
+                            <th>
+                                <i class="bi bi-diagram-3 me-1"></i> Category
+                            </th>
+
+                            <th>
+                                <i class="bi bi-toggle-on me-1"></i> Status
+                            </th>
+
+                            <th class="text-center" style="width:120px;">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var g in Model)
+                            {
+                                <tr>
+
+                                    <td class="fw-semibold">
+                                        @g.GroupName
+                                    </td>
+
+                                    <td>
+                                        @(string.IsNullOrEmpty(g.CategoryName) ? "-" : g.CategoryName)
+                                    </td>
+
+                                    <td>
+                                        @if (g.IsActive)
+                                        {
+                                            <span class="badge bg-success-subtle text-success">
+                                                Active
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary-subtle text-secondary">
+                                                Inactive
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        <div class="btn-group btn-group-sm">
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@g.Id"
+                                               class="btn btn-outline-primary"
+                                               title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+
+                                            @* <a asp-action="Delete"
+                                               asp-route-id="@g.Id"
+                                               class="btn btn-outline-danger"
+                                               title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </a> *@
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-muted">
+                                    <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                                    No product groups found
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

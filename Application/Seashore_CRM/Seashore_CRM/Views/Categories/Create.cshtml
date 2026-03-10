@@ -1,4 +1,4 @@
-@model seashore_CRM.Models.Entities.Category
+@model Seashore_CRM.ViewModels.Category.CategoryCreateViewModel
 
 @{
     ViewData["Title"] = "Create Category";
@@ -6,17 +6,57 @@
 
 @await Html.PartialAsync("_PageHeader")
 
-<div class="card mx-auto" style="max-width:800px;">
-    <div class="card-body">
-        <form asp-action="Create" method="post">
-            <div class="mb-3">
-                <label asp-for="CategoryName" class="form-label"></label>
-                <input asp-for="CategoryName" class="form-control form-control-lg" />
-            </div>
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Create</button>
-                <a asp-action="Index" class="btn btn-link">Cancel</a>
-            </div>
-        </form>
+<div class="container my-4">
+    <div class="card shadow-sm mx-auto" style="max-width:700px;">
+        
+        <!-- Header -->
+        <div class="card-header bg-light">
+            <h5 class="mb-0 fw-semibold">
+                <i class="bi bi-diagram-3 me-2"></i>
+                Create Category
+            </h5>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <form asp-action="Create" method="post" id="categoryForm">
+                @Html.AntiForgeryToken()
+
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row g-3">
+                    <!-- Category Name -->
+                    <div class="col-12">
+                        <label asp-for="CategoryName" class="form-label fw-semibold required"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                            <input asp-for="CategoryName" class="form-control" placeholder="Enter category name" />
+                        </div>
+                        <span asp-validation-for="CategoryName" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-4 d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4" id="submitBtn">
+                        <span class="spinner-border spinner-border-sm d-none me-2" id="submitSpinner"></span>
+                        Create
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("categoryForm")
+            .addEventListener("submit", function () {
+                document.getElementById("submitSpinner").classList.remove("d-none");
+                document.getElementById("submitBtn").setAttribute("disabled", "disabled");
+            });
+    </script>
+}

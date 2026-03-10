@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8xY/3H7tesM=",
+  "dgSpecHash": "y/DVUtCnykE=",
   "success": true,
-  "projectFilePath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DataLayer.csproj",
+  "projectFilePath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Fayas\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Fayas\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

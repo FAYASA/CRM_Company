@@ -1,4 +1,4 @@
-@model seashore_CRM.Models.Entities.Category
+@model Seashore_CRM.ViewModels.Category.CategoryListViewModel
 
 @{
     ViewData["Title"] = "Delete Category";
@@ -13,7 +13,7 @@
             <h4>@Model.CategoryName</h4>
         </div>
 
-        <form asp-action="Delete" method="post">
+        <form asp-action="DeleteConfirmed" method="post">
             <input type="hidden" asp-for="Id" />
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-danger">Delete</button>

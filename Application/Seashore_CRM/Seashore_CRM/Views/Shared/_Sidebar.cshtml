@@ -1,13 +1,19 @@
 ﻿@using seashore_CRM.Common.Constants
 
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
 <div class="app-sidebar d-flex flex-column bg-dark vh-100">
     <nav class="sidebar-nav px-2 flex-grow-1">
         <ul class="nav flex-column">
 
             <!-- Main Menu -->
             <li class="nav-item text-uppercase text-muted small mt-3">Main Menu</li>
+
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+                <a class="nav-link text-white @(currentController == "Home" ? "active" : "")"
                    asp-controller="Home" asp-action="Index">
                     <i class="bi bi-speedometer2 me-2"></i> Dashboard
                 </a>
@@ -15,81 +21,90 @@
 
             <!-- Companies -->
             <li class="nav-item">
-                <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                <a class="nav-link text-white"
                    data-bs-toggle="collapse"
                    href="#companiesMenu"
-                   aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Companies")">
-                    <span><i class="bi bi-building me-2"></i> Companies</span>
+                   aria-expanded="@(currentController == "Companies")">
+                    <i class="bi bi-building me-2"></i> Companies
                 </a>
 
-                <div class="collapse @(ViewContext.RouteData.Values["controller"]?.ToString() == "Companies" ? "show" : "")" id="companiesMenu">
+                <div class="collapse @(currentController == "Companies" ? "show" : "")" id="companiesMenu">
                     <ul class="nav flex-column ms-3">
+
                         <li class="nav-item">
-                            <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                            <a class="nav-link text-white @(currentController == "Companies" && currentAction == "Index" ? "active" : "")"
                                asp-controller="Companies" asp-action="Index">
                                 <i class="bi bi-list-ul me-2"></i> All Companies
                             </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")"
+                            <a class="nav-link text-white @(currentController == "Companies" && currentAction == "Create" ? "active" : "")"
                                asp-controller="Companies" asp-action="Create">
                                 <i class="bi bi-plus-circle me-2"></i> Add Company
                             </a>
                         </li>
+
                     </ul>
                 </div>
             </li>
 
             <!-- Contacts -->
             <li class="nav-item">
-                <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                <a class="nav-link text-white"
                    data-bs-toggle="collapse"
                    href="#contactsMenu"
-                   aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Contacts")">
-                    <span><i class="bi bi-people me-2"></i> Contacts</span>
+                   aria-expanded="@(currentController == "Contacts")">
+                    <i class="bi bi-people me-2"></i> Contacts
                 </a>
 
-                <div class="collapse @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contacts" ? "show" : "")" id="contactsMenu">
+                <div class="collapse @(currentController == "Contacts" ? "show" : "")" id="contactsMenu">
                     <ul class="nav flex-column ms-3">
+
                         <li class="nav-item">
-                            <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                            <a class="nav-link text-white @(currentController == "Contacts" && currentAction == "Index" ? "active" : "")"
                                asp-controller="Contacts" asp-action="Index">
                                 <i class="bi bi-list-ul me-2"></i> All Contacts
                             </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")"
+                            <a class="nav-link text-white @(currentController == "Contacts" && currentAction == "Create" ? "active" : "")"
                                asp-controller="Contacts" asp-action="Create">
                                 <i class="bi bi-person-plus-fill me-2"></i> Add Contact
                             </a>
                         </li>
+
                     </ul>
                 </div>
             </li>
 
             <!-- Leads -->
             <li class="nav-item">
-                <a class="nav-link text-white d-flex justify-content-between align-items-center"
+                <a class="nav-link text-white"
                    data-bs-toggle="collapse"
                    href="#leadsMenu"
-                   aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Leads")">
-                    <span><i class="bi bi-person-lines-fill me-2"></i> Leads</span>
+                   aria-expanded="@(currentController == "Leads")">
+                    <i class="bi bi-person-lines-fill me-2"></i> Leads
                 </a>
 
-                <div class="collapse @(ViewContext.RouteData.Values["controller"]?.ToString() == "Leads" ? "show" : "")" id="leadsMenu">
+                <div class="collapse @(currentController == "Leads" ? "show" : "")" id="leadsMenu">
                     <ul class="nav flex-column ms-3">
+
                         <li class="nav-item">
-                            <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                            <a class="nav-link text-white @(currentController == "Leads" && currentAction == "Index" ? "active" : "")"
                                asp-controller="Leads" asp-action="Index">
                                 <i class="bi bi-list-ul me-2"></i> All Leads
                             </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Create" ? "active" : "")"
+                            <a class="nav-link text-white @(currentController == "Leads" && currentAction == "Create" ? "active" : "")"
                                asp-controller="Leads" asp-action="Create">
                                 <i class="bi bi-person-plus-fill me-2"></i> Lead Capture
                             </a>
                         </li>
+
                     </ul>
                 </div>
             </li>
@@ -98,28 +113,28 @@
             <li class="nav-item text-uppercase text-muted small mt-3">Sales</li>
 
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Opportunities" ? "active" : "")"
+                <a class="nav-link text-white @(currentController == "Opportunities" ? "active" : "")"
                    asp-controller="Opportunities" asp-action="Index">
                     <i class="bi bi-briefcase me-2"></i> Opportunities
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Quotes" ? "active" : "")"
+                <a class="nav-link text-white @(currentController == "Quotes" ? "active" : "")"
                    asp-controller="Quotes" asp-action="Index">
                     <i class="bi bi-card-text me-2"></i> Quotes
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contracts" ? "active" : "")"
+                <a class="nav-link text-white @(currentController == "Contracts" ? "active" : "")"
                    asp-controller="Contracts" asp-action="Index">
                     <i class="bi bi-file-earmark-text me-2"></i> Contracts
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Invoices" ? "active" : "")"
+                <a class="nav-link text-white @(currentController == "Invoices" ? "active" : "")"
                    asp-controller="Invoices" asp-action="Index">
                     <i class="bi bi-receipt me-2"></i> Invoices
                 </a>
@@ -128,18 +143,64 @@
             <!-- General -->
             <li class="nav-item text-uppercase text-muted small mt-3">General</li>
 
+            <!-- Products -->
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Products" ? "active" : "")"
+                <a class="nav-link text-white @(currentController == "Products" ? "active" : "")"
                    asp-controller="Products" asp-action="Index">
                     <i class="bi bi-box-seam me-2"></i> Products
                 </a>
+            </li>
+
+            <!-- Categories + Product Groups -->
+            <li class="nav-item">
+                <a class="nav-link text-white"
+                   data-bs-toggle="collapse"
+                   href="#categoriesMenu"
+                   aria-expanded="@(currentController == "Categories" || currentController == "ProGroup")">
+
+                    <i class="bi bi-diagram-3 me-2"></i> Categories
+                </a>
+
+                <div class="collapse @((currentController == "Categories" || currentController == "ProGroup") ? "show" : "")" id="categoriesMenu">
+                    <ul class="nav flex-column ms-3">
+
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(currentController == "Categories" && currentAction == "Index" ? "active" : "")"
+                               asp-controller="Categories" asp-action="Index">
+                                <i class="bi bi-list-ul me-2"></i> All Categories
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(currentController == "Categories" && currentAction == "Create" ? "active" : "")"
+                               asp-controller="Categories" asp-action="Create">
+                                <i class="bi bi-plus-circle me-2"></i> Add Category
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(currentController == "ProGroup" && currentAction == "Index" ? "active" : "")"
+                               asp-controller="ProGroup" asp-action="Index">
+                                <i class="bi bi-diagram-2 me-2"></i> View Product Groups
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(currentController == "ProGroup" && currentAction == "Create" ? "active" : "")"
+                               asp-controller="ProGroup" asp-action="Create">
+                                <i class="bi bi-plus-square me-2"></i> Add Product Group
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
             </li>
 
             <!-- Support -->
             <li class="nav-item text-uppercase text-muted small mt-3">Support</li>
 
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Tickets" ? "active" : "")"
+                <a class="nav-link text-white @(currentController == "Tickets" ? "active" : "")"
                    asp-controller="Tickets" asp-action="Index">
                     <i class="bi bi-life-preserver me-2"></i> Tickets
                 </a>
@@ -149,17 +210,17 @@
             <li class="nav-item text-uppercase text-muted small mt-3">Analytics</li>
 
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Analytics" ? "active" : "")"
+                <a class="nav-link text-white @(currentController == "Analytics" ? "active" : "")"
                    asp-controller="Analytics" asp-action="Index">
                     <i class="bi bi-bar-chart-line me-2"></i> Reports
                 </a>
             </li>
 
-            <!-- Profile -->
+            <!-- Account -->
             <li class="nav-item text-uppercase text-muted small mt-3">Account</li>
 
             <li class="nav-item">
-                <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Profile" ? "active" : "")"
+                <a class="nav-link text-white @(currentController == "Profile" ? "active" : "")"
                    asp-controller="Profile" asp-action="Index">
                     <i class="bi bi-person-circle me-2"></i> Profile
                 </a>
@@ -168,31 +229,13 @@
             <!-- Admin Users -->
             @if (User?.IsInRole(RoleNames.Administrator) == true)
             {
-                <li class="nav-item mt-3">
-                    <a class="nav-link text-white d-flex justify-content-between align-items-center"
-                       data-bs-toggle="collapse"
-                       href="#usersMenu"
-                       aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Users")">
-                        <span><i class="bi bi-people-fill me-2"></i> Users</span>
+                <li class="nav-item text-uppercase text-muted small mt-3">Administration</li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white @(currentController == "Users" ? "active" : "")"
+                       asp-controller="Users" asp-action="Index">
+                        <i class="bi bi-people-fill me-2"></i> Users
                     </a>
-
-                    <div class="collapse @(ViewContext.RouteData.Values["controller"]?.ToString() == "Users" ? "show" : "")" id="usersMenu">
-                        <ul class="nav flex-column ms-3">
-                            <li class="nav-item">
-                                <a class="nav-link text-white"
-                                   asp-controller="Users" asp-action="Index">
-                                    <i class="bi bi-list-ul me-2"></i> All Users
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link text-white"
-                                   asp-controller="Users" asp-action="Create">
-                                    <i class="bi bi-person-plus-fill me-2"></i> Add User
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
             }
 

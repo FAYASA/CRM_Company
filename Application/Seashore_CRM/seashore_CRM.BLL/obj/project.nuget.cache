@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2KKiM6JTBRE=",
+  "dgSpecHash": "5WCMybTPfFM=",
   "success": true,
-  "projectFilePath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.ApplicationLayer.csproj",
+  "projectFilePath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Fayas\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Fayas\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

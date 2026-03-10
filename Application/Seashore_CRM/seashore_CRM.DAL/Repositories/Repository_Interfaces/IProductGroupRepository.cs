@@ -1,16 +1,12 @@
 ﻿using seashore_CRM.DomainModelLayer.Entities;
-using System;
+using seashore_CRM.DAL.Repositories.Repository_Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace seashore_CRM.DataLayer.Repositories.Repository_Interfaces
 {
-    public interface IProductGroupRepository
+    public interface IProductGroupRepository : IRepository<ProductGroup>
     {
-        Task<IEnumerable<ProductGroup>> GetAllAsync();
-
         // Optional: Add by category directly (cleaner)
         Task<IEnumerable<ProductGroup>> GetByCategoryIdAsync(int categoryId);
     }

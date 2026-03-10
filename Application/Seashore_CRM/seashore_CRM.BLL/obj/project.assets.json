@@ -3480,25 +3480,7 @@
           "bin/placeholder/seashore_CRM.Common.dll": {}
         }
       },
-      "seashore_CRM.DataLayer/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "BCrypt.Net-Next": "4.1.0",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
-          "Microsoft.EntityFrameworkCore.Design": "8.0.0",
-          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.0",
-          "Microsoft.Extensions.Logging": "9.0.0",
-          "seashore_CRM.DomainModelLayer": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/seashore_CRM.DataLayer.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/seashore_CRM.DataLayer.dll": {}
-        }
-      },
-      "seashore_CRM.DomainModelLayer/1.0.0": {
+      "seashore_CRM.DomainModel/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
@@ -3510,10 +3492,28 @@
           "seashore_CRM.Common": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/seashore_CRM.DomainModelLayer.dll": {}
+          "bin/placeholder/seashore_CRM.DomainModel.dll": {}
         },
         "runtime": {
-          "bin/placeholder/seashore_CRM.DomainModelLayer.dll": {}
+          "bin/placeholder/seashore_CRM.DomainModel.dll": {}
+        }
+      },
+      "seashore_CRM.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "BCrypt.Net-Next": "4.1.0",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
+          "Microsoft.EntityFrameworkCore.Design": "8.0.0",
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.0",
+          "Microsoft.Extensions.Logging": "9.0.0",
+          "seashore_CRM.DomainModel": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/seashore_CRM.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/seashore_CRM.Infrastructure.dll": {}
         }
       }
     }
@@ -9895,15 +9895,15 @@
       "path": "../seashore_CRM.Common/seashore_CRM.Common.csproj",
       "msbuildProject": "../seashore_CRM.Common/seashore_CRM.Common.csproj"
     },
-    "seashore_CRM.DataLayer/1.0.0": {
+    "seashore_CRM.DomainModel/1.0.0": {
       "type": "project",
-      "path": "../seashore_CRM.DAL/seashore_CRM.DataLayer.csproj",
-      "msbuildProject": "../seashore_CRM.DAL/seashore_CRM.DataLayer.csproj"
+      "path": "../seashore_CRM.Models/seashore_CRM.DomainModel.csproj",
+      "msbuildProject": "../seashore_CRM.Models/seashore_CRM.DomainModel.csproj"
     },
-    "seashore_CRM.DomainModelLayer/1.0.0": {
+    "seashore_CRM.Infrastructure/1.0.0": {
       "type": "project",
-      "path": "../seashore_CRM.Models/seashore_CRM.DomainModelLayer.csproj",
-      "msbuildProject": "../seashore_CRM.Models/seashore_CRM.DomainModelLayer.csproj"
+      "path": "../seashore_CRM.DAL/seashore_CRM.Infrastructure.csproj",
+      "msbuildProject": "../seashore_CRM.DAL/seashore_CRM.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -9916,8 +9916,8 @@
       "Microsoft.Extensions.Logging >= 9.0.0",
       "Portable.BouncyCastle >= 1.9.0",
       "seashore_CRM.Common >= 1.0.0",
-      "seashore_CRM.DataLayer >= 1.0.0",
-      "seashore_CRM.DomainModelLayer >= 1.0.0"
+      "seashore_CRM.DomainModel >= 1.0.0",
+      "seashore_CRM.Infrastructure >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -9927,9 +9927,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.ApplicationLayer.csproj",
-      "projectName": "seashore_CRM.ApplicationLayer",
-      "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.ApplicationLayer.csproj",
+      "projectUniqueName": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.Application.csproj",
+      "projectName": "seashore_CRM.Application",
+      "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\seashore_CRM.Application.csproj",
       "packagesPath": "C:\\Users\\Fayas\\.nuget\\packages\\",
       "outputPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.BLL\\obj\\",
       "projectStyle": "PackageReference",
@@ -9956,11 +9956,11 @@
             "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj": {
               "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Common\\seashore_CRM.Common.csproj"
             },
-            "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DataLayer.csproj": {
-              "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.DataLayer.csproj"
+            "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.Infrastructure.csproj": {
+              "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.DAL\\seashore_CRM.Infrastructure.csproj"
             },
-            "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModelLayer.csproj": {
-              "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModelLayer.csproj"
+            "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModel.csproj": {
+              "projectPath": "F:\\CRM\\GIT_App\\CRM_Company\\Application\\Seashore_CRM\\seashore_CRM.Models\\seashore_CRM.DomainModel.csproj"
             }
           }
         }
