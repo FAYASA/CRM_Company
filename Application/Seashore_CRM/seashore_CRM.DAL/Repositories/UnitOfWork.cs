@@ -34,6 +34,7 @@ namespace seashore_CRM.DAL.Repositories
         public IRoleRepository Roles { get; }
 
         public IProductGroupRepository ProductGroups { get; }
+        public IUserLeadRightsRepository UserLeadRights { get; }
 
         public UnitOfWork(AppDbContext context)
         {
@@ -61,6 +62,7 @@ namespace seashore_CRM.DAL.Repositories
             Users = new UserRepository(context);
             Opportunities = new OpportunityRepository(context);
             Roles = new RoleRepository(context);
+            UserLeadRights = new UserLeadRightsRepository(context);
         }
 
         public async Task<int> CommitAsync()

@@ -84,7 +84,7 @@
                             }
                         </td>
                         <td>@p.Cost.ToString("0.00")</td>
-                        <td>@p.TaxPercentage.ToString("0.00")</td>
+                        <td>@($"{p.TaxPercentage:0.00}")</td>
                         <td>
                             @if (p.IsActive)
                             {

@@ -7,14 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\seashore_CRM.BLL\seashore_CRM.Application.csproj" />
-    <ProjectReference Include="..\seashore_CRM.DAL\seashore_CRM.DataLayer.csproj" />
-    <ProjectReference Include="..\seashore_CRM.BLL\seashore_CRM.ApplicationLayer.csproj" />
-    <ProjectReference Include="..\seashore_CRM.Common\seashore_CRM.Common.csproj" />
-    <ProjectReference Include="..\seashore_CRM.Models\seashore_CRM.DomainModel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
@@ -24,6 +16,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\seashore_CRM.BLL\seashore_CRM.Application.csproj" />
+    <ProjectReference Include="..\seashore_CRM.Common\seashore_CRM.Common.csproj" />
+    <ProjectReference Include="..\seashore_CRM.DAL\seashore_CRM.Infrastructure.csproj" />
+    <ProjectReference Include="..\seashore_CRM.Models\seashore_CRM.DomainModel.csproj" />
   </ItemGroup>
 
 </Project>

@@ -36,7 +36,8 @@ namespace seashore_CRM.DAL.Data
         public DbSet<Payment> Payments => Set<Payment>();
         public DbSet<Activity> Activities => Set<Activity>();
         public DbSet<Comment> Comments => Set<Comment>();
-        public DbSet<OpportunityItem> LeadItems => Set<OpportunityItem>();
+        // Use LeadItem DbSet (previously incorrectly mapped to OpportunityItem)
+        public DbSet<LeadItem> LeadItems => Set<LeadItem>();
         public DbSet<IndividualCustomer> IndividualCustomers => Set<IndividualCustomer>();
         public DbSet<ProductGroup> ProductGroups => Set<ProductGroup>();
 
@@ -126,10 +127,11 @@ namespace seashore_CRM.DAL.Data
             modelBuilder.Entity<Opportunity>()
                 .HasIndex(o => o.LeadId);
 
-            modelBuilder.Entity<OpportunityItem>()
-                .HasIndex(li => li.OpportunityId);
+            // LeadItem indexes (previously referenced OpportunityItem)
+            modelBuilder.Entity<LeadItem>()
+                .HasIndex(li => li.LeadId);
 
-            modelBuilder.Entity<OpportunityItem>()
+            modelBuilder.Entity<LeadItem>()
                 .HasIndex(li => li.ProductId);
 
             // Index for report-to relationship
@@ -251,14 +253,14 @@ namespace seashore_CRM.DAL.Data
                 .HasForeignKey(c => c.CustomerId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            // LeadItem relations
-            modelBuilder.Entity<OpportunityItem>()
-                .HasOne(li => li.Opportunity)
+            // LeadItem relations (previously configured for OpportunityItem)
+            modelBuilder.Entity<LeadItem>()
+                .HasOne(li => li.Lead)
                 .WithMany()
-                .HasForeignKey(li => li.OpportunityId)
+                .HasForeignKey(li => li.LeadId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<OpportunityItem>()
+            modelBuilder.Entity<LeadItem>()
                 .HasOne(li => li.Product)
                 .WithMany()
                 .HasForeignKey(li => li.ProductId)

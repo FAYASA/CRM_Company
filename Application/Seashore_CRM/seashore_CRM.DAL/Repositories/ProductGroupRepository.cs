@@ -24,7 +24,7 @@ namespace seashore_CRM.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ProductGroup>> GetByCategoryIdAsync(int categoryId)
+        public async Task<IEnumerable<ProductGroup>> GetByCategoryIdAsync(int? categoryId)
         {
             return await _context.ProductGroups
                 .Where(pg => pg.CategoryId == categoryId)
@@ -35,6 +35,11 @@ namespace seashore_CRM.DAL.Repositories
         {
             if (!id.HasValue) return null;
             return await _context.ProductGroups.FindAsync(id.Value);
+        }
+
+        public async Task<IEnumerable<ProductGroup?>> GetByPG_Id(int? id)
+        {
+            return await _context.ProductGroups.Where(pg => pg.CategoryId == id).ToListAsync();
         }
 
         public async Task<IEnumerable<ProductGroup>> FindAsync(System.Linq.Expressions.Expression<System.Func<ProductGroup, bool>> predicate)

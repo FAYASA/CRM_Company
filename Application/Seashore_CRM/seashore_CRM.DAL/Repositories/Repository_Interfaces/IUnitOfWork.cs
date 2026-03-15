@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using seashore_CRM.DataLayer.Repositories.Repository_Interfaces;
 using seashore_CRM.Models.Entities;
+using seashore_CRM.DAL.Repositories.Repository_Interfaces;
 
 namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
 {
@@ -29,6 +30,8 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
         IUserRepository Users { get; }
         IOpportunityRepository Opportunities { get; }
         IRoleRepository Roles { get; }
+
+        IUserLeadRightsRepository UserLeadRights { get; }
 
         Task<int> CommitAsync();
     }

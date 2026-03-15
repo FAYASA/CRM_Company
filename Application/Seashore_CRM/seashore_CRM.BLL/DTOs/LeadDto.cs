@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System;
+using seashore_CRM.ApplicationLayer.DTOs;
 
 namespace seashore_CRM.BLL.DTOs
 {
@@ -66,5 +67,19 @@ namespace seashore_CRM.BLL.DTOs
         public DateTime? UpdatedDate { get; set; }
         public DateTime? ClosureDate { get; set; }
         public List<string>? ProductNames { get; set; }
+
+        public int? CategoryId { get; set; }
+
+        // New aggregate fields captured from client (model binding)
+        public decimal? SubTotal { get; set; }
+        public decimal? TaxTotal { get; set; }
+        public decimal? TotalCost { get; set; }
+        public decimal? GrossProfit { get; set; }
+
+        // Selected activities from client-side (optional)
+        public List<string>? SelectedActivities { get; set; }
+
+        // RowVersion for optimistic concurrency
+        public byte[]? RowVersion { get; set; }
     }
 }

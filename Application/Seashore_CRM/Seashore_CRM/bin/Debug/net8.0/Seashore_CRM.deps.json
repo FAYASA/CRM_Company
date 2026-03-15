@@ -15,10 +15,9 @@
           "Microsoft.EntityFrameworkCore.Tools": "8.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
           "seashore_CRM.Application": "1.0.0",
-          "seashore_CRM.ApplicationLayer": "1.0.0",
           "seashore_CRM.Common": "1.0.0",
-          "seashore_CRM.DataLayer": "1.0.0",
-          "seashore_CRM.DomainModel": "1.0.0"
+          "seashore_CRM.DomainModel": "1.0.0",
+          "seashore_CRM.Infrastructure": "1.0.0"
         },
         "runtime": {
           "Seashore_CRM.dll": {}

@@ -1,0 +1,81 @@
+@using Seashore_CRM.ViewModels.Lead
+@{
+    ViewData["Title"] = "User Lead Rights";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">User Lead Rights</h4>
+        <button class="btn btn-primary btn-sm" id="btnAddRight">Add Right</button>
+    </div>
+
+    <table class="table table-sm table-bordered" id="rightsTable">
+        <thead class="table-light">
+            <tr>
+                <th>User</th>
+                <th>Lead</th>
+                <th class="text-center">Can View</th>
+                <th class="text-center">Can Edit</th>
+                <th style="width:120px">Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="rightModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="rightForm" class="modal-content">
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add Right</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="Id" name="Id" value="0" />
+
+                <div class="mb-2">
+                    <label class="form-label">User</label>
+                    <select id="UserId" name="UserId" class="form-select form-select-sm" required>
+                        <option value="">Select user</option>
+                        @foreach (var u in (ViewBag.Users as Microsoft.AspNetCore.Mvc.Rendering.SelectList) ?? new SelectList(Enumerable.Empty<SelectListItem>()))
+                        {
+                            <option value="@u.Value">@u.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Lead</label>
+                    <select id="LeadId" name="LeadId" class="form-select form-select-sm" required>
+                        <option value="">Select lead</option>
+                        @foreach (var l in (ViewBag.Leads as Microsoft.AspNetCore.Mvc.Rendering.SelectList) ?? new SelectList(Enumerable.Empty<SelectListItem>()))
+                        {
+                            <option value="@l.Value">@l.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-check mb-1">
+                    <input class="form-check-input" type="checkbox" id="CanView" name="CanView" />
+                    <label class="form-check-label">Can View</label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="CanEdit" name="CanEdit" />
+                    <label class="form-check-label">Can Edit</label>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary btn-sm" type="submit" id="saveRightBtn">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/userLeadRights.js"></script>
+}

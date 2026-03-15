@@ -1,47 +1,94 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using seashore_CRM.BLL.DTOs;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using System.Collections.Generic;
-using seashore_CRM.Models.Entities;
-using seashore_CRM.DAL.Repositories.Repository_Interfaces;
-using seashore_CRM.BLL.Services.Service_Interfaces;
-using System.Text.Json;
-using System;
 using Microsoft.EntityFrameworkCore;
+using seashore_CRM.ApplicationLayer.DTOs;
+using seashore_CRM.BLL.DTOs;
+using seashore_CRM.BLL.Services.Service_Interfaces;
+using seashore_CRM.DAL.Data;
+using seashore_CRM.DAL.Repositories.Repository_Interfaces;
+using seashore_CRM.DomainModelLayer.Entities;
+using seashore_CRM.Models.Entities;
+using Seashore_CRM.ViewModels.Lead;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Seashore_CRM.Controllers
 {
-    public class LeadsController : Controller
+    public partial class LeadsController : Controller
     {
         private readonly ILeadService _leadService;
         private readonly IUnitOfWork _uow;
+        private readonly AppDbContext _db;
         private readonly IWebHostEnvironment _env;
         private readonly IActivityService _activityService;
         private readonly ILeadStatusActivityService _leadStatusActivityService;
+        private readonly IProductService _productService;
 
-        public LeadsController(ILeadService leadService, IUnitOfWork uow, IWebHostEnvironment env, IActivityService activityService, ILeadStatusActivityService leadStatusActivityService)
+        public LeadsController(ILeadService leadService, IUnitOfWork uow, AppDbContext db, IWebHostEnvironment env, IActivityService activityService,
+            ILeadStatusActivityService leadStatusActivityService, IProductService productService)
         {
             _leadService = leadService;
             _uow = uow;
+            _db = db;
             _env = env;
             _activityService = activityService;
             _leadStatusActivityService = leadStatusActivityService;
+            _productService = productService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? q, int? status, int? assigned, int? category, int page = 1, int pageSize = 20)
         {
-            var leads = await _leadService.GetAllLeadsAsync();
-            return View(leads.ToList());
-        }
+            var allLeads = (await _leadService.GetAllLeadsAsync()).ToList();
 
-        // Static UI wireframe view (pipeline board + sidebar + timeline)
-        public IActionResult Wireframe()
-        {
-            return View();
+            // Basic filtering in memory for now (consider pushing to repository for large datasets)
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                allLeads = allLeads.Where(l => (l.ProductNames != null && l.ProductNames.Any() && l.ProductNames.Any(p => p.Contains(q, System.StringComparison.OrdinalIgnoreCase)))
+                                            || (!string.IsNullOrWhiteSpace(l.AssignedUserName) && l.AssignedUserName.Contains(q, System.StringComparison.OrdinalIgnoreCase))).ToList();
+            }
+
+            if (status.HasValue)
+            {
+                allLeads = allLeads.Where(l => l.StatusId == status.Value).ToList();
+            }
+
+            if (assigned.HasValue)
+            {
+                allLeads = allLeads.Where(l => l.AssignedUserId == assigned.Value).ToList();
+            }
+
+            if (category.HasValue)
+            {
+                allLeads = allLeads.Where(l => l.CategoryId == category.Value).ToList();
+            }
+
+            var total = allLeads.Count;
+            var totalPages = (int)System.Math.Ceiling(total / (double)pageSize);
+
+            var items = allLeads.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            var vm = new LeadListViewModel
+            {
+                Leads = items,
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = total,
+                TotalPages = totalPages,
+                Query = q,
+                SelectedStatusId = status,
+                SelectedAssignedId = assigned,
+                SelectedCategoryId = category,
+                Statuses = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(await _uow.LeadStatuses.GetAllAsync(), "Id", "StatusName", status),
+                Users = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(_uow.Users.GetAllAsync().ToList(), "Id", "FullName", assigned),
+                Categories = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(await _uow.Categories.GetAllAsync(), "Id", "CategoryName", category)
+            };
+
+            return View(vm);
         }
 
         public async Task<IActionResult> Details(int id)
@@ -135,18 +182,31 @@ namespace Seashore_CRM.Controllers
 
         public async Task<IActionResult> Create()
         {
-            await PopulateSelectListsAsync();
-            return View(new LeadDto());
+            var vm = await BuildLeadCreateViewModel();
+            vm.Mode = "create";
+            vm.SubmitButtonText = "Save Lead";
+            return View(vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(LeadDto lead)
+        public async Task<IActionResult> Create(LeadCreateViewModel vm)
         {
+            var lead = vm?.Lead ?? new LeadDto();
+
+            // if rowversion sent as base64 hidden input convert back
+            var rv = Request.Form["Lead.RowVersion"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(rv))
+            {
+                try { lead.RowVersion = System.Convert.FromBase64String(rv); } catch {  }
+            }
+
             if (!ModelState.IsValid)
             {
-                await PopulateSelectListsAsync(lead);
-                return View(lead);
+                var newVm = await BuildLeadCreateViewModel(lead);
+                newVm.Mode = "create";
+                newVm.SubmitButtonText = "Save Lead";
+                return View(newVm);
             }
 
             // Handle file uploads
@@ -190,26 +250,82 @@ namespace Seashore_CRM.Controllers
             // Create Lead and get its Id
             var leadId = await _leadService.AddLeadAsync(lead);
 
-            // Persist LeadItem rows for each product item
-            if (lead.ProductItems != null && lead.ProductItems.Any())
+            // Parse and persist any UserLeadRights submitted in the form
+            var rights = new List<UserLeadRightsViewModel>();
+            if (Request.Form.Keys.Any(k => k.StartsWith("UserLeadRights[")))
             {
-                foreach (var pi in lead.ProductItems.Where(x => x.ProductId.HasValue))
+                try
                 {
-                    var lineTotal = pi.Quantity * pi.UnitPrice * (1 + (pi.TaxPercentage / 100M));
-                    var li = new LeadItem
+                    var groups = new Dictionary<int, Dictionary<string, string>>();
+                    var rightsKeys = Request.Form.Keys.Where(k => k.StartsWith("UserLeadRights[")).ToList();
+                    foreach (var key in rightsKeys)
                     {
-                        LeadId = leadId,
-                        ProductId = pi.ProductId.Value,
-                        Quantity = pi.Quantity,
-                        UnitPrice = pi.UnitPrice,
-                        TaxPercentage = pi.TaxPercentage,
-                        LineTotal = lineTotal
-                    };
-                    await _uow.LeadItems.AddAsync(li);
-                }
+                        var after = key.Substring("UserLeadRights[".Length);
+                        var idxStr = after.Substring(0, after.IndexOf(']'));
+                        if (!int.TryParse(idxStr, out var idx)) continue;
+                        var prop = after.Substring(after.IndexOf(']') + 2);
+                        var val = Request.Form[key].FirstOrDefault();
+                        if (!groups.ContainsKey(idx)) groups[idx] = new Dictionary<string, string>();
+                        groups[idx][prop] = val ?? string.Empty;
+                    }
 
-                await _uow.CommitAsync();
+                    foreach (var g in groups.OrderBy(x => x.Key))
+                    {
+                        var dict = g.Value;
+                        if (!dict.TryGetValue("UserId", out var userIdStr)) continue;
+                        if (!int.TryParse(userIdStr, out var userId)) continue;
+                        var canView = dict.TryGetValue("CanView", out var cv) && (cv == "True" || cv == "true" || cv == "on");
+                        var canEdit = dict.TryGetValue("CanEdit", out var ce) && (ce == "True" || ce == "true" || ce == "on");
+                        var id = 0;
+                        if (dict.TryGetValue("Id", out var idStr) && int.TryParse(idStr, out var parsedId)) id = parsedId;
+
+                        rights.Add(new UserLeadRightsViewModel
+                        {
+                            Id = id,
+                            UserId = userId,
+                            LeadId = 0, // will set after lead created
+                            CanView = canView,
+                            CanEdit = canEdit
+                        });
+                    }
+
+                    // persist rights after lead created
+                    foreach (var rvm in rights)
+                    {
+                        if (rvm.Id > 0)
+                        {
+                            var existing = (await _uow.UserLeadRights.GetByIdAsync(rvm.Id));
+                            if (existing != null)
+                            {
+                                existing.UserId = rvm.UserId;
+                                existing.CanView = rvm.CanView;
+                                existing.CanEdit = rvm.CanEdit;
+                                _uow.UserLeadRights.Update(existing);
+                            }
+                        }
+                        else
+                        {
+                            var entity = new UserLeadRights
+                            {
+                                LeadId = leadId,
+                                UserId = rvm.UserId,
+                                CanView = rvm.CanView,
+                                CanEdit = rvm.CanEdit
+                            };
+                            await _uow.UserLeadRights.AddAsync(entity);
+                        }
+                    }
+
+                    await _uow.CommitAsync();
+                }
+                catch
+                {
+                    // swallow for now; if persistence fails we'll continue — consider logging and surface model errors
+                }
             }
+
+            // NOTE: Product items and selected activities are persisted inside _leadService.AddLeadAsync.
+            // Removing duplicate persistence here to avoid creating duplicate LeadItem/Activity rows.
 
             // Persist comments submitted in the form
             var commentsText = Request.Form["Comments"].FirstOrDefault();
@@ -226,48 +342,54 @@ namespace Seashore_CRM.Controllers
                 await _uow.CommitAsync();
             }
 
-            // Persist any selected activities from create form
-            var selectedActivities = Request.Form["SelectedActivities"].ToList();
-            if (selectedActivities != null && selectedActivities.Any())
-            {
-                foreach (var at in selectedActivities)
-                {
-                    if (string.IsNullOrWhiteSpace(at)) continue;
-                    var a = new Activity
-                    {
-                        LeadId = leadId,
-                        ActivityType = at,
-                        ActivityDate = System.DateTime.UtcNow
-                    };
-                    await _uow.Activities.AddAsync(a);
-                }
-                await _uow.CommitAsync();
-            }
-
             return RedirectToAction(nameof(Index));
         }
+
+
+
+
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var lead = await _leadService.GetLeadByIdAsync(id);
             if (lead == null) return NotFound();
-            await PopulateSelectListsAsync(lead);
-            return View(lead);
+            var vm = await BuildLeadEditViewModel(lead);
+            // Use Create view to render the shared form, but VM has Mode="edit"
+            return View("Create", vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, LeadDto lead)
+        public async Task<IActionResult> Edit(int id, LeadEditViewModel vm)
         {
+            var lead = vm?.Lead ?? new LeadDto();
+
+            // if rowversion sent as base64 hidden input convert back
+            var rv = Request.Form["Lead.RowVersion"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(rv))
+            {
+                try { lead.RowVersion = System.Convert.FromBase64String(rv); } catch { /* ignore invalid */ }
+            }
+
             if (id != lead.Id) return BadRequest();
             if (!ModelState.IsValid)
             {
-                await PopulateSelectListsAsync(lead);
-                return View(lead);
+                var newVm = await BuildLeadEditViewModel(lead);
+                return View("Create", newVm);
             }
 
-            await _leadService.UpdateLeadAsync(lead);
+            try
+            {
+                await _leadService.UpdateLeadAsync(lead);
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                var newVm = await BuildLeadEditViewModel(lead);
+                return View("Create", newVm);
+            }
 
             // Persist any selected activities from edit form
             var selectedActivities = Request.Form["SelectedActivities"].ToList();
@@ -350,17 +472,17 @@ namespace Seashore_CRM.Controllers
             return RedirectToAction("Details", new { id });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetContactsByCompany(int companyId)
-        {
-            var contacts = await _leadService.GetLeadByIdAsync(companyId);
+        //[HttpGet]
+        //public async Task<IActionResult> GetContactsByCompany(int companyId)
+        //{
+        //    var contacts = await _leadService.GetLeadByIdAsync(companyId);
 
-            var result = contacts;
+        //    var result = contacts;
 
-            return Json(result);
-        }
+        //    return Json(result);
+        //}
 
-        // New: returns contacts for the provided company id
+        // returns contacts for the provided company id
         [HttpGet]
         public async Task<IActionResult> ContactsByCompany(int companyId)
         {
@@ -373,6 +495,24 @@ namespace Seashore_CRM.Controllers
                 id = c.Id,
                 name = !string.IsNullOrWhiteSpace(c.ContactName) ? c.ContactName : (c.Email ?? c.Mobile ?? "(no name)")
             }).ToList();
+
+            return Json(result);
+        }
+
+        // Return Product Groups for the selected Category
+        [HttpGet]
+        public async Task<JsonResult> ProductGroupsByCategory(int categoryId)
+        {
+            if (categoryId <= 0)
+                return Json(new List<object>());
+
+            var groups = await _uow.ProductGroups.GetByCategoryIdAsync(categoryId);
+
+            var result = groups.Select(g => new
+            {
+                id = g.Id,
+                name = g.GroupName
+            });
 
             return Json(result);
         }
@@ -421,7 +561,11 @@ namespace Seashore_CRM.Controllers
             var users = await usersQueryable.ToListAsync();
 
             var products =  _uow.Products.GetAllAsync(); 
-            var categories = await _uow.Categories.GetAllAsync(); 
+            var categories = await _uow.Categories.GetAllAsync();
+            var pro_Groups = await _uow.ProductGroups.GetByCategoryIdAsync(model?.CategoryId);
+            var pro_GroupsEN = pro_Groups.ToList();
+
+
 
             ViewBag.Companies = new SelectList(companies, "Id", "CompanyName", model?.CompanyId);
             ViewBag.Contacts = new SelectList(contacts, "Id", "ContactName", model?.ContactId);
@@ -432,6 +576,7 @@ namespace Seashore_CRM.Controllers
             ViewBag.Users = new SelectList(users, "Id", "FullName", model?.AssignedUserId);
             ViewBag.ProductList = products.Select(p => new SelectListItem(p.ProductName, p.Id.ToString())).ToList();
             ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
+            ViewBag.Pro_Groups = new SelectList(pro_GroupsEN, "Id", "GroupName");
 
             // Expose product metadata to client as JSON for auto-fill (unit price, cost, tax, category)
             var prodMap = products.Select(p => new {
@@ -494,5 +639,169 @@ namespace Seashore_CRM.Controllers
                 // swallow for now
             }
         }
+
+        private async Task<LeadCreateViewModel> BuildLeadCreateViewModel(LeadDto? model = null)
+        {
+            var vm = new LeadCreateViewModel();
+
+            var companiesQueryable = _uow.Companies.GetAllAsync();
+            var companies = await companiesQueryable.ToListAsync();
+
+            var contactsEn = await _uow.Contacts.GetByCompanyIdAsync(model?.CompanyId);
+            var contacts = contactsEn.ToList();
+
+            var SAvtivitiesEn = await _uow.LeadStatusActivities.GetByIdAsync(model?.StatusId);
+
+            var SActivities = new List<LeadStatusActivity>();
+            if (SAvtivitiesEn != null)
+            {
+                SActivities.Add(SAvtivitiesEn);
+            }
+
+            var IndcontactsQueryable = _uow.Contacts.GetAllIndAsync();
+            var Indcontacts = await IndcontactsQueryable.ToListAsync();
+
+            var sources = await _uow.LeadSources.GetAllAsync();
+            var statuses = await _uow.LeadStatuses.GetAllAsync();
+
+            var usersQueryable = _uow.Users.GetAllAsync();
+            var users = await usersQueryable.ToListAsync();
+
+            var productsQueryable = _uow.Products.GetAllAsync();
+            var products = await productsQueryable.ToListAsync(); 
+            var categories = await _uow.Categories.GetAllAsync();
+            var categoriesList = categories.ToList();
+            var categoriesDict = categoriesList.ToDictionary(c => c.Id, c => c.CategoryName);
+            var allProductGroups = await _uow.ProductGroups.GetAllAsync();
+            var productGroupsList = allProductGroups.ToList();
+            var groupsDict = productGroupsList.ToDictionary(g => g.Id, g => g.GroupName);
+            var pro_Groups = await _uow.ProductGroups.GetByCategoryIdAsync(model?.CategoryId);
+            var pro_GroupsEN = pro_Groups.ToList();
+
+
+            vm.Companies = new SelectList(companies, "Id", "CompanyName", model?.CompanyId);
+            vm.Contacts = new SelectList(contacts, "Id", "ContactName", model?.ContactId);
+            vm.ContactForIndv = new SelectList(Indcontacts, "Id", "ContactName", model?.ContactId);
+            vm.Sources = new SelectList(sources, "Id", "SourceName", model?.SourceId);
+            vm.Statuses = new SelectList(statuses, "Id", "StatusName", model?.StatusId);
+
+            // Populate status activities for the selected status (use FindAsync)
+            IEnumerable<seashore_CRM.Models.Entities.LeadStatusActivity> statusActivitiesForSelected = Enumerable.Empty<seashore_CRM.Models.Entities.LeadStatusActivity>();
+            if (model?.StatusId != null)
+            {
+                statusActivitiesForSelected = await _uow.LeadStatusActivities.FindAsync(a => a.LeadStatusId == model.StatusId.Value);
+            }
+            vm.StatusActivities = new SelectList(statusActivitiesForSelected, "Id", "ActivityName", model?.ActivityId);
+
+            vm.Users = new SelectList(users, "Id", "FullName", model?.AssignedUserId);
+
+            vm.ProductList = products.Select(p => new ProductOptionViewModel
+             {
+                 Text = p.ProductName,
+                 Value = p.Id.ToString(),
+                 Category = categoriesDict.TryGetValue(p.CategoryId, out var cname) ? cname : p.CategoryId.ToString(),
+                 ProGroup = p.ProductGroupId.HasValue && groupsDict.TryGetValue(p.ProductGroupId.Value, out var gname) ? gname : null
+             }).ToList();
+
+            vm.Categories = new SelectList(categories, "Id", "CategoryName");
+            vm.Pro_Groups = new SelectList(pro_GroupsEN, "Id", "GroupName");
+
+            var productsAll = products;
+            var prodMap = productsAll.Select(p => new {
+                 id = p.Id,
+                 name = p.ProductName,
+                 cost = p.Cost,
+                 tax = p.TaxPercentage,
+                 categoryId = p.CategoryId,
+                 categoryName = categoriesDict.TryGetValue(p.CategoryId, out var cn) ? cn : null,
+                 productGroupName = p.ProductGroupId.HasValue && groupsDict.TryGetValue(p.ProductGroupId.Value, out var gn) ? gn : null
+              }).ToDictionary(x => x.id.ToString(), x => x);
+             vm.ProductsJson = JsonSerializer.Serialize(prodMap);
+
+            // If editing an existing lead, load its LeadItems and map to ProductItems in VM so client JS can render rows
+            if (model != null)
+            {
+                var leadItems = (await _uow.LeadItems.FindAsync(li => li.LeadId == model.Id)).ToList();
+                if (leadItems.Any())
+                {
+                    vm.Lead.ProductItems = new List<seashore_CRM.BLL.DTOs.LeadProductDto>();
+                    foreach (var li in leadItems)
+                    {
+                        var p = await _uow.Products.GetByIdAsync(li.ProductId);
+                        var itemDto = new seashore_CRM.BLL.DTOs.LeadProductDto
+                        {
+                            ProductId = li.ProductId,
+                            ProductName = p?.ProductName,
+                            Quantity = li.Quantity,
+                            UnitPrice = li.UnitPrice,
+                            TaxPercentage = li.TaxPercentage,
+                            CategoryId = p?.CategoryId,
+                            ProductGroup = p != null && p.ProductGroupId.HasValue ? (groupsDict.TryGetValue(p.ProductGroupId.Value, out var gname) ? gname : null) : null,
+                            SaleValue = li.UnitPrice * li.Quantity,
+                            TaxValue = li.UnitPrice * li.Quantity * (li.TaxPercentage / 100M),
+                            GrossTotal = li.LineTotal,
+                            Cost = p?.Cost ?? 0,
+                            GrossProfit = (li.LineTotal - (p?.Cost ?? 0) * li.Quantity)
+                        };
+                        vm.Lead.ProductItems.Add(itemDto);
+                    }
+                }
+
+                // Also preload selected activities from existing Activity records for UI (if desired)
+                var existingActs = (await _uow.Activities.FindAsync(a => a.LeadId == model.Id)).OrderByDescending(a => a.ActivityDate).ToList();
+                if (existingActs.Any())
+                {
+                    vm.Lead.SelectedActivities = existingActs.Select(a => a.ActivityType).Distinct().ToList();
+                }
+            }
+
+            var commentTemplates = new List<string>
+            {
+                "Need more information",
+                "Sent quote",
+                "Followed up",
+                "Client requested sample",
+                "Waiting for approval"
+            };
+            vm.CommentTemplates = new SelectList(commentTemplates);
+
+            var mapping = await GetStatusActivitiesAsync();
+            vm.StatusActivitiesJson = JsonSerializer.Serialize(mapping);
+
+            if (model != null) vm.Lead = model;
+
+            return vm;
+        }
+
+        private async Task<LeadEditViewModel> BuildLeadEditViewModel(LeadDto model)
+        {
+            var vm = new LeadEditViewModel();
+            vm.Mode = "edit";
+            vm.SubmitButtonText = "Update Lead";
+
+            // reuse the same data population as create VM
+            var createVm = await BuildLeadCreateViewModel(model);
+
+            vm.Companies = createVm.Companies;
+            vm.Contacts = createVm.Contacts;
+            vm.ContactForIndv = createVm.ContactForIndv;
+            vm.Sources = createVm.Sources;
+            vm.Statuses = createVm.Statuses;
+            vm.StatusActivities = createVm.StatusActivities;
+            vm.Users = createVm.Users;
+            vm.ProductList = createVm.ProductList;
+            vm.Categories = createVm.Categories;
+            vm.Pro_Groups = createVm.Pro_Groups;
+            vm.ProductsJson = createVm.ProductsJson;
+            vm.StatusActivitiesJson = createVm.StatusActivitiesJson;
+            vm.CommentTemplates = createVm.CommentTemplates;
+            vm.UserLeadRights = createVm.UserLeadRights;
+
+            vm.Lead = model;
+
+            return vm;
+        }
+
+        // ... other helper methods unchanged ...
     }
 }

@@ -10,11 +10,11 @@ namespace seashore_CRM.Models.Entities
 
         public int CategoryId { get; set; }
 
-        public int ProductGroupId { get; set; }
+        public int? ProductGroupId { get; set; }
 
         public decimal Cost { get; set; }
 
-        public decimal TaxPercentage { get; set; }
+        public decimal? TaxPercentage { get; set; }
 
         public Category? Category { get; set; }
 

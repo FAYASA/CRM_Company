@@ -8,6 +8,6 @@ namespace seashore_CRM.DataLayer.Repositories.Repository_Interfaces
     public interface IProductGroupRepository : IRepository<ProductGroup>
     {
         // Optional: Add by category directly (cleaner)
-        Task<IEnumerable<ProductGroup>> GetByCategoryIdAsync(int categoryId);
+        Task<IEnumerable<ProductGroup>> GetByCategoryIdAsync(int? categoryId);
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using seashore_CRM.DAL.Repositories.Repository_Interfaces;
 using seashore_CRM.BLL.Services.Service_Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace seashore_CRM.BLL.Services
 {
@@ -28,6 +29,46 @@ namespace seashore_CRM.BLL.Services
             var entity = _mapper.Map<Lead>(leadDto);
             await _uow.Leads.AddAsync(entity);
             await _uow.CommitAsync();
+
+            // persist any LeadProductDto items as LeadItem records if provided
+            if (leadDto.ProductItems != null && leadDto.ProductItems.Any())
+            {
+                foreach (var pi in leadDto.ProductItems.Where(x => x.ProductId.HasValue))
+                {
+                    // compute line total using unit price, quantity and tax percentage (server-side authoritative)
+                    var lineTotal = pi.Quantity * pi.UnitPrice * (1 + (pi.TaxPercentage / 100M));
+                    var li = new LeadItem
+                    {
+                        LeadId = entity.Id,
+                        ProductId = pi.ProductId.Value,
+                        Quantity = pi.Quantity,
+                        UnitPrice = pi.UnitPrice,
+                        TaxPercentage = pi.TaxPercentage,
+                        LineTotal = lineTotal
+                    };
+                    await _uow.LeadItems.AddAsync(li);
+                }
+
+                await _uow.CommitAsync();
+            }
+
+            // persist any selected activities provided in DTO
+            if (leadDto.SelectedActivities != null && leadDto.SelectedActivities.Any())
+            {
+                foreach (var at in leadDto.SelectedActivities)
+                {
+                    if (string.IsNullOrWhiteSpace(at)) continue;
+                    var a = new Activity
+                    {
+                        LeadId = entity.Id,
+                        ActivityType = at,
+                        ActivityDate = DateTime.UtcNow
+                    };
+                    await _uow.Activities.AddAsync(a);
+                }
+                await _uow.CommitAsync();
+            }
+
             return entity.Id;
         }
 
@@ -134,9 +175,34 @@ namespace seashore_CRM.BLL.Services
 
         public async Task UpdateLeadAsync(LeadDto leadDto)
         {
-            var entity = _mapper.Map<Lead>(leadDto);
-            _uow.Leads.Update(entity);
-            await _uow.CommitAsync();
+            // Load existing entity from database so EF can track it and preserve concurrency tokens
+            var existing = await _uow.Leads.GetByIdAsync(leadDto.Id);
+            if (existing == null) throw new KeyNotFoundException("Lead not found");
+
+            // Concurrency check: if DTO has RowVersion, compare
+            if (leadDto.RowVersion != null && existing.RowVersion != null && !existing.RowVersion.SequenceEqual(leadDto.RowVersion))
+            {
+                throw new DbUpdateConcurrencyException("The lead has been modified by another user.");
+            }
+
+            // Map incoming dto onto the tracked entity to update its scalar properties
+            _mapper.Map(leadDto, existing);
+
+            // update audit timestamp
+            existing.UpdatedDate = DateTime.UtcNow;
+
+            // repository Update may be a no-op for tracked entities but call it to be explicit
+            _uow.Leads.Update(existing);
+
+            try
+            {
+                await _uow.CommitAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                // rethrow a clearer exception for the controller to handle and show friendly UI
+                throw new DbUpdateConcurrencyException("Concurrency conflict: the lead was updated by someone else.");
+            }
         }
 
         public async Task<int?> QualifyLeadAsync(LeadDto dto)
