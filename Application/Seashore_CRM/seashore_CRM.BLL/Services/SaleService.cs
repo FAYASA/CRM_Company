@@ -4,20 +4,27 @@ using System.Threading.Tasks;
 using System;
 using seashore_CRM.DAL.Repositories.Repository_Interfaces;
 using seashore_CRM.BLL.Services.Service_Interfaces;
+using FluentValidation;
 
 namespace seashore_CRM.BLL.Services
 {
     public class SaleService : ISaleService
     {
         private readonly IUnitOfWork _uow;
+        private readonly IValidator<Sale> _validator;
 
-        public SaleService(IUnitOfWork uow)
+        public SaleService(IUnitOfWork uow, IValidator<Sale> validator)
         {
             _uow = uow;
+            _validator = validator;
         }
 
         public async Task<int> AddAsync(Sale entity)
         {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            var v = await _validator.ValidateAsync(entity);
+            if (!v.IsValid) throw new ValidationException(v.Errors);
+
             await _uow.Sales.AddAsync(entity);
             await _uow.CommitAsync();
             return entity.Id;
@@ -48,6 +55,8 @@ namespace seashore_CRM.BLL.Services
 
         public async Task UpdateAsync(Sale entity)
         {
+            var v = await _validator.ValidateAsync(entity);
+            if (!v.IsValid) throw new ValidationException(v.Errors);
             _uow.Sales.Update(entity);
             await _uow.CommitAsync();
         }

@@ -1,5 +1,6 @@
 using seashore_CRM.DomainModelLayer.Entities;
 using System;
+using System.Collections.Generic;
 
 namespace seashore_CRM.Models.Entities
 {
@@ -12,18 +13,27 @@ namespace seashore_CRM.Models.Entities
         public int? IndividualCustomerId { get; set; }
         public int? SourceId { get; set; }
         public int? StatusId { get; set; } 
+
+        public int? ActivityId { get; set; }
         public string? Priority { get; set; } 
         public int? AssignedUserId { get; set; } 
         public DateTime? ExpectedClosureDate { get; set; } 
         public DateTime? FollowUpDate { get; set; }
+        // store time of follow-up (new column)
+        public TimeSpan? FollowUpTime { get; set; }
+        // Activity type (Phone/Email/Meeting/Demo)
+        public string? ActivityType { get; set; }
 
-        // Mark if lead already converted
-        public bool IsConverted { get; set; } = false;
+        // Attachments metadata stored as JSON (filenames, paths)
+        public string? AttachmentsJson { get; set; }
+
+        //// Mark if lead already converted
+        //public bool IsConverted { get; set; } = false;
 
         // Qualification fields
         public bool IsQualified { get; set; } = false;
-        public DateTime? QualifiedOn { get; set; }
-        public int? QualifiedById { get; set; }
+        //public DateTime? QualifiedOn { get; set; }
+        //public int? QualifiedById { get; set; }
         public string? QualificationNotes { get; set; }
 
         // Business/Opportunity related
@@ -38,5 +48,14 @@ namespace seashore_CRM.Models.Entities
         public LeadSource? Source { get; set; }
         public LeadStatus? Status { get; set; }
         public User? AssignedUser { get; set; }
+
+        // A lead can have many status activities (history of activities). Use a collection to avoid one-to-one mapping.
+        public ICollection<LeadStatusActivity> LeadStatusActivities { get; set; } = new List<LeadStatusActivity>();
+
+        // Line items on the lead (products entered during capture)
+        public ICollection<LeadItem> LeadItems { get; set; } = new List<LeadItem>();
+
+        // User-specific rights for this lead
+        public ICollection<UserLeadRights> UserLeadRights { get; set; } = new List<UserLeadRights>();
     }
 }

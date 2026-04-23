@@ -4,18 +4,39 @@ using seashore_CRM.DAL.Repositories.Repository_Interfaces;
 using seashore_CRM.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FluentValidation;
+using System.Linq;
+using System;
 
 namespace seashore_CRM.BLL.Services
 {
     public class ProductService : IProductService
     {
         private readonly IUnitOfWork _uow;
+        private readonly IValidator<ProductCreateDto> _createValidator;
+        private readonly IValidator<ProductUpdateDto> _update_validator;
 
-        public ProductService(IUnitOfWork uow)
+        public ProductService(IUnitOfWork uow, IValidator<ProductCreateDto> createValidator, IValidator<ProductUpdateDto> updateValidator)
         {
             _uow = uow;
+            _createValidator = createValidator;
+            _update_validator = updateValidator;
         }
-
+        IQueryable<ProductListDto> IProductService.GetAllExceptInactive()
+        {
+            var products = _uow.Products.GetAllExceptInactive();
+            var dto = products.Select(p => new ProductListDto
+            {
+                Id = p.Id,
+                ProductName = p.ProductName,
+                CategoryName = p.Category.CategoryName,
+                ProductGroupName = p.ProductGroup.GroupName,
+                Cost = p.Cost,
+                TaxPercentage = p.TaxPercentage,
+                IsActive = p.IsActive
+            });
+            return dto;
+        }
         IQueryable<ProductListDto> IProductService.GetAllAsync()
         {
             var products = _uow.Products.GetAllAsync();
@@ -85,6 +106,11 @@ namespace seashore_CRM.BLL.Services
 
         public async Task<int> CreateAsync(ProductCreateDto dto)
         {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            var vResult = await _createValidator.ValidateAsync(dto);
+            if (!vResult.IsValid) throw new ValidationException(vResult.Errors);
+
             var product = new Product
             {
                 ProductName = dto.ProductName,
@@ -103,6 +129,11 @@ namespace seashore_CRM.BLL.Services
 
         public async Task<bool> UpdateAsync(ProductUpdateDto dto)
         {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            var vResult = await _update_validator.ValidateAsync(dto);
+            if (!vResult.IsValid) throw new ValidationException(vResult.Errors);
+
             var product = await _uow.Products.GetByIdAsync(dto.Id);
 
             if (product == null)

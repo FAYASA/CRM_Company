@@ -1,0 +1,104 @@
+@model Seashore_CRM.ViewModels.IndividualCustomer.IndividualCustomerUpdateViewModel
+
+@{
+    ViewData["Title"] = "Edit Individual Customer";
+}
+
+@await Html.PartialAsync("_PageHeader")
+
+<div class="container my-4">
+    <div class="card shadow-sm mx-auto form-container">
+
+        <!-- Header -->
+        <div class="card-header bg-light">
+            <h5 class="mb-0 fw-semibold">
+                <i class="bi bi-pencil-square me-2"></i>
+                Edit Individual Customer
+            </h5>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+
+            <form asp-action="Edit" method="post" id="customerForm">
+                @Html.AntiForgeryToken()
+
+                <!-- Hidden Id -->
+                <input type="hidden" asp-for="Id" />
+
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row g-3">
+
+                    <!-- Name -->
+                    <div class="col-md-6">
+                        <label asp-for="Name" class="form-label fw-semibold required"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            <input asp-for="Name" class="form-control" placeholder="Enter full name" />
+                        </div>
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="col-md-6">
+                        <label asp-for="Location" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                            <input asp-for="Location" class="form-control" placeholder="Enter location" />
+                        </div>
+                        <span asp-validation-for="Location" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6">
+                        <label asp-for="Phone" class="form-label fw-semibold required"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                            <input asp-for="Phone" class="form-control" placeholder="Enter phone number" />
+                        </div>
+                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Enter email address" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-4 d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary px-4" id="submitBtn">
+                        <span class="spinner-border spinner-border-sm d-none me-2" id="submitSpinner"></span>
+                        Save Changes
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById("customerForm")
+            .addEventListener("submit", function () {
+                document.getElementById("submitSpinner").classList.remove("d-none");
+                document.getElementById("submitBtn").setAttribute("disabled", "disabled");
+            });
+    </script>
+}

@@ -24,8 +24,8 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Pages/Leads/Convert.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVhZHNcQ29udmVydC5jc2h0bWw=
+[F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Pages/Admin/UserActivities/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlckFjdGl2aXRpZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Views/Account/Login.cshtml]
@@ -104,6 +104,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Views/IndividualCustomers/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5kaXZpZHVhbEN1c3RvbWVyc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Views/IndividualCustomers/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5kaXZpZHVhbEN1c3RvbWVyc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Views/IndividualCustomers/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5kaXZpZHVhbEN1c3RvbWVyc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Views/IndividualCustomers/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5kaXZpZHVhbEN1c3RvbWVyc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Views/IndividualCustomers/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5kaXZpZHVhbEN1c3RvbWVyc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Views/Invoices/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52b2ljZXNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -154,10 +174,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Views/Leads/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVhZHNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Views/Leads/Qualify.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVhZHNcUXVhbGlmeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/CRM/GIT_App/CRM_Company/Application/Seashore_CRM/Seashore_CRM/Views/Opportunities/Create.cshtml]

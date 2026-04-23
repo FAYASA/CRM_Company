@@ -21,7 +21,7 @@
         @if (Model.Mode == "edit")
         {
             <input type="hidden" asp-for="Lead.Id" />
-            @if (Model.Lead?.RowVersion != null)
+            if (Model.Lead?.RowVersion != null)
             {
                 <input type="hidden" name="Lead.RowVersion" value="@System.Convert.ToBase64String(Model.Lead.RowVersion)" />
             }
@@ -136,7 +136,7 @@
                                     </a>
                                 </label>
 
-                                <select asp-for="Lead.ContactId"
+                                <select asp-for="Lead.IndividualCustomerId"
                                         class="form-select form-select-sm"
                                         asp-items="Model.ContactForIndv"
                                         id="individualContactSelect">
@@ -223,9 +223,25 @@
                                 <label class="form-label fw-semibold small text-muted">Attach Files</label>
 
                                 <input type="file"
-                                       name="files"
+                                       name="attachments"
                                        class="form-control form-control-sm"
                                        multiple>
+
+                                @* Display existing attachments when editing *@
+                                @if (Model.Mode == "edit" && !string.IsNullOrWhiteSpace(Model.Lead?.AttachmentsJson))
+                                {
+                                    var atts = System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.List<string>>(Model.Lead.AttachmentsJson ?? "[]");
+                                    if (atts != null && atts.Any())
+                                    {
+                                        <div class="mt-2 small text-muted">Existing files:</div>
+                                        <ul class="small">
+                                            @foreach (var a in atts)
+                                            {
+                                                <li>@a</li>
+                                            }
+                                        </ul>
+                                    }
+                                }
 
                             </div>
 
@@ -433,7 +449,27 @@
                         </select>
                     </div>
                     <div class="card-body p-0">
-                        <textarea id="comments" name="Comments" class="form-control border-0 rounded-0" rows="8" placeholder="Type notes here..."></textarea>
+
+                        @* show existing comments when editing *@
+                        @if (Model.Mode == "edit" && Model.Lead?.Comments != null && Model.Lead.Comments.Any())
+                        {
+                            <div class="p-3 border-bottom">
+                                <div class="small text-muted mb-2">Previous comments</div>
+                                <ul class="list-unstyled mb-0">
+                                    @foreach (var c in Model.Lead.Comments.OrderByDescending(x => x.CreatedAt))
+                                    {
+                                        <li class="mb-2">
+                                            <div class="fw-semibold">@(!string.IsNullOrWhiteSpace(c.Content) ? c.Content : "(no content)")</div>
+                                            <div class="small text-muted">@c.CreatedAt.ToString("dd-MMM-yyyy HH:mm")</div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+
+                        <div class="p-3">
+                            <textarea id="comments" name="Comments" class="form-control border-0 rounded-0" rows="6" placeholder="Type notes here..."></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -505,17 +541,17 @@
                                 <tr data-index="@ri">
                                     <td>
                                         @r.UserName
-                                        <input type="hidden" name="UserLeadRights[@ri].Id" value="@r.Id" />
-                                        <input type="hidden" name="UserLeadRights[@ri].UserId" value="@r.UserId" />
-                                        <input type="hidden" name="UserLeadRights[@ri].LeadId" value="@r.LeadId" />
+                                        <input type="hidden" name="Lead.UserLeadRights[@ri].Id" value="@r.Id" />
+                                        <input type="hidden" name="Lead.UserLeadRights[@ri].UserId" value="@r.UserId" />
+                                        <input type="hidden" name="Lead.UserLeadRights[@ri].LeadId" value="@r.LeadId" />
                                     </td>
                                     <td>
                                         @(r.CanView ? "✔️" : "❌")
-                                        <input type="hidden" name="UserLeadRights[@ri].CanView" value="@r.CanView" />
+                                        <input type="hidden" name="Lead.UserLeadRights[@ri].CanView" value="@(r.CanView ? "true" : "false")" />
                                     </td>
                                     <td>
                                         @(r.CanEdit ? "✔️" : "❌")
-                                        <input type="hidden" name="UserLeadRights[@ri].CanEdit" value="@r.CanEdit" />
+                                        <input type="hidden" name="Lead.UserLeadRights[@ri].CanEdit" value="@(r.CanEdit ? "true" : "false")" />
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-sm btn-danger remove-right">Remove</button>
@@ -765,13 +801,67 @@
 
 @section Scripts {
     <script>
-        // Pass server-side data and URLs to external script via global config object
+        // simple rights manager: add selected user with view/edit flags into hidden inputs for form submission
+        (function(){
+            var addBtn = document.getElementById('addUserRight');
+            var userSelect = document.getElementById('userSelect');
+            var canView = document.getElementById('canView');
+            var canEdit = document.getElementById('canEdit');
+            var rightsBody = document.getElementById('rightsTableBody');
+            var index = rightsBody.querySelectorAll('tr').length;
+
+            function createHiddenBool(name, value) {
+                var inp = document.createElement('input');
+                inp.type = 'hidden';
+                inp.name = name;
+                inp.value = value ? 'true' : 'false';
+                return inp;
+            }
+
+            addBtn.addEventListener('click', function(){
+                var uid = userSelect.value;
+                if (!uid) { alert('Select user'); return; }
+
+                var userText = userSelect.options[userSelect.selectedIndex].text.trim();
+                // prevent duplicate user rows (by displayed name)
+                var exists = Array.from(rightsBody.querySelectorAll('tr td:first-child')).some(function(td){ return td.textContent.trim() === userText; });
+                if (exists) { alert('This user is already added'); return; }
+
+                // If Edit is checked, enforce View in UI
+                var effectiveCanView = canView.checked || canEdit.checked;
+
+                // create row with inputs bound to Lead.UserLeadRights[index]
+                var tr = document.createElement('tr');
+                tr.innerHTML = '<td>'+ userText + '<input type="hidden" name="Lead.UserLeadRights['+index+'].UserId" value="'+uid+'" /></td>' +
+                               '<td>' + (effectiveCanView ? '✔️' : '❌') + '<input type="hidden" name="Lead.UserLeadRights['+index+'].CanView" value="'+(effectiveCanView ? 'true' : 'false')+'" /></td>' +
+                               '<td>' + (canEdit.checked ? '✔️' : '❌') + '<input type="hidden" name="Lead.UserLeadRights['+index+'].CanEdit" value="'+(canEdit.checked ? 'true' : 'false')+'" /></td>' +
+                               '<td><button type="button" class="btn btn-sm btn-danger remove-right">Remove</button></td>';
+
+                rightsBody.appendChild(tr);
+                index++;
+
+                // clear checkboxes
+                canView.checked = false; canEdit.checked = false;
+            });
+
+            rightsBody.addEventListener('click', function(e){
+                if (e.target && e.target.matches('.remove-right')) {
+                    var row = e.target.closest('tr');
+                    row.remove();
+                }
+            });
+        })();
+    </script>
+    <script>
         window.leadsCreateConfig = {
             productsMap: @Html.Raw(Model.ProductsJson ?? "{}"),
             initialItems: @Html.Raw(JsonSerializer.Serialize(Model.Lead.ProductItems ?? new System.Collections.Generic.List<seashore_CRM.BLL.DTOs.LeadProductDto>())),
             initialPriority: @Html.Raw(JsonSerializer.Serialize(Model.Lead.Priority)),
             initialActivityType: @Html.Raw(JsonSerializer.Serialize(Model.Lead.ActivityType)),
             initialSelectedActivities: @Html.Raw(JsonSerializer.Serialize(Model.Lead.SelectedActivities ?? new System.Collections.Generic.List<string>())),
+            initialActivityId: @Html.Raw(JsonSerializer.Serialize(Model.Lead.ActivityId)),
+            initialContactId: @Html.Raw(JsonSerializer.Serialize(Model.Lead.ContactId)),
+            initialIndividualCustomerId: @Html.Raw(JsonSerializer.Serialize(Model.Lead.IndividualCustomerId)),
             urls: {
                 activitiesByStatus: '@Url.Action("ActivitiesByStatus", "Leads")',
                 addStatusActivity: '@Url.Action("AddStatusActivity", "Leads")',

@@ -15,6 +15,8 @@ namespace seashore_CRM.DAL.Repositories
         {
             _context = context;
         }
+
+
         public async Task<Product?> GetByIdAsync(int id)
         {
             return await _context.Products.IgnoreQueryFilters()
@@ -35,6 +37,16 @@ namespace seashore_CRM.DAL.Repositories
         {
             _context.Products.Remove(entity);
         }
+
+        public IQueryable<Product> GetAllExceptInactive()
+        {
+            return _context.Products
+            .Include(p => p.Category)
+                // then iclude ProductGroups of the Category
+                .ThenInclude(c => c.ProductGroups)
+                .AsNoTracking();
+        }
+
         public IQueryable<Product> GetAllAsync()
         {
             return _context.Products.IgnoreQueryFilters()

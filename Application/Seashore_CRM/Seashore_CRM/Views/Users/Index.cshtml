@@ -64,153 +64,114 @@
     </div>
 
 
-    <!-- USERS TABLE -->
+    <!-- USERS TABLE (DataTables server-side) -->
+    @* antiforgery token for AJAX POSTs *@
+    @Html.AntiForgeryToken()
+
     <div class="table-responsive">
-        <table class="table table-striped table-bordered align-middle bg-white">
+        <table id="userTable" class="display table table-striped table-bordered align-middle bg-white" style="width:100%">
             <thead class="table-secondary small text-uppercase">
                 <tr>
-
-                    <!-- USERNAME -->
-                    <th>
-                        <a asp-action="Index"
-                           asp-route-q="@ViewBag.Query"
-                           asp-route-sortBy="UserName"
-                           asp-route-sortOrder="@(currentSortBy == "UserName" && currentSortOrder == "asc" ? "desc" : "asc")"
-                           class="text-decoration-none text-dark">
-
-                            <i class="bi bi-person me-1"></i> User Name
-
-                            @if (currentSortBy == "UserName")
-                            {
-                                <i class="bi ms-1 @(currentSortOrder == "asc" ? "bi-caret-up-fill" : "bi-caret-down-fill")"></i>
-                            }
-                        </a>
-                    </th>
-
-                    <!-- EMAIL -->
-                    <th>
-                        <a asp-action="Index"
-                           asp-route-q="@ViewBag.Query"
-                           asp-route-sortBy="Email"
-                           asp-route-sortOrder="@(currentSortBy == "Email" && currentSortOrder == "asc" ? "desc" : "asc")"
-                           class="text-decoration-none text-dark">
-                            <i class="bi bi-envelope me-1"></i> Email
-                        </a>
-                    </th>
-
-                    <!-- ROLES -->
-                    <th><i class="bi bi-shield-lock me-1"></i> Roles</th>
-
-                    <!-- REGION -->
-                    <th>
-                        <a asp-action="Index"
-                           asp-route-q="@ViewBag.Query"
-                           asp-route-sortBy="Region"
-                           asp-route-sortOrder="@(currentSortBy == "Region" && currentSortOrder == "asc" ? "desc" : "asc")"
-                           class="text-decoration-none text-dark">
-                            <i class="bi bi-geo-alt me-1"></i> Region
-                        </a>
-                    </th>
-
-                    <!-- STATUS -->
-                    <th>
-                        <a asp-action="Index"
-                           asp-route-q="@ViewBag.Query"
-                           asp-route-sortBy="IsActive"
-                           asp-route-sortOrder="@(currentSortBy == "IsActive" && currentSortOrder == "asc" ? "desc" : "asc")"
-                           class="text-decoration-none text-dark">
-                            <i class="bi bi-toggle-on me-1"></i> Status
-                        </a>
-                    </th>
-
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Roles</th>
+                    <th>Region</th>
+                    <th>Status</th>
                     <th style="width:140px;">Actions</th>
                 </tr>
             </thead>
-
-            <tbody>
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var u in Model)
-                    {
-                        <tr>
-                            <td class="fw-semibold">@u.UserName</td>
-                            <td>@u.Email</td>
-
-                            <!-- ROLES -->
-                            <td>
-                                @if (u.Roles != null && u.Roles.Any())
-                                {
-                                    foreach (var role in u.Roles)
-                                    {
-                                        <span class="badge bg-secondary me-1">@role</span>
-                                    }
-                                }
-                                else
-                                {
-                                    @Html.Raw("<span class='text-muted'>N/A</span>")
-                                }
-                    </td>
-
-                    <!-- REGION -->
-                    <td>
-                        @(string.IsNullOrWhiteSpace(u.Region)
-                                                ? Html.Raw("<span class='text-muted'>N/A</span>")
-                                                : u.Region)
-                    </td>
-
-                            <!-- STATUS -->
-                            <td>
-                        @if (u.IsActive)
-                                {
-                                    <span class="badge bg-success">Active</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">Inactive</span>
-                                }
-                            </td>
-
-                            <!-- ACTIONS -->
-                            <td class="text-center">
-                                <div class="btn-group btn-group-sm">
-                                    <a asp-action="Edit"
-                                       asp-route-id="@u.Id"
-                                       class="btn btn-outline-primary"
-                                       title="Edit">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-
-                                    <form asp-action="ToggleStatus"
-                                          asp-route-id="@u.Id"
-                                          method="post"
-                                          class="d-inline">
-                                        @Html.AntiForgeryToken()
-
-                                        <button type="submit"
-                                                class="btn btn-sm @(u.IsActive ? "btn-outline-danger" : "btn-outline-success")"
-                                                title="@(u.IsActive ? "Deactivate User" : "Activate User")"
-                                                onclick="return confirm('Are you sure you want to @(u.IsActive ? "Deactivate" : "Activate") this user?');">
-
-                                            <i class="bi @(u.IsActive ? "bi-person-x" : "bi-person-check")"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="6" class="text-center text-muted">
-                            No users found.
-                        </td>
-                    </tr>
-                }
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
+
+    @* Ensure jQuery is loaded then DataTables (include CDN here to guarantee availability) *@
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(function () {
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            var table = $('#userTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '@Url.Action("GetUsers", "Users")',
+                    type: 'POST',
+                    // send antiforgery token as form field so server can read from Request.Form
+                    data: function (d) {
+                        d.__RequestVerificationToken = token;
+                        return d;
+                    },
+                    dataSrc: function (json) {
+                        console.log('GetUsers response', json);
+                        // DataTables expects array - if server returned object with 'data', this will pass through
+                        if (!json || !json.data) {
+                            console.warn('Invalid response from GetUsers');
+                            return [];
+                        }
+                        return json.data;
+                    },
+                    error: function (xhr, err, thrown) {
+                        console.error('DataTables AJAX error', xhr.status, thrown, xhr.responseText);
+                    }
+                },
+                columns: [
+                    { data: 'userName' },
+                    { data: 'email' },
+                    {
+                        data: 'role',
+                        render: function (data) {
+                            if (!data) return '';
+                            if (Array.isArray(data)) return data.join(', ');
+                            return data;
+                        }
+                    },
+                    { data: 'region', defaultContent: '' },
+                    {
+                        data: 'isActive',
+                        render: function (data) {
+                            return data ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-secondary">Inactive</span>';
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row) {
+                            var edit = '<a href="' + ('/Users/Edit/' + row.id) + '" class="btn btn-outline-primary btn-sm me-1" title="Edit"><i class="bi bi-pencil"></i></a>';
+                            var toggleBtn = '<button class="btn btn-sm btn-outline-secondary" onclick="toggleStatus(' + row.id + ');" title="Toggle Status"><i class="bi bi-arrow-repeat"></i></button>';
+                            return '<div class="btn-group btn-group-sm">' + edit + toggleBtn + '</div>';
+                        }
+                    }
+                ],
+                lengthMenu: [10, 25, 50, 100],
+                pageLength: 10,
+                initComplete: function () { console.log('DataTable initialized'); },
+                drawCallback: function (settings) { console.log('DataTable draw', settings.json); }
+            });
+
+            window.toggleStatus = function (id) {
+                if (!confirm('Are you sure you want to toggle status for this user?')) return;
+                fetch('/Users/ToggleStatus?id=' + id, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': token,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }).then(function (resp) {
+                    console.log('ToggleStatus response', resp.status);
+                    if (resp.redirected) {
+                        // likely unauthenticated/forbidden redirect - open location in console
+                        console.warn('ToggleStatus redirected to', resp.url);
+                    }
+                    if (resp.ok) table.ajax.reload(null, false);
+                    else alert('Failed to toggle status');
+                }).catch(function (err) { console.error('ToggleStatus failed', err); alert('Failed to toggle status'); });
+            };
+        });
+    </script>
 
 
     <!-- PAGINATION -->

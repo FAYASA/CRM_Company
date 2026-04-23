@@ -22,7 +22,7 @@ namespace seashore_CRM.BLL.Mapping
 
             // Map product dto to LeadItem when saving (LineTotal computed in controller/service)
             CreateMap<LeadProductDto, LeadItem>()
-                // Do not map ProductId automatically when null. Service should create product first for free-entry items.
+                // Map ProductId from DTO when provided. Do not map when ProductId is null.
                 .ForMember(dest => dest.ProductId, opt => opt.Condition(src => src.ProductId.HasValue))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice))

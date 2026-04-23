@@ -2,6 +2,9 @@ namespace seashore_CRM.BLL.DTOs
 {
     public class LeadProductDto
     {
+        // LeadProductId stores the LeadItem.Id when editing existing rows
+        public int? LeadProductId { get; set; }
+        // ProductId stores the referenced Product.Id
         public int? ProductId { get; set; }
         public string? ProductName { get; set; }
         public int Quantity { get; set; }
@@ -16,5 +19,6 @@ namespace seashore_CRM.BLL.DTOs
         public decimal GrossTotal { get; set; }
         public decimal Cost { get; set; }
         public decimal GrossProfit { get; set; }
+        public string? CategoryName { get; set; }
     }
 }

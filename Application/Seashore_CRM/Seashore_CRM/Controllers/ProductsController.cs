@@ -9,6 +9,7 @@ using seashore_CRM.Models.Entities;
 using Seashore_CRM.ViewModels.Product;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 
 namespace Seashore_CRM.Controllers
 {
@@ -81,21 +82,30 @@ namespace Seashore_CRM.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ProductViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var dto = new ProductCreateDto
+            try
             {
-                ProductName = model.ProductName,
-                CategoryId = model.CategoryId,
-                ProductGroupId = model.ProductGroupId,
-                Cost = model.Cost,
-                TaxPercentage = model.TaxPercentage
-            };
+                var dto = new ProductCreateDto
+                {
+                    ProductName = model.ProductName,
+                    CategoryId = model.CategoryId,
+                    ProductGroupId = model.ProductGroupId,
+                    Cost = model.Cost,
+                    TaxPercentage = model.TaxPercentage
+                };
 
-            await _productService.CreateAsync(dto);
-            return RedirectToAction(nameof(Index));
+                await _productService.CreateAsync(dto);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ValidationException vex)
+            {
+                foreach (var err in vex.Errors)
+                {
+                    if (string.IsNullOrEmpty(err.PropertyName)) ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                    else ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+                }
 
+                return View(model);
+            }
         }
 
         // Auto Fill Category & Product Group
@@ -129,40 +139,45 @@ namespace Seashore_CRM.Controllers
         [HttpPost]
         public async Task<IActionResult> QuickCreate(ProductCreateViewModel model)
         {
-            if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Validation failed" });
-
-            var dto = new ProductCreateDto
+            try
             {
-                ProductName = model.ProductName,
-                CategoryId = model.CategoryId,
-                ProductGroupId = model.ProductGroupId,
-                Cost = model.Cost,
-                TaxPercentage = model.TaxPercentage
-            };
+                var dto = new ProductCreateDto
+                {
+                    ProductName = model.ProductName,
+                    CategoryId = model.CategoryId,
+                    ProductGroupId = model.ProductGroupId,
+                    Cost = model.Cost,
+                    TaxPercentage = model.TaxPercentage
+                };
 
-            var newProductId = await _productService.CreateAsync(dto);
+                var newProductId = await _productService.CreateAsync(dto);
 
-            // Fetch the created product details to return full info to caller
-            var created = await _productService.GetByIdAsync(newProductId);
+                // Fetch the created product details to return full info to caller
+                var created = await _productService.GetByIdAsync(newProductId);
 
-            if (created == null)
-            {
-                return Json(new { success = false, message = "Failed to load created product" });
+                if (created == null)
+                {
+                    return Json(new { success = false, message = "Failed to load created product" });
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    id = newProductId,
+                    name = created.ProductName,
+                    categoryId = created.CategoryId,
+                    categoryName = created.CategoryName,
+                    productGroupId = created.ProductGroupId,
+                    productGroupName = created.ProductGroupName,
+                    cost = created.Cost,
+                    tax = created.TaxPercentage
+                });
             }
-
-            return Json(new
+            catch (ValidationException vex)
             {
-                success = true,
-                id = newProductId,
-                name = created.ProductName,
-                categoryId = created.CategoryId,
-                categoryName = created.CategoryName,
-                productGroupId = created.ProductGroupId,
-                productGroupName = created.ProductGroupName,
-                cost = created.Cost,
-                tax = created.TaxPercentage
-            });
+                var errors = vex.Errors.Select(e => new { field = e.PropertyName, error = e.ErrorMessage }).ToList();
+                return Json(new { success = false, message = "Validation failed", errors });
+            }
         }
 
         public async Task<JsonResult> GetGroups(int categoryId)

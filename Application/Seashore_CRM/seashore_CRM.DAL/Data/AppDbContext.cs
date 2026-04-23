@@ -7,6 +7,7 @@ using seashore_CRM.Models.Identity;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace seashore_CRM.DAL.Data
 {
@@ -30,16 +31,18 @@ namespace seashore_CRM.DAL.Data
         public DbSet<Opportunity> Opportunities => Set<Opportunity>();
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<Product> Products => Set<Product>();
+        public DbSet<ProductGroup> ProductGroups => Set<ProductGroup>();
         public DbSet<Sale> Sales => Set<Sale>();
         public DbSet<SaleItem> SaleItems => Set<SaleItem>();
         public DbSet<Invoice> Invoices => Set<Invoice>();
         public DbSet<Payment> Payments => Set<Payment>();
-        public DbSet<Activity> Activities => Set<Activity>();
         public DbSet<Comment> Comments => Set<Comment>();
-        // Use LeadItem DbSet (previously incorrectly mapped to OpportunityItem)
-        public DbSet<LeadItem> LeadItems => Set<LeadItem>();
-        public DbSet<IndividualCustomer> IndividualCustomers => Set<IndividualCustomer>();
-        public DbSet<ProductGroup> ProductGroups => Set<ProductGroup>();
+        public DbSet<LeadHistory> LeadHistories => Set<LeadHistory>();
+
+        // log sets
+        public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+        public DbSet<SystemLog> SystemLogs => Set<SystemLog>();
+        public DbSet<UserActivity> UserActivities => Set<UserActivity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,6 +51,13 @@ namespace seashore_CRM.DAL.Data
             ConfigureBaseEntity(modelBuilder);
             ConfigureIndexes(modelBuilder);
             ConfigureRelationships(modelBuilder);
+
+            // Configure UserActivity indexes
+            modelBuilder.Entity<UserActivity>()
+                .HasIndex(u => u.PerformedAt);
+
+            modelBuilder.Entity<UserActivity>()
+                .HasIndex(u => u.UserId);
         }
 
         // ===============================
@@ -71,9 +81,10 @@ namespace seashore_CRM.DAL.Data
                         .Property(nameof(BaseEntity.CreatedDate))
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    // Default IsActive should be true for new rows at DB level
                     modelBuilder.Entity(clrType)
                         .Property(nameof(BaseEntity.IsActive))
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(true);
 
                     // Concurrency token
                     modelBuilder.Entity(clrType)
@@ -137,6 +148,12 @@ namespace seashore_CRM.DAL.Data
             // Index for report-to relationship
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.ReportToUserId);
+
+            // Indexes for LeadHistory
+            modelBuilder.Entity<LeadHistory>()
+                .HasIndex(h => h.LeadId);
+            modelBuilder.Entity<LeadHistory>()
+                .HasIndex(h => h.ChangedAt);
         }
 
         // ===============================
@@ -229,18 +246,6 @@ namespace seashore_CRM.DAL.Data
                 .HasForeignKey(p => p.InvoiceId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Activity>()
-                .HasOne(a => a.Lead)
-                .WithMany()
-                .HasForeignKey(a => a.LeadId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            modelBuilder.Entity<Activity>()
-                .HasOne(a => a.Customer)
-                .WithMany()
-                .HasForeignKey(a => a.CustomerId)
-                .OnDelete(DeleteBehavior.SetNull);
-
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Lead)
                 .WithMany()
@@ -256,15 +261,17 @@ namespace seashore_CRM.DAL.Data
             // LeadItem relations (previously configured for OpportunityItem)
             modelBuilder.Entity<LeadItem>()
                 .HasOne(li => li.Lead)
-                .WithMany()
+                .WithMany(l => l.LeadItems)
                 .HasForeignKey(li => li.LeadId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired(false);
 
             modelBuilder.Entity<LeadItem>()
                 .HasOne(li => li.Product)
                 .WithMany()
                 .HasForeignKey(li => li.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
 
             // LeadStatus -> LeadStatusActivity
             modelBuilder.Entity<LeadStatusActivity>()
@@ -277,12 +284,16 @@ namespace seashore_CRM.DAL.Data
             modelBuilder.Entity<UserLeadRights>()
                 .HasOne(r => r.User)
                 .WithMany()
-                .HasForeignKey(r => r.UserId);
+                .HasForeignKey(r => r.UserId)
+                // mark Restrict to avoid cascade paths and avoid issues with global query filters
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<UserLeadRights>()
                 .HasOne(r => r.Lead)
-                .WithMany()
-                .HasForeignKey(r => r.LeadId);
+                .WithMany(l => l.UserLeadRights)
+                .HasForeignKey(r => r.LeadId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired(false);
 
             // IndividualCustomer relations
             modelBuilder.Entity<Lead>()
@@ -311,19 +322,95 @@ namespace seashore_CRM.DAL.Data
                 .WithMany()
                 .HasForeignKey(p => p.ProductGroupId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // LeadHistory relationships
+            modelBuilder.Entity<LeadHistory>()
+                .HasOne(h => h.Lead)
+                .WithMany()
+                .HasForeignKey(h => h.LeadId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<LeadHistory>()
+                .HasOne(h => h.ChangedBy)
+                .WithMany()
+                .HasForeignKey(h => h.ChangedById)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // RelatedLeadStatusActivity: avoid cascade to prevent multiple cascade paths
+            modelBuilder.Entity<LeadHistory>()
+                .HasOne(h => h.RelatedLeadStatusActivity)
+                .WithMany()
+                .HasForeignKey("RelatedLeadStatusActivityId")
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
 
         // Override SaveChangesAsync // this for automatically setting audit fields and implementing soft delete logic
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var entries = ChangeTracker.Entries<BaseEntity>();
+            // Capture audit entries before SaveChanges
+            var auditEntries = new List<AuditLog>();
+
+            var entries = ChangeTracker.Entries<BaseEntity>().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted).ToList();
+
+            var now = DateTime.UtcNow;
+            var userId = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                        ?? _httpContextAccessor?.HttpContext?.User?.Identity?.Name
+                        ?? "System";
+            var correlationId = _httpContextAccessor?.HttpContext?.TraceIdentifier;
+
             foreach (var entry in entries)
             {
-                var now = DateTime.UtcNow;
-                var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value 
-                            ?? _httpContextAccessor.HttpContext?.User?.Identity?.Name 
-                            ?? "System";
+                var audit = new AuditLog
+                {
+                    TableName = entry.Entity.GetType().Name,
+                    Action = entry.State.ToString(),
+                    ChangedAt = now,
+                    ChangedBy = userId,
+                    CorrelationId = correlationId
+                };
+
+                // capture key
+                var keyNames = entry.Metadata.FindPrimaryKey()?.Properties.Select(p => p.Name).ToList();
+                if (keyNames != null && keyNames.Any())
+                {
+                    var keyValues = keyNames.ToDictionary(k => k, k => entry.Property(k).CurrentValue);
+                    audit.KeyValues = JsonSerializer.Serialize(keyValues);
+                }
+
+                if (entry.State == EntityState.Added)
+                {
+                    audit.NewValues = JsonSerializer.Serialize(entry.CurrentValues.ToObject());
+                }
+                else if (entry.State == EntityState.Deleted)
+                {
+                    audit.OldValues = JsonSerializer.Serialize(entry.OriginalValues.ToObject());
+                }
+                else if (entry.State == EntityState.Modified)
+                {
+                    var oldValues = new Dictionary<string, object?>();
+                    var newValues = new Dictionary<string, object?>();
+
+                    foreach (var prop in entry.Properties)
+                    {
+                        if (prop.IsTemporary) continue;
+                        var propName = prop.Metadata.Name;
+                        var original = entry.GetDatabaseValues()?.GetValue<object?>(propName);
+                        var current = prop.CurrentValue;
+                        if (!Equals(original, current))
+                        {
+                            oldValues[propName] = original;
+                            newValues[propName] = current;
+                        }
+                    }
+
+                    if (oldValues.Any()) audit.OldValues = JsonSerializer.Serialize(oldValues);
+                    if (newValues.Any()) audit.NewValues = JsonSerializer.Serialize(newValues);
+                }
+
+                auditEntries.Add(audit);
+
+                // Also apply standard base entity auditing/soft delete
                 switch (entry.State)
                 {
                     case EntityState.Added:
@@ -344,7 +431,28 @@ namespace seashore_CRM.DAL.Data
                         break;
                 }
             }
-            return await base.SaveChangesAsync(cancellationToken);
+
+            // Save changes (this will persist data and generate keys for added entries)
+            var result = await base.SaveChangesAsync(cancellationToken);
+
+            // After successful save, persist audit logs (with any generated keys)
+            if (auditEntries.Any())
+            {
+                foreach (var audit in auditEntries)
+                {
+                    // if key values were empty for added entries, try to refetch
+                    if (string.IsNullOrEmpty(audit.KeyValues))
+                    {
+                        // best effort: skip
+                    }
+
+                    AuditLogs.Add(audit);
+                }
+
+                await base.SaveChangesAsync(cancellationToken);
+            }
+
+            return result;
         }
 
         // ===============================

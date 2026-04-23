@@ -14,6 +14,11 @@ namespace seashore_CRM.DAL.Repositories
             _context = context;
         }
 
+        public IQueryable<Company> GetAllExceptInactive()
+        {
+            return _context.Companies.AsNoTracking();
+        }
+
         public IQueryable<Company> GetAllAsync()
         {
             return _context.Companies.IgnoreQueryFilters().AsNoTracking();

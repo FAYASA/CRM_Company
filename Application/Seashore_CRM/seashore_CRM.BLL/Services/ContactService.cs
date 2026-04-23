@@ -6,17 +6,46 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
+using System.Security.Claims;
 
 namespace seashore_CRM.BLL.Services
 {
     public class ContactService : IContactService
     {
         private readonly IUnitOfWork _uow;
+        private readonly IUserActivityService _activityService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ContactService(IUnitOfWork uow)
+        public ContactService(IUnitOfWork uow, IUserActivityService activityService, IHttpContextAccessor httpContextAccessor)
         {
             _uow = uow;
+            _activityService = activityService;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+        //================================
+        // GET ALL CONTACTS EXCEPT INACTIVE
+        //================================
+
+        public IQueryable<ContactListDto> GetAllActiveAsync()
+        {
+            var contacts = _uow.Contacts.GetAllActive();
+            return contacts.Select(c => new ContactListDto
+            {
+                Id = c.Id,
+                ContactName = c.ContactName,
+                Email = c.Email,
+                Phone = c.Phone,
+                Mobile = c.Mobile,
+                Designation = c.Designation,
+                CompanyName = c.Company.CompanyName,
+                IsActive = c.IsActive,
+                CompanyId = c.CompanyId
+                });
+        }
+
 
         // ===============================
         // GET ALL CONTACTS
@@ -58,6 +87,28 @@ namespace seashore_CRM.BLL.Services
                 IsActive = c.IsActive,
                 CompanyId = c.CompanyId
             }).AsQueryable();
+        }
+
+
+        //================================
+        // GET ALL ACTIVE CONTACTS BY COMPANY ID
+        //================================
+
+        public async Task<IQueryable<ContactListDto>> GetAllActiveByCompanyIdAsync(int companyId)
+        {
+            var contacts = await _uow.Contacts.GetActiveByCompanyIdAsync(companyId);
+            return contacts.Select(c => new ContactListDto
+            {
+                Id = c.Id,
+                ContactName = c.ContactName,
+                Email = c.Email,
+                Phone = c.Phone,
+                Mobile = c.Mobile,
+                Designation = c.Designation,
+                CompanyName = c.Company?.CompanyName ?? string.Empty,
+                IsActive = c.IsActive,
+                CompanyId = c.CompanyId
+                }).AsQueryable();
         }
 
         // ===============================
@@ -148,6 +199,11 @@ namespace seashore_CRM.BLL.Services
 
             _uow.Contacts.Remove(entity);
             await _uow.CommitAsync();
+
+            // Log user activity: log detection
+            var userId = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            var userName = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? string.Empty;
+            await _activityService.LogEntityActionAsync(userId, userName, "Deleted", "Contact", id.ToString(), JsonSerializer.Serialize(new { entity.ContactName, entity.Email, entity.Phone }), _httpContextAccessor?.HttpContext?.TraceIdentifier);
         }
     }
 }

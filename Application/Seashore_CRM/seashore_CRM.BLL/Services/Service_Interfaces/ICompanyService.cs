@@ -11,6 +11,8 @@ namespace seashore_CRM.BLL.Services.Service_Interfaces
         //Task<List<CompanyListDto>> SearchAsync(string? query);
 
         IQueryable<CompanyListDto> GetAllAsync();
+
+        IQueryable<CompanyListDto> GetAllExceptInactive();
         IQueryable<CompanyListDto> SearchAsync(string? query);
         Task<CompanyDetailDto?> GetByIdAsync(int id);
         Task<int> CreateAsync(CompanyCreateDto dto);

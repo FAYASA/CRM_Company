@@ -9,10 +9,15 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
 
         Task<Contact?> GetWithCompanyAsync(int id);   // include Company
 
+        Task<IEnumerable<Contact>> GetActiveByCompanyIdAsync(int? companyId);
+
         //Task<IEnumerable<Contact>> GetAllAsync();
         IQueryable<Contact> GetAllAsync();
 
-        IQueryable<Contact> GetAllIndAsync();
+
+        IQueryable<Contact> GetAllActive();
+
+       // IQueryable<Contact> GetAllIndAsync();
 
         Task<IEnumerable<Contact>> GetAllWithCompanyAsync();  // include Company
 

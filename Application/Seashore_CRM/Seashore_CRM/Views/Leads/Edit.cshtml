@@ -1,86 +1,1544 @@
-@model seashore_CRM.BLL.DTOs.LeadDto
-
+﻿@using System.Text.Json
+@using Seashore_CRM.ViewModels.Lead
+@model Seashore_CRM.ViewModels.Lead.LeadEditViewModel
 @{
-    ViewData["Title"] = "Edit Lead";
+    ViewData["Title"] = Model.Mode == "edit" ? "Edit Lead" : "Lead Capture";
 }
 
 @await Html.PartialAsync("_PageHeader")
 
-<div class="card mx-auto" style="max-width:1100px;">
-    <div class="card-body">
-        <h4>Edit Lead</h4>
-        <form asp-action="Edit" method="post">
-            <input type="hidden" asp-for="Id" />
+<form asp-action="@(Model.Mode == "edit" ? "Edit" : "Create")" method="post" enctype="multipart/form-data" class="mt-3 pb-5">
+    @Html.AntiForgeryToken()
+    <div class="container-fluid px-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+            <div>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm px-3 me-2">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-sm px-4 fw-bold shadow-sm">@Model.SubmitButtonText</button>
+            </div>
+        </div>
 
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <label asp-for="StatusId" class="form-label">Status</label>
-                    <select asp-for="StatusId" class="form-select" asp-items="ViewBag.Statuses" id="statusSelect">
-                        <option value="">-- Select Status --</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label asp-for="Priority" class="form-label">Priority</label>
-                    <input asp-for="Priority" class="form-control" />
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="AssignedUserId" class="form-label">Assigned User</label>
-                    <select asp-for="AssignedUserId" class="form-select" asp-items="ViewBag.Users">
-                        <option value="">-- Select User --</option>
-                    </select>
+        @* include hidden Id when editing *@
+        @if (Model.Mode == "edit")
+        {
+            <input type="hidden" asp-for="Lead.Id" />
+            if (Model.Lead?.RowVersion != null)
+            {
+                <input type="hidden" name="Lead.RowVersion" value="@System.Convert.ToBase64String(Model.Lead.RowVersion)" />
+            }
+        }
+
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs mb-3" id="leadTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#generalTab" type="button" role="tab" aria-controls="generalTab" aria-selected="true">General Info</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="product-tab" data-bs-toggle="tab" data-bs-target="#productTab" type="button" role="tab" aria-controls="productTab" aria-selected="false">Products</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="Rights-tab" data-bs-toggle="tab" data-bs-target="#RightsTab" type="button" role="tab" aria-controls="RightsTab" aria-selected="false">View / Edit Rights</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#commentsTab" type="button" role="tab" aria-controls="commentsTab" aria-selected="false">Comments & Notes</button>
+            </li>
+        </ul>
+
+        <!-- Tabs Content -->
+        <div class="tab-content" id="leadTabsContent">
+
+            <!-- General Information Tab -->
+            <div class="tab-pane fade show active" id="generalTab" role="tabpanel">
+
+                <div class="card shadow-sm border-0 mb-4">
+
+                    <div class="card-header bg-white py-3">
+                        <h6 class="text-uppercase fw-bold text-secondary mb-0 small">
+                            General Information
+                        </h6>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row g-4">
+
+                            <!-- Lead Type -->
+                            <div class="col-lg-3">
+                                <label class="form-label fw-semibold small text-muted">Lead Type</label>
+
+                                <div class="border rounded p-2 d-flex gap-3 align-items-center">
+
+                                    <div class="form-check mb-0">
+                                        <input class="form-check-input" type="radio" asp-for="Lead.LeadType" value="Corporate" id="leadCorporate">
+                                        <label class="form-check-label small" for="leadCorporate">
+                                            <i class="bi bi-building text-primary me-1"></i> Corporate
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check mb-0">
+                                        <input class="form-check-input" type="radio" asp-for="Lead.LeadType" value="Individual" id="leadIndividual">
+                                        <label class="form-check-label small" for="leadIndividual">
+                                            <i class="bi bi-person text-success me-1"></i> Individual
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <!-- Company -->
+                            <div class="col-lg-3" id="companySelectDiv">
+                                <label class="form-label fw-semibold small text-muted">
+                                    Company
+                                    <a asp-action="Create" asp-controller="Companies" target="_blank" class="ms-1 small text-primary">+ New</a>
+                                </label>
+
+                                <select asp-for="Lead.CompanyId"
+                                        class="form-select form-select-sm"
+                                        asp-items="Model.Companies"
+                                        id="companySelect">
+
+                                    <option value="">Select Company</option>
+
+                                </select>
+                            </div>
+
+
+                            <!-- Corporate Contact -->
+                            <div class="col-lg-3" id="corporateContactDiv">
+
+                                <label class="form-label fw-semibold small text-muted">
+                                    Contact
+                                    <a asp-action="Create" asp-controller="Contacts" target="_blank" class="ms-1 small text-primary">+ New</a>
+                                </label>
+
+                                <select asp-for="Lead.ContactId"
+                                        class="form-select form-select-sm"
+                                        asp-items="Model.Contacts"
+                                        id="corporateContactSelect">
+
+                                        @* Default value *@
+
+
+
+                                    <option value="">Select Contact</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Individual Contact -->
+                            <div class="col-lg-3" id="individualContactDiv" style="display:none;">
+
+                                <label class="form-label fw-semibold small text-muted">
+                                    Individual Contact
+                                    <a href="#" class="ms-1 small text-primary" data-bs-toggle="modal" data-bs-target="#createContactModal">
+                                        + New
+                                    </a>
+                                </label>
+
+                                <select asp-for="Lead.IndividualCustomerId"
+                                        class="form-select form-select-sm"
+                                        asp-items="Model.ContactForIndv"
+                                        id="individualContactSelect">
+
+                                    <option value="">Select Contact</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Source -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">Source</label>
+
+                                <select asp-for="Lead.SourceId"
+                                        class="form-select form-select-sm"
+                                        asp-items="Model.Sources">
+
+                                    <option value="">Select Source</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Status -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">Status</label>
+
+                                <select asp-for="Lead.StatusId"
+                                        class="form-select form-select-sm"
+                                        asp-items="Model.Statuses"
+                                        id="statusSelect">
+
+                                    <option value="">Select Status</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Activity -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">
+                                    Activity
+                                    <a href="#" id="addStatusActivityBtn" class="ms-1 small text-primary">+ New</a>
+                                </label>
+
+                                <select asp-for="Lead.ActivityId"
+                                        class="form-select form-select-sm"
+                                        asp-items="Model.StatusActivities"
+                                        id="StatusActivitySelect">
+
+                                    <option value="">Select Activity</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Assigned User -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">Assigned User</label>
+
+                                <select asp-for="Lead.AssignedUserId"
+                                        class="form-select form-select-sm"
+                                        asp-items="Model.Users">
+
+                                    <option value="">Select User</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Attach Files -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">Attach Files</label>
+
+                                <input type="file"
+                                       name="attachments"
+                                       class="form-control form-control-sm"
+                                       multiple>
+
+                                @* Display existing attachments when editing *@
+                                @if (Model.Mode == "edit" && !string.IsNullOrWhiteSpace(Model.Lead?.AttachmentsJson))
+                                {
+                                    var atts = System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.List<string>>(Model.Lead.AttachmentsJson ?? "[]");
+                                    if (atts != null && atts.Any())
+                                    {
+                                        <div class="mt-2 small text-muted">Existing files:</div>
+                                        <ul class="small">
+                                            @foreach (var a in atts)
+                                            {
+                                                <li>@a</li>
+                                            }
+                                        </ul>
+                                    }
+                                }
+
+                            </div>
+
+
+                            <!-- Priority -->
+                            <div class="col-lg-3">
+
+                                <label class="form-label fw-semibold small text-muted">Priority</label>
+
+                                <div class="btn-group w-100" role="group">
+
+                                    <button type="button"
+                                            class="btn btn-outline-danger btn-sm priority-btn"
+                                            data-val="Hot">
+                                        🔥 Hot
+                                    </button>
+
+                                    <button type="button"
+                                            class="btn btn-outline-warning btn-sm priority-btn"
+                                            data-val="Warm">
+                                        ☀ Warm
+                                    </button>
+
+                                    <button type="button"
+                                            class="btn btn-outline-success btn-sm priority-btn"
+                                            data-val="Cold">
+                                        ❄ Cold
+                                    </button>
+
+                                </div>
+
+                                <input asp-for="Lead.Priority" type="hidden" id="priorityHidden" />
+
+                            </div>
+
+
+                            <!-- Activity Type -->
+                            <div class="col-12">
+
+                                <label class="form-label fw-semibold small text-muted">Activity Type</label>
+
+                                <div class="d-flex flex-wrap gap-2">
+
+                                    <input type="radio" class="btn-check" id="catPhone" value="Phone" asp-for="Lead.ActivityType">
+                                    <label class="btn btn-outline-danger btn-sm" for="catPhone">
+                                        <i class="bi bi-telephone-fill me-1"></i> Phone
+                                    </label>
+
+                                    <input type="radio" class="btn-check" id="catEmail" value="Email" asp-for="Lead.ActivityType">
+                                    <label class="btn btn-outline-primary btn-sm" for="catEmail">
+                                        <i class="bi bi-envelope-fill me-1"></i> Email
+                                    </label>
+
+                                    <input type="radio" class="btn-check" id="catMeeting" value="Meeting" asp-for="Lead.ActivityType">
+                                    <label class="btn btn-outline-success btn-sm" for="catMeeting">
+                                        <i class="bi bi-people-fill me-1"></i> Meeting
+                                    </label>
+
+                                    <input type="radio" class="btn-check" id="catDemo" value="Demo" asp-for="Lead.ActivityType">
+                                    <label class="btn btn-outline-info btn-sm" for="catDemo">
+                                        <i class="bi bi-play-fill me-1"></i> Demo
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Follow Up Section -->
+                            <div class="col-12 border-top pt-4">
+
+                                <div class="row g-4">
+
+                                    <div class="col-lg-4">
+
+                                        <label class="form-label fw-semibold small text-muted">
+                                            Follow Up <span class="text-danger">*</span>
+                                        </label>
+
+                                        <input asp-for="Lead.FollowUpDate"
+                                               type="date"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+
+                                    <div class="col-lg-4">
+
+                                        <label class="form-label fw-semibold small text-muted">Time</label>
+
+                                        <input asp-for="Lead.FollowUpTime"
+                                               type="time"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+
+                                    <div class="col-lg-4">
+
+                                        <label class="form-label fw-semibold small text-muted">Expected Closure</label>
+
+                                        <input asp-for="Lead.ExpectedClosureDate"
+                                               type="date"
+                                               class="form-control form-control-sm">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Qualification Section -->
+                            <div class="col-12 border-top pt-4">
+
+                                <div class="row g-4">
+
+                                    <div class="col-lg-2">
+
+                                        <div class="form-check mt-4">
+
+                                            <input asp-for="Lead.IsQualified"
+                                                   class="form-check-input"
+                                                   type="checkbox">
+
+                                            <label class="form-check-label fw-semibold small">
+                                                Qualified
+                                            </label>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="col-lg-4">
+
+                                        <label class="form-label fw-semibold small text-muted">
+                                            Qualification Notes
+                                        </label>
+
+                                        <input asp-for="Lead.QualificationNotes"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+
+                                    <div class="col-lg-2">
+
+                                        <label class="form-label fw-semibold small text-muted">
+                                            Budget
+                                        </label>
+
+                                        <input asp-for="Lead.Budget"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+
+                                    <div class="col-lg-2">
+
+                                        <label class="form-label fw-semibold small text-muted">
+                                            Decision Date
+                                        </label>
+
+                                        <input asp-for="Lead.DecisionDate"
+                                               type="date"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+
+                                    <div class="col-lg-2">
+
+                                        <label class="form-label fw-semibold small text-muted">
+                                            Probability %
+                                        </label>
+
+                                        <input asp-for="Lead.Probability"
+                                               type="number"
+                                               min="0"
+                                               max="100"
+                                               class="form-control form-control-sm">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="mt-4 d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <a asp-action="Index" class="btn btn-link">Cancel</a>
+
+            <!-- Comments & Notes Tab -->
+            <div class="tab-pane fade" id="commentsTab" role="tabpanel" aria-labelledby="comments-tab">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
+                        <span class="small fw-bold text-muted text-uppercase">Comments & Notes</span>
+                        <select id="commentTemplate" class="form-select form-select-sm w-auto border-0 text-primary fw-bold">
+                            <option value="">Quick Templates</option>
+                            @foreach (var t in (Model.CommentTemplates as SelectList ?? new SelectList(Enumerable.Empty<SelectListItem>())))
+                            {
+                                <option value="@t.Value">@t.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="card-body p-0">
+
+                        @* show existing comments when editing *@
+                        @if (Model.Mode == "edit" && Model.Lead?.Comments != null && Model.Lead.Comments.Any())
+                        {
+                            <div class="p-3 border-bottom">
+                                <div class="small text-muted mb-2">Previous comments</div>
+                                <ul class="list-unstyled mb-0">
+                                    @foreach (var c in Model.Lead.Comments.OrderByDescending(x => x.CreatedAt))
+                                    {
+                                        <li class="mb-2">
+                                            <div class="fw-semibold">@(!string.IsNullOrWhiteSpace(c.Content) ? c.Content : "(no content)")</div>
+                                            <div class="small text-muted">@c.CreatedAt.ToString("dd-MMM-yyyy HH:mm")</div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+
+                        <div class="p-3">
+                            <textarea id="comments" name="Comments" class="form-control border-0 rounded-0" rows="6" placeholder="Type notes here..."></textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
+
+
+
+            <!-- for user right -->
+            <div class="tab-pane fade" id="RightsTab" role="tabpanel">
+
+                <h6 class="text-uppercase fw-bold text-secondary mb-3">User Rights</h6>
+
+                <!-- Add User Rights -->
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body">
+
+                        <div class="row g-2 align-items-end">
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Select User</label>
+                                <select id="userSelect" class="form-select form-select-sm"
+                                        asp-items="Model.Users">
+                                    <option value="">Select User</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-check mt-4">
+                                    <input class="form-check-input" type="checkbox" id="canView">
+                                    <label class="form-check-label">View</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-check mt-4">
+                                    <input class="form-check-input" type="checkbox" id="canEdit">
+                                    <label class="form-check-label">Edit</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary btn-sm mt-3" id="addUserRight">
+                                    Add
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Rights Table -->
+                <table class="table table-sm table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>User</th>
+                            <th>Can View</th>
+                            <th>Can Edit</th>
+                            <th width="100">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="rightsTableBody">
+
+                        @{
+                            var existingRights = Model.UserLeadRights ?? new List<UserLeadRightsViewModel>();
+                            for (int ri = 0; ri < existingRights.Count; ri++)
+                            {
+                                var r = existingRights[ri];
+                                <tr data-index="@ri">
+                                    <td>
+                                        @r.UserName
+                                        <input type="hidden" name="Lead.UserLeadRights[@ri].Id" value="@r.Id" />
+                                        <input type="hidden" name="Lead.UserLeadRights[@ri].UserId" value="@r.UserId" />
+                                        <input type="hidden" name="Lead.UserLeadRights[@ri].LeadId" value="@r.LeadId" />
+                                    </td>
+                                    <td>
+                                        @(r.CanView ? "✔️" : "❌")
+                                        <input type="hidden" name="Lead.UserLeadRights[@ri].CanView" value="@(r.CanView ? "true" : "false")" />
+                                    </td>
+                                    <td>
+                                        @(r.CanEdit ? "✔️" : "❌")
+                                        <input type="hidden" name="Lead.UserLeadRights[@ri].CanEdit" value="@(r.CanEdit ? "true" : "false")" />
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-danger remove-right">Remove</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Product Details Tab -->
+            <div class="tab-pane fade" id="productTab" role="tabpanel" aria-labelledby="product-tab">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="text-uppercase fw-bold text-secondary mb-0"
+                        style="font-size: 0.8rem; letter-spacing: 1px;">
+                        Product Details
+                    </h6>
+                    <div>
+                        <button type="button" class="btn btn-success btn-sm px-3 shadow-sm" id="addProduct">
+                            <i class="bi bi-plus-lg"></i> Add Row
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm add-product-btn " id="addNewProduct">
+                            <i class="bi bi-plus-lg"></i> Add New Product
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive shadow-sm rounded border bg-white mb-4">
+                    <table class="table table-sm table-hover align-middle mb-0" id="productTable" style="min-width: 1200px;">
+                        <thead class="bg-light text-muted small text-uppercase">
+                            <tr>
+                                <th style="width: 180px;">Product Name</th>
+                                <th class="ps-3" style="width: 140px;">Category</th>
+                                <th class="ps-3" style="width: 140px;">Pro.Group</th>
+                                <th class="text-center" style="width: 70px;">Qty</th>
+                                <th class="text-end" style="width: 100px;">Price</th>
+                                <th class="text-end" style="width: 100px;">Sale Val</th>
+                                <th class="text-center" style="width: 80px;">Tax %</th>
+                                <th class="text-end" style="width: 100px;">Tax Val</th>
+                                <th class="text-end" style="width: 110px;">Total</th>
+                                <th class="text-end" style="width: 100px;">Cost</th>
+                                <th class="text-end" style="width: 100px;">Profit</th>
+                                <th style="width: 40px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="productBody">
+                            <tr class="product-row">
+
+                                @* leadproduct-id = LeadItem.Id (used to update/delete existing LeadItems) *@
+                                <input type="hidden" class="leadproduct-id" name="Lead.ProductItems[0].LeadProductId" />
+                                @* product-id = Product.Id (reference to product catalog) *@
+                                <input type="hidden" class="product-id" name="Lead.ProductItems[0].ProductId" />
+                                <td>
+                                    <div class="d-flex gap-1 align-items-center">
+                                        <input list="productList"
+                                               class="form-control form-control-sm border-0 bg-transparent fw-bold text-primary product-name"
+                                               placeholder="Type product name..." name="Lead.ProductItems[0].ProductName" />
+                                        
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm category" readonly name="Lead.ProductItems[0].CategoryName" />
+                                    <input type="hidden" class="category-id" name="Lead.ProductItems[0].CategoryId" />
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm productgroup" readonly name="Lead.ProductItems[0].ProductGroup" />
+                                </td>
+                                <td><input type="number" class="form-control form-control-sm border-0 bg-transparent text-center qty" name="Lead.ProductItems[0].Quantity" value="1" /></td>
+                                <td><input type="number" class="form-control form-control-sm border-0 bg-transparent text-end unitprice" name="Lead.ProductItems[0].UnitPrice" value="0" /></td>
+                                <td><input type="text" class="form-control form-control-sm border-0 bg-light text-end salevalue" name="Lead.ProductItems[0].SaleValue" readonly /></td>
+                                <td><input type="number" class="form-control form-control-sm border-0 bg-transparent text-center taxpct" name="Lead.ProductItems[0].TaxPercentage" value="0" readonly /></td>
+                                <td><input type="text" class="form-control form-control-sm border-0 bg-light text-end taxvalue" name="Lead.ProductItems[0].TaxValue" readonly /></td>
+                                <td><input type="text" class="form-control form-control-sm border-0 bg-light text-end fw-bold gtotal" name="Lead.ProductItems[0].GrossTotal" readonly /></td>
+                                <td><input type="number" class="form-control form-control-sm border-0 bg-transparent text-end cost" name="Lead.ProductItems[0].Cost" value="0" readonly /></td>
+                                <td><input type="text" class="form-control form-control-sm border-0 bg-light text-end fw-bold grossprofit" name="Lead.ProductItems[0].GrossProfit" readonly /></td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-link text-danger p-0 remove-row"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Totals -->
+                <div class="row mb-4">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <div class="card p-2 shadow-sm">
+                            <div class="d-flex justify-content-between small text-muted mb-1"><div>Subtotal</div><div id="leadSubtotal">0.00</div></div>
+                            <div class="d-flex justify-content-between small text-muted mb-1"><div>Tax Total</div><div id="leadTaxTotal">0.00</div></div>
+                            <div class="d-flex justify-content-between small text-muted mb-1"><div>Total Cost</div><div id="leadTotalCost">0.00</div></div>
+                            <div class="d-flex justify-content-between fw-bold"><div>Gross Total</div><div id="leadGrossTotal">0.00</div></div>
+                            <div class="d-flex justify-content-between small text-muted mt-2"><div>Gross Profit</div><div id="leadGrossProfit">0.00</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hidden aggregate inputs for model binding -->
+                <input type="hidden" name="Lead.SubTotal" />
+                <input type="hidden" name="Lead.TaxTotal" />
+                <input type="hidden" name="Lead.TotalCost" />
+                <input type="hidden" name="Lead.GrossProfit" />
+
+                <datalist id="productList">
+                    @foreach (var p in Model.ProductList)
+                    {
+                        <option value="@p.Text" data-id="@p.Value" data-category="@p.Category" data-progroup="@p.ProGroup"></option>
+                    }
+                </datalist>
+            </div>
+        </div>
+
+        <!-- Hidden container for selected activities (will be populated by JS) -->
+        <div id="selectedActivitiesContainer"></div>
+
+        <!-- Hidden inputs for selected activities (client will add Lead.SelectedActivities[n]) -->
+        <div id="selectedActivitiesInputs"></div>
+
+     </div>
+ </form>
+
+<!-- Create Products -->
+<div class="modal fade" id="addProductModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="mb-2">
+                    <label>Product Name</label>
+                    <input type="text" id="newProductName" class="form-control">
+                </div>
+
+                <div class="mb-2">
+                    <label>Category</label>
+                    <select id="newProductCategory" class="form-select form-select-sm"
+                            asp-items="Model.Categories">
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+
+                <div class="mb-2">
+                    <label>Pro.Group</label>
+                    <select id="newPro_Group" class="form-select form-select-sm"
+                            asp-items="Model.Pro_Groups">
+                        <option value="">Select Pro.Group</option>
+                    </select>
+                </div>
+
+
+                <div class="mb-2">
+                    <label>Cost</label>
+                    <input type="number" id="newProductCost" class="form-control">
+                </div>
+
+                <div class="mb-2">
+                    <label>Tax %</label>
+                    <input type="number" id="newProductTax" class="form-control">
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                <button class="btn btn-primary" id="saveNewProduct">Save Product</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Create Individual Contact Modal -->
+<div class="modal fade" id="createContactModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Create Individual Contact</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="mb-2">
+                    <label class="form-label">Name</label>
+                    <input type="text" id="contactName" class="form-control form-control-sm" />
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Phone</label>
+                    <input type="text" id="contactPhone" class="form-control form-control-sm" />
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="contactEmail" class="form-control form-control-sm" />
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Location</label>
+                    <input type="text" id="contactLocation" class="form-control form-control-sm" />
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-primary" id="saveContactBtn">Save Contact</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal to create a new activity name for selected status -->
+<div class="modal fade" id="addActivityModal" tabindex="-1" aria-labelledby="addActivityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addActivityModalLabel">Add Activity for Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <input type="text" id="modalStatusName" class="form-control" readonly />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Activity Name</label>
+                    <input type="text" id="newActivityName" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="saveActivityBtn" class="btn btn-primary">Save Activity</button>
+            </div>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
+        // simple rights manager: add selected user with view/edit flags into hidden inputs for form submission
         (function(){
-            const mapping = @Html.Raw(ViewBag.StatusActivitiesJson ?? "{}");
+            var addBtn = document.getElementById('addUserRight');
+            var userSelect = document.getElementById('userSelect');
+            var canView = document.getElementById('canView');
+            var canEdit = document.getElementById('canEdit');
+            var rightsBody = document.getElementById('rightsTableBody');
+            var index = rightsBody.querySelectorAll('tr').length;
 
-            function renderSuggested(statusId) {
-                const area = $('#suggestedActivitiesArea');
-                area.empty();
-                if (!statusId) {
-                    area.append('<p class="text-muted">Select a status to see suggested activities.</p>');
-                    return;
-                }
-
-                const statusText = $('#statusSelect option:selected').text();
-                const activities = mapping[statusText];
-                if (!activities || activities.length === 0) {
-                    area.append('<p class="text-muted">No suggested activities for this status.</p>');
-                    return;
-                }
-
-                const list = $('<div class="d-flex flex-wrap"></div>');
-                activities.forEach(function(a, i){
-                    const btn = $(`<div class="m-1"><label class="btn btn-outline-primary btn-sm"><input type="checkbox" class="activity-checkbox" value="${a}" /> ${a}</label></div>`);
-                    list.append(btn);
-                });
-                area.append(list);
-
-                $('.activity-checkbox').on('change', function(){
-                    $('#selectedActivitiesContainer').empty();
-                    $('.activity-checkbox:checked').each(function(i, el){
-                        const val = $(el).val();
-                        $('#selectedActivitiesContainer').append(`<input type="hidden" name="SelectedActivities" value="${val}" />`);
-                    });
-                });
+            function createHiddenBool(name, value) {
+                var inp = document.createElement('input');
+                inp.type = 'hidden';
+                inp.name = name;
+                inp.value = value ? 'true' : 'false';
+                return inp;
             }
 
-            $('#statusSelect').on('change', function(){
-                renderSuggested($(this).val());
+            addBtn.addEventListener('click', function(){
+                var uid = userSelect.value;
+                if (!uid) { alert('Select user'); return; }
+
+                var userText = userSelect.options[userSelect.selectedIndex].text.trim();
+                // prevent duplicate user rows (by displayed name)
+                var exists = Array.from(rightsBody.querySelectorAll('tr td:first-child')).some(function(td){ return td.textContent.trim() === userText; });
+                if (exists) { alert('This user is already added'); return; }
+
+                // If Edit is checked, enforce View in UI
+                var effectiveCanView = canView.checked || canEdit.checked;
+
+                // create row with inputs bound to Lead.UserLeadRights[index]
+                var tr = document.createElement('tr');
+                tr.innerHTML = '<td>'+ userText + '<input type="hidden" name="Lead.UserLeadRights['+index+'].UserId" value="'+uid+'" /></td>' +
+                               '<td>' + (effectiveCanView ? '✔️' : '❌') + '<input type="hidden" name="Lead.UserLeadRights['+index+'].CanView" value="'+(effectiveCanView ? 'true' : 'false')+'" /></td>' +
+                               '<td>' + (canEdit.checked ? '✔️' : '❌') + '<input type="hidden" name="Lead.UserLeadRights['+index+'].CanEdit" value="'+(canEdit.checked ? 'true' : 'false')+'" /></td>' +
+                               '<td><button type="button" class="btn btn-sm btn-danger remove-right">Remove</button></td>';
+
+                rightsBody.appendChild(tr);
+                index++;
+
+                // clear checkboxes
+                canView.checked = false; canEdit.checked = false;
             });
 
-            // initial
-            renderSuggested($('#statusSelect').val());
+            rightsBody.addEventListener('click', function(e){
+                if (e.target && e.target.matches('.remove-right')) {
+                    var row = e.target.closest('tr');
+                    row.remove();
+                }
+            });
         })();
+    </script>
+    <script>
+        window.leadsCreateConfig = {
+            productsMap: @Html.Raw(Model.ProductsJson ?? "{}"),
+            initialItems: @Html.Raw(JsonSerializer.Serialize(Model.Lead.ProductItems ?? new System.Collections.Generic.List<seashore_CRM.BLL.DTOs.LeadProductDto>())),
+            initialPriority: @Html.Raw(JsonSerializer.Serialize(Model.Lead.Priority)),
+            initialActivityType: @Html.Raw(JsonSerializer.Serialize(Model.Lead.ActivityType)),
+            initialSelectedActivities: @Html.Raw(JsonSerializer.Serialize(Model.Lead.SelectedActivities ?? new System.Collections.Generic.List<string>())),
+            initialActivityId: @Html.Raw(JsonSerializer.Serialize(Model.Lead.ActivityId)),
+            initialContactId: @Html.Raw(JsonSerializer.Serialize(Model.Lead.ContactId)),
+            initialIndividualCustomerId: @Html.Raw(JsonSerializer.Serialize(Model.Lead.IndividualCustomerId)),
+            urls: {
+                activitiesByStatus: '@Url.Action("ActivitiesByStatus", "Leads")',
+                addStatusActivity: '@Url.Action("AddStatusActivity", "Leads")',
+                contactsByCompany: '@Url.Action("ContactsByCompany", "Leads")',
+                productGroupsByCategory: '@Url.Action("ProductGroupsByCategory", "Leads")',
+                quickCreateProduct: '@Url.Action("QuickCreate", "Products")',
+                createIndividualContact: '@Url.Action("CreateIndividual", "Contacts")',
+                getProductDetails: '@Url.Action("GetProductDetails", "Products")'
+            }
+        };
+    </script>
+
+    <script>
+        (function ($) {
+            $(function () {
+                // =======================
+                // 1. Initialize Variables
+                // =======================
+                let idx = 1;
+                const productsMap = (window.leadsCreateConfig && window.leadsCreateConfig.productsMap) || {};
+                const initialItems = (window.leadsCreateConfig && window.leadsCreateConfig.initialItems) || [];
+                const initialPriority = (window.leadsCreateConfig && window.leadsCreateConfig.initialPriority) || null;
+                const initialActivityType = (window.leadsCreateConfig && window.leadsCreateConfig.initialActivityType) || null;
+                const initialSelectedActivities = (window.leadsCreateConfig && window.leadsCreateConfig.initialSelectedActivities) || [];
+                let currentProductSelect = null;
+                // rights index starts after existing rows
+                let rightsIndex = ($('#rightsTableBody tr').length) || 0;
+
+                // Build convenient local lookup maps used by the UI. Server sends a combined object
+                // with keys 'byId', 'byName' and 'legacy'. Ensure these exist so client code
+                // does not throw ReferenceErrors when trying to access them.
+                const productsById = (productsMap && productsMap.byId) ? productsMap.byId : {};
+                const productsByName = (productsMap && productsMap.byName) ? productsMap.byName : {};
+                const productsLegacy = (productsMap && productsMap.legacy) ? productsMap.legacy : {};
+
+                // =======================
+                // Utility: recalc row totals
+                // =======================
+                function recalcRow(tr) {
+                    const q = parseFloat(tr.find('.qty').val() || 0);
+                    const u = parseFloat(tr.find('.unitprice').val() || 0);
+                    const tP = parseFloat(tr.find('.taxpct').val() || 0);
+                    const c = parseFloat(tr.find('.cost').val() || 0);
+
+                    const s = q * u;
+                    const tV = s * (tP / 100);
+                    const g = s + tV;
+                    const p = s - (c * q);
+
+                    tr.find('.salevalue').val(s.toFixed(2));
+                    tr.find('.taxvalue').val(tV.toFixed(2));
+                    tr.find('.gtotal').val(g.toFixed(2));
+                    tr.find('.grossprofit').val(p.toFixed(2));
+
+                    // also update hidden inputs on the row if present (for server binding)
+                    const indexMatch = tr.find('.product-id').attr('name') ? tr.find('.product-id').attr('name').match(/Lead\.ProductItems\[(\d+)\]/) : null;
+                    if (indexMatch) {
+                        const i = indexMatch[1];
+                        // ensure hidden inputs for calculated values exist and are updated
+                        updateOrCreateHidden(tr, `Lead.ProductItems[${i}].SaleValue`, s.toFixed(2));
+                        updateOrCreateHidden(tr, `Lead.ProductItems[${i}].TaxValue`, tV.toFixed(2));
+                        updateOrCreateHidden(tr, `Lead.ProductItems[${i}].GrossTotal`, g.toFixed(2));
+                        updateOrCreateHidden(tr, `Lead.ProductItems[${i}].GrossProfit`, p.toFixed(2));
+                    }
+                }
+
+                function updateOrCreateHidden(tr, name, value) {
+                    let hd = tr.find(`input[type=hidden][name="${name}"]`);
+                    if (hd.length) {
+                        hd.val(value);
+                    } else {
+                        tr.append(`<input type="hidden" name="${name}" value="${value}" />`);
+                    }
+                }
+
+                // =======================
+                // Aggregate totals
+                // =======================
+                function recalcAll() {
+                    let subTotal = 0;
+                    let taxTotal = 0;
+                    let grossTotal = 0;
+                    let totalCost = 0;
+                    let grossProfit = 0;
+
+                    $('#productBody tr').each(function () {
+                        const tr = $(this);
+                        const s = parseFloat(tr.find('.salevalue').val() || 0);
+                        const tV = parseFloat(tr.find('.taxvalue').val() || 0);
+                        const g = parseFloat(tr.find('.gtotal').val() || 0);
+                        const c = parseFloat(tr.find('.cost').val() || 0);
+                        const q = parseFloat(tr.find('.qty').val() || 0);
+                        const p = parseFloat(tr.find('.grossprofit').val() || 0);
+
+                        subTotal += s;
+                        taxTotal += tV;
+                        grossTotal += g;
+                        totalCost += (c * q);
+                        grossProfit += p;
+                    });
+
+                    // update UI fields if present
+                    $('#leadSubtotal').text(subTotal.toFixed(2));
+                    $('#leadTaxTotal').text(taxTotal.toFixed(2));
+                    $('#leadGrossTotal').text(grossTotal.toFixed(2));
+                    $('#leadTotalCost').text(totalCost.toFixed(2));
+                    $('#leadGrossProfit').text(grossProfit.toFixed(2));
+
+                    // update hidden inputs for server
+                    setHidden('Lead.SubTotal', subTotal.toFixed(2));
+                    setHidden('Lead.TaxTotal', taxTotal.toFixed(2));
+                    setHidden('Lead.GrossTotal', grossTotal.toFixed(2));
+                    setHidden('Lead.TotalCost', totalCost.toFixed(2));
+                    setHidden('Lead.GrossProfit', grossProfit.toFixed(2));
+                }
+
+                function setHidden(name, value) {
+                    let el = $(`input[type=hidden][name="${name}"]`);
+                    if (el.length) el.val(value);
+                    else $('#productTable').after(`<input type="hidden" name="${name}" value="${value}" />`);
+                }
+
+                // =======================
+                // Lead Type Logic
+                // =======================
+                function toggleCompany() {
+                    const isCorporate = $('#leadCorporate').is(':checked');
+                    $('#companySelect').prop('disabled', !isCorporate);
+
+                    if (!isCorporate) {
+                        $('#corporateContactDiv, #companySelectDiv').hide();
+                        $('#companySelect').val('');
+                        $('#individualContactDiv').show();
+                        $('#individualContactSelect').prop('disabled', false).val('');
+                        $('#corporateContactSelect').empty().append('<option value="">-- Select Contact --</option>').prop('disabled', true);
+                    } else {
+                        $('#corporateContactDiv, #companySelectDiv').show();
+                        $('#individualContactDiv').hide();
+                        $('#individualContactSelect').prop('disabled', true);
+                        if ($('#companySelect').val()) $('#companySelect').trigger('change');
+                        else $('#corporateContactSelect').empty().append('<option value="">-- Select Contact --</option>').prop('disabled', true);
+                    }
+                }
+                $('input[name="Lead.LeadType"]').on('change', toggleCompany);
+                toggleCompany();
+
+                // =======================
+                // Priority Button Group
+                // =======================
+                function setPriorityButtons(val) {
+                    $('.priority-btn').removeClass('active btn-danger btn-warning btn-success').addClass('btn-outline-secondary');
+                    $('.priority-btn').each(function () {
+                        if ($(this).data('val') === val) {
+                            $(this).addClass('active');
+                            if (val === 'Hot') $(this).removeClass('btn-outline-secondary').addClass('btn-danger');
+                            if (val === 'Warm') $(this).removeClass('btn-outline-secondary').addClass('btn-warning');
+                            if (val === 'Cold') $(this).removeClass('btn-outline-secondary').addClass('btn-success');
+                        }
+                    });
+                    $('#priorityHidden').val(val || '');
+                }
+
+                $('.priority-btn').click(function () {
+                    const val = $(this).data('val');
+                    setPriorityButtons(val);
+                });
+
+                // set initial priority from server if provided
+                if (initialPriority) setPriorityButtons(initialPriority);
+
+                // =======================
+                // Activity Type buttons
+                // =======================
+                function setActivityType(val) {
+                    if (!val) return;
+                    $('input[name="Lead.ActivityType"]').prop('checked', false);
+                    $(`input[name="Lead.ActivityType"][value="${val}"]`).prop('checked', true);
+                }
+                if (initialActivityType) setActivityType(initialActivityType);
+
+                // =======================
+                // Status and Activity Change
+                // =======================
+                $('#statusSelect').on('change', function () {
+                    const statusId = $(this).val();
+                    const $activitySelect = $('#StatusActivitySelect');
+
+                    if (!statusId) {
+                        $activitySelect.empty().append('<option value="">-- Select Activities --</option>').prop('disabled', true);
+                        return;
+                    }
+
+                    $.get(window.leadsCreateConfig.urls.activitiesByStatus, { statusId }, function (data) {
+                        $activitySelect.empty().append('<option value="">-- Select Activities --</option>');
+                        if (data && data.length) {
+                            data.forEach(a => $activitySelect.append('<option value="' + a.id + '">' + a.name + '</option>'));
+                            $activitySelect.prop('disabled', false);
+
+                            // if editing, select existing activity id by matching name
+                            if (initialSelectedActivities && initialSelectedActivities.length) {
+                                // try to select the first matching available activity
+                                const firstMatch = data.find(d => initialSelectedActivities.includes(d.name));
+                                if (firstMatch) $activitySelect.val(firstMatch.id);
+                            }
+
+                            // if editing and initialActivityId provided, select it directly
+                            if (window.leadsCreateConfig && window.leadsCreateConfig.initialActivityId) {
+                                $activitySelect.val(window.leadsCreateConfig.initialActivityId);
+                            }
+                        } else $activitySelect.prop('disabled', true);
+                    }).fail(() => console.log("Activity load failed"));
+                });
+
+                $('#addStatusActivityBtn').on('click', function (e) {
+                    e.preventDefault();
+                    const statusText = $('#statusSelect option:selected').text();
+                    $('#modalStatusName').val(statusText);
+                    new bootstrap.Modal(document.getElementById('addActivityModal')).show();
+                });
+
+                $('#saveActivityBtn').on('click', function () {
+                    const statusName = $('#modalStatusName').val();
+                    const activityName = $('#newActivityName').val().trim();
+                    if (!statusName || statusName === '-- Select Status --') return alert('Please select a status first.');
+                    if (!activityName) return alert('Enter activity name.');
+                    const token = $('input[name="__RequestVerificationToken"]').first().val();
+
+                    $.post(window.leadsCreateConfig.urls.addStatusActivity, {
+                        statusName, activityName, __RequestVerificationToken: token
+                    }, function (resp) {
+                        if (resp && resp.success) {
+                            bootstrap.Modal.getInstance(document.getElementById('addActivityModal')).hide();
+                            $('#newActivityName').val('');
+                        } else alert('Failed to add activity');
+                    }).fail(() => alert('Error while adding activity'));
+                });
+
+                // =======================
+                // Comments Template
+                // =======================
+                $('#commentTemplate').on('change', function () {
+                    const txt = $(this).find("option:selected").text();
+                    if ($(this).val()) {
+                        const box = $('#comments');
+                        box.val((box.val() ? box.val() + "\n" : "") + txt);
+                        $(this).val("");
+                    }
+                });
+
+                // =======================
+                // Product Row Management & Calculations
+                // =======================
+                function prepareRow(row, index) {
+                    // update name attributes for model binding
+                    row.find('input, select').each(function () {
+                        const cls = $(this).attr('class') || '';
+                        // map based on class to expected DTO property name
+                    if ($(this).hasClass('leadproduct-id')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].LeadProductId`);
+                        }
+                        else if ($(this).hasClass('product-id')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].ProductId`);
+                        } else if ($(this).hasClass('product-name')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].ProductName`);
+                        } else if ($(this).hasClass('category-id')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].CategoryId`);
+                        } else if ($(this).hasClass('category')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].CategoryName`);
+                        } else if ($(this).hasClass('productgroup')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].ProductGroup`);
+                        } else if ($(this).hasClass('qty')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].Quantity`);
+                        } else if ($(this).hasClass('unitprice')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].UnitPrice`);
+                        } else if ($(this).hasClass('taxpct')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].TaxPercentage`);
+                        } else if ($(this).hasClass('cost')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].Cost`);
+                        } else if ($(this).hasClass('salevalue')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].SaleValue`);
+                        } else if ($(this).hasClass('taxvalue')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].TaxValue`);
+                        } else if ($(this).hasClass('gtotal')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].GrossTotal`);
+                        } else if ($(this).hasClass('grossprofit')) {
+                            $(this).attr('name', `Lead.ProductItems[${index}].GrossProfit`);
+                        }
+                    });
+
+                    // bind change events for calculation
+                    row.find('.qty, .unitprice, .taxpct, .cost').off('input change').on('input change', function () {
+                        recalcRow(row);
+                        recalcAll();
+                    });
+
+                    // ensure remove button exists and bound
+                    row.find('.remove-row').off('click').on('click', function () {
+                        if ($('#productBody tr').length > 1) {
+                            row.remove();
+                            recalcAll();
+                        } else {
+                            alert('At least one product row is required.');
+                        }
+                    });
+                }
+
+                $('#addProduct').click(function () {
+                    const index = $('#productBody tr').length;
+                    const newRow = $('#productBody tr:first').clone();
+                    // remove values in clone
+                    newRow.find('input, select').val('');
+                    prepareRow(newRow, index);
+                    // remove any hidden calculated inputs to avoid duplicates
+                    newRow.find('input[type=hidden]').not('.product-id').remove();
+                    $('#productBody').append(newRow);
+                    recalcAll();
+                });
+
+                // initial preparation for existing first row
+                prepareRow($('#productBody tr:first'), 0);
+
+                $(document).on('click', '.remove-row', function () {
+                    if ($('#productBody tr').length > 1) $(this).closest('tr').remove();
+                    else alert('At least one product row is required.');
+                    recalcAll();
+                });
+
+                // If initialItems exist, render them into rows
+                function renderInitialItems(items) {
+                    if (!items || !items.length) return;
+                    // Save a template row (clone it) before we clear the table. Cloning after empty()
+                    // would fail because there would be no element to clone.
+                    const templateRow = $('#productBody tr.product-row').first().clone();
+
+                    // clear existing rows
+                    $('#productBody').empty();
+
+                    items.forEach(function (it, i) {
+                        // clone the saved template
+                        const newRow = templateRow.clone();
+                        // set display values (support camelCase or PascalCase)
+                        const productName = it.ProductName || it.productName || '';
+                        const productId = it.ProductId || it.productId || '';
+                        const leadProductId = it.LeadProductId || it.leadProductId || '';
+                        const quantity = it.Quantity || it.quantity || 1;
+                        const unitPrice = it.UnitPrice || it.unitPrice || 0;
+                        const taxPct = it.TaxPercentage || it.taxPercentage || 0;
+                        const cost = it.Cost || it.cost || 0;
+                        const categoryName = it.CategoryName || it.categoryName || '';
+                        const categoryId = it.CategoryId || it.categoryId || '';
+                        const productGroup = it.ProductGroup || it.productGroup || '';
+
+                        newRow.find('.product-name').val(productName);
+                        newRow.find('.product-id').val(productId);
+                        newRow.find('.leadproduct-id').val(leadProductId);
+                        newRow.find('.qty').val(quantity);
+                        newRow.find('.unitprice').val(unitPrice);
+                        newRow.find('.taxpct').val(taxPct);
+                        newRow.find('.cost').val(cost);
+                        newRow.find('.category').val(categoryName);
+                        newRow.find('.category-id').val(categoryId);
+                        newRow.find('.productgroup').val(productGroup);
+
+                        // set proper name attributes
+                        prepareRow(newRow, i);
+
+                        // ensure hidden fields for server values are present (they will be created by prepareRow)
+                        recalcRow(newRow);
+                        $('#productBody').append(newRow);
+                    });
+                    recalcAll();
+                }
+
+                renderInitialItems(initialItems);
+
+                // =======================
+                // Rights: add / remove
+                // =======================
+                $('#addUserRight').on('click', function () {
+                    const userId = $('#userSelect').val();
+                    const userName = $('#userSelect option:selected').text().trim();
+                    const canView = $('#canView').is(':checked');
+                    const canEdit = $('#canEdit').is(':checked');
+
+                    if (!userId) return alert('Select a user');
+
+                    let existingInput = null;
+                    $('#rightsTableBody').find('input[type="hidden"]').each(function () {
+                        const name = $(this).attr('name') || '';
+                        if (name.endsWith('.UserId') && $(this).val() == userId) {
+                            existingInput = $(this);
+                            return false; // break
+                        }
+                    });
+
+                    function renderIcon(val) { return val ? '??' : '?'; }
+
+                    if (existingInput) {
+                        const name = existingInput.attr('name');
+                        const idx = name.substring(name.indexOf('[') + 1, name.indexOf(']'));
+                        const row = $('#rightsTableBody').find('tr[data-index="' + idx + '"]');
+
+                        row.find('td').eq(1).html(renderIcon(canView));
+                        row.find('td').eq(2).html(renderIcon(canEdit));
+
+                        let canViewInput = row.find('input[name="UserLeadRights[' + idx + '].CanView"]');
+                        if (canViewInput.length) canViewInput.val(canView);
+                        else row.find('td').eq(1).append('<input type="hidden" name="UserLeadRights[' + idx + '].CanView" value="' + canView + '" />');
+
+                        let canEditInput = row.find('input[name="UserLeadRights[' + idx + '].CanEdit"]');
+                        if (canEditInput.length) canEditInput.val(canEdit);
+                        else row.find('td').eq(2).append('<input type="hidden" name="UserLeadRights[' + idx + '].CanEdit" value="' + canEdit + '" />');
+
+                        alert('This user already exists. Rights have been updated.');
+
+                        $('#userSelect').val('');
+                        $('#canView, #canEdit').prop('checked', false);
+                        return;
+                    }
+
+                    const tr = $(`<tr data-index="${rightsIndex}"></tr>`);
+                    const tdUser = $(`<td></td>`).text(userName)
+                        .append(`<input type="hidden" name="UserLeadRights[${rightsIndex}].Id" value="0" />`)
+                        .append(`<input type="hidden" name="UserLeadRights[${rightsIndex}].UserId" value="${userId}" />`)
+                        .append(`<input type="hidden" name="UserLeadRights[${rightsIndex}].LeadId" value="" />`);
+                    const tdView = $(`<td></td>`).html(renderIcon(canView))
+                        .append(`<input type="hidden" name="UserLeadRights[${rightsIndex}].CanView" value="${canView}" />`);
+                    const tdEdit = $(`<td></td>`).html(renderIcon(canEdit))
+                        .append(`<input type="hidden" name="UserLeadRights[${rightsIndex}].CanEdit" value="${canEdit}" />`);
+                    const tdActions = $(`<td></td>`).html(`<button type="button" class="btn btn-sm btn-danger remove-right">Remove</button>`);
+
+                    tr.append(tdUser, tdView, tdEdit, tdActions);
+                    $('#rightsTableBody').append(tr);
+                    rightsIndex++;
+
+                    $('#userSelect').val('');
+                    $('#canView, #canEdit').prop('checked', false);
+                });
+
+                $(document).on('click', '.remove-right', function () {
+                    $(this).closest('tr').remove();
+                });
+
+                // =======================
+                // AJAX: Contacts, Activities, Product Groups
+                // =======================
+                $('#companySelect').on('change', function () {
+                    const companyId = $(this).val();
+                    const $contactSelect = $('#corporateContactSelect');
+
+                    // Always reset dropdown (but DO NOT disable)
+                    $contactSelect.empty().append('<option value="">-- Select Contact --</option>');
+
+                    if (!companyId) {
+                        return; // just keep it empty
+                    }
+
+                    $.get(window.leadsCreateConfig.urls.contactsByCompany, { companyId }, function (data) {
+
+                        if (data && data.length) {
+                            data.forEach(c => {
+                                $contactSelect.append('<option value="' + c.id + '">' + c.name + '</option>');
+                            });
+
+                            // Preselect if editing
+                            const initialContactId = window.leadsCreateConfig?.initialContactId;
+                            if (initialContactId) {
+                                const match = data.find(d => d.id == initialContactId);
+                                if (match) {
+                                    $contactSelect.val(match.id);
+                                }
+                            }
+                        }
+
+                    }).fail(() => {
+                        // Optional: handle error (but don't disable)
+                        console.log("Failed to load contacts");
+                    });
+                });
+
+                $('#newProductCategory').on('change', function () {
+                    const categoryId = $(this).val();
+                    const $proGroupSelect = $('#newPro_Group');
+
+                    if (!categoryId) {
+                        $proGroupSelect.empty().append('<option value="">-- Select Pro.Group --</option>').prop('disabled', true);
+                        return;
+                    }
+
+                    $.get(window.leadsCreateConfig.urls.productGroupsByCategory, { categoryId }, function (data) {
+                        $proGroupSelect.empty().append('<option value="">-- Select Pro.Group --</option>');
+                        if (data && data.length) {
+                            data.forEach(g => $proGroupSelect.append('<option value="' + g.id + '">' + g.name + '</option>'));
+                            $proGroupSelect.prop('disabled', false);
+                        } else $proGroupSelect.prop('disabled', true);
+                    }).fail(() => $proGroupSelect.prop('disabled', true));
+                });
+
+                // =======================
+                // Modal AJAX: Products
+                // =======================
+                $(document).on("click", ".add-product-btn", function () {
+                    currentProductSelect = $(this).closest("td").find(".product-select");
+                    new bootstrap.Modal(document.getElementById('addProductModal')).show();
+                });
+
+                $("#saveNewProduct").click(function () {
+                    const data = {
+                        ProductName: $("#newProductName").val(),
+                        CategoryId: $("#newProductCategory").val(),
+                        ProductGroupId: $("#newPro_Group").val(),
+                        Cost: $("#newProductCost").val(),
+                        TaxPercentage: $("#newProductTax").val()
+                    };
+
+                    if (!data.ProductName) return alert("Enter product name");
+                    if (!data.CategoryId) return alert("Select category");
+                    if (!data.Cost) return alert("Enter cost");
+
+                    $.post(window.leadsCreateConfig.urls.quickCreateProduct, data, function (res) {
+
+                        if (res.success) {
+
+                            // Use categoryName and productGroupName (not IDs) for data attributes so UI shows names immediately
+                            $("#productList").append(`\n                        <option value="${res.name}"\n                                data-id="${res.id}"\n                                data-category="${res.categoryName || ''}"\n                                data-progroup="${res.productGroupName || ''}">\n                        </option>\n                    `);
+
+                            // update local product map with human-readable names
+                            productsMap[res.id] = {
+                                cost: res.cost,
+                                tax: res.tax,
+                                categoryName: res.categoryName || '',
+                                productGroupName: res.productGroupName || ''
+                            };
+
+                            bootstrap.Modal.getInstance(document.getElementById('addProductModal')).hide();
+
+                            $("#newProductName, #newProductCategory, #newPro_Group, #newProductCost, #newProductTax").val('');
+
+                        } else {
+                            alert(res.message || "Error saving product");
+                        }
+
+                    }).fail(() => alert("AJAX error. Please try again."));
+                });
+
+                // =======================
+                // Modal AJAX: Individual Contact
+                // =======================
+                $("#saveContactBtn").click(function () {
+                    const data = {
+                        Name: $("#contactName").val(),
+                        Phone: $("#contactPhone").val(),
+                        Email: $("#contactEmail").val(),
+                        Location: $("#contactLocation").val()
+                    };
+
+                    fetch(window.leadsCreateConfig.urls.createIndividualContact, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    })
+                        .then(r => r.json())
+                        .then(res => {
+                            if (res.success) {
+                                const select = $("#individualContactSelect");
+                                select.append(`<option value="${res.id}" selected>${res.name}</option>`);
+                                bootstrap.Modal.getInstance(document.getElementById('createContactModal')).hide();
+                            }
+                        });
+                });
+
+                // =======================
+                // Product Auto Fill on selection
+                // =======================
+                $(document).on('change', '.product-name', function () {
+                    const val = $(this).val();
+                    const row = $(this).closest('tr');
+
+                    if (!val) {
+                        row.find('.category, .productgroup, .cost, .taxpct, .product-id').val('');
+                        recalcRow(row);
+                        recalcAll();
+                        return;
+                    }
+
+                    const option = $('#productList option').filter(function () { return $(this).val() === val; }).first();
+                    let productId = null;
+
+                    if (option.length) {
+                        const category = option.data('category') || '';
+                        const proGroup = option.data('progroup') || '';
+                        productId = option.data('id') || '';
+
+                        row.find('.category').val(category);
+                        row.find('.productgroup').val(proGroup);
+                        row.find('.product-id').val(productId);
+                    } else {
+                        productId = val;
+                        row.find('.product-id').val(productId);
+                    }
+
+                    if (productId && (productsById[productId] || productsLegacy[productId])) {
+                        const mapEntry = productsById[productId] || productsLegacy[productId];
+                        if (mapEntry.categoryName) row.find('.category').val(mapEntry.categoryName);
+                        if (mapEntry.productGroupName) row.find('.productgroup').val(mapEntry.productGroupName);
+                        if (mapEntry.cost !== undefined) row.find('.cost').val(mapEntry.cost);
+                        if (mapEntry.tax !== undefined) row.find('.taxpct').val(mapEntry.tax);
+                        recalcRow(row);
+                        recalcAll();
+                        return;
+                    }
+
+                    // fallback: if selection matched by product name (and there may be duplicates), prefer grouped byName
+                    if (!productId && productsByName[val]) {
+                        const group = productsByName[val];
+                        // if multiple products share the same name, pick the first for now but set product-id to its id
+                        const pick = group[0];
+                        row.find('.product-id').val(pick.id);
+                        if (pick.categoryName) row.find('.category').val(pick.categoryName);
+                        if (pick.productGroupName) row.find('.productgroup').val(pick.productGroupName);
+                        if (pick.cost !== undefined) row.find('.cost').val(pick.cost);
+                        if (pick.tax !== undefined) row.find('.taxpct').val(pick.tax);
+                        recalcRow(row);
+                        recalcAll();
+                        return;
+                    }
+
+                    if (productId) {
+                        $.get(window.leadsCreateConfig.urls.getProductDetails, { id: productId }, function (res) {
+                            if (!res) return;
+
+                            if (res.cost !== undefined) row.find('.cost').val(res.cost);
+                            if (res.tax !== undefined) row.find('.taxpct').val(res.tax);
+                            if (res.categoryName) row.find('.category').val(res.categoryName);
+                            if (res.productGroupName) row.find('.productgroup').val(res.productGroupName);
+
+                            recalcRow(row);
+                            recalcAll();
+                        }).fail(function () {
+                            console.log('Failed to load product details for id:', productId);
+                        });
+                    } else {
+                        recalcRow(row);
+                        recalcAll();
+                    }
+                });
+
+                // Trigger change on pre-selected company/status
+                if ($('#companySelect').val()) $('#companySelect').trigger('change');
+                if ($('#statusSelect').val()) $('#statusSelect').trigger('change');
+                
+                // if editing, pre-select contact / individual customer
+                if (window.leadsCreateConfig && window.leadsCreateConfig.initialContactId) {
+                    // try to set corporate contact first
+                    const corp = $('#corporateContactSelect');
+                    const ind = $('#individualContactSelect');
+                    if (corp.length && corp.find(`option[value="${window.leadsCreateConfig.initialContactId}"]`).length) {
+                        corp.val(window.leadsCreateConfig.initialContactId);
+                    }
+                    if (ind.length && ind.find(`option[value="${window.leadsCreateConfig.initialIndividualCustomerId}"]`).length) {
+                        ind.val(window.leadsCreateConfig.initialIndividualCustomerId);
+                    }
+                }
+
+                // initial totals
+                recalcAll();
+
+            });
+        })(jQuery);
     </script>
 }

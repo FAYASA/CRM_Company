@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using seashore_CRM.BLL.Services.Service_Interfaces;
 using seashore_CRM.BLL.DTOs;
 using Seashore_CRM.ViewModels.Contact;
+using System.Threading.Tasks;
+using FluentValidation;
 
 namespace Seashore_CRM.Controllers
 {
@@ -147,8 +149,21 @@ namespace Seashore_CRM.Controllers
                 CompanyId = cvm.CompanyId
             };
 
-            await _contactService.CreateAsync(dto);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _contactService.CreateAsync(dto);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ValidationException vex)
+            {
+                foreach (var err in vex.Errors)
+                {
+                    if (string.IsNullOrEmpty(err.PropertyName)) ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                    else ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+                }
+                await LoadCompanies();
+                return View(cvm);
+            }
         }
 
         // ===============================
@@ -203,8 +218,21 @@ namespace Seashore_CRM.Controllers
                 RowVersion = cvm.RowVersion
             };
 
-            await _contactService.UpdateAsync(dto);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _contactService.UpdateAsync(dto);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ValidationException vex)
+            {
+                foreach (var err in vex.Errors)
+                {
+                    if (string.IsNullOrEmpty(err.PropertyName)) ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                    else ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+                }
+                await LoadCompanies();
+                return View(cvm);
+            }
         }
 
         // ===============================

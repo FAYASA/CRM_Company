@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using FluentValidation;
 
 namespace Seashore_CRM.Controllers
 {
@@ -98,18 +99,34 @@ namespace Seashore_CRM.Controllers
                 return View(sale);
             }
 
-            await _saleService.AddAsync(sale);
-
-            if (items != null && items.Any())
+            try
             {
-                foreach (var it in items)
-                {
-                    it.SaleId = sale.Id;
-                    await _saleItemService.AddAsync(it);
-                }
-            }
+                await _saleService.AddAsync(sale);
 
-            return RedirectToAction("Details", new { id = sale.Id });
+                if (items != null && items.Any())
+                {
+                    foreach (var it in items)
+                    {
+                        it.SaleId = sale.Id;
+                        await _saleItemService.AddAsync(it);
+                    }
+                }
+
+                return RedirectToAction("Details", new { id = sale.Id });
+            }
+            catch (ValidationException vex)
+            {
+                foreach (var err in vex.Errors)
+                {
+                    if (string.IsNullOrEmpty(err.PropertyName)) ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                    else ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+                }
+                var companies = _companyService.GetAllAsync();
+                var products = _productService.GetAllAsync();
+                ViewBag.Companies = new SelectList(companies, "Id", "CompanyName", sale.CustomerId);
+                ViewBag.Products = products.Select(p => new SelectListItem(p.ProductName, p.Id.ToString())).ToList();
+                return View(sale);
+            }
         }
 
         public async Task<IActionResult> CreateFromOpportunity(int opportunityId)

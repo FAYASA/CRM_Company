@@ -1,4 +1,4 @@
-(function ($) {
+﻿(function ($) {
     $(function () {
         // =======================
         // 1. Initialize Variables
@@ -12,6 +12,13 @@
         let currentProductSelect = null;
         // rights index starts after existing rows
         let rightsIndex = ($('#rightsTableBody tr').length) || 0;
+
+        // Build convenient local lookup maps used by the UI. Server sends a combined object
+        // with keys 'byId', 'byName' and 'legacy'. Ensure these exist so client code
+        // does not throw ReferenceErrors when trying to access them.
+        const productsById = (productsMap && productsMap.byId) ? productsMap.byId : {};
+        const productsByName = (productsMap && productsMap.byName) ? productsMap.byName : {};
+        const productsLegacy = (productsMap && productsMap.legacy) ? productsMap.legacy : {};
 
         // =======================
         // Utility: recalc row totals
@@ -182,6 +189,11 @@
                         const firstMatch = data.find(d => initialSelectedActivities.includes(d.name));
                         if (firstMatch) $activitySelect.val(firstMatch.id);
                     }
+
+                    // if editing and initialActivityId provided, select it directly
+                    if (window.leadsCreateConfig && window.leadsCreateConfig.initialActivityId) {
+                        $activitySelect.val(window.leadsCreateConfig.initialActivityId);
+                    }
                 } else $activitySelect.prop('disabled', true);
             }).fail(() => console.log("Activity load failed"));
         });
@@ -300,10 +312,16 @@
         // If initialItems exist, render them into rows
         function renderInitialItems(items) {
             if (!items || !items.length) return;
+            // Save a template row (clone it) before we clear the table. Cloning after empty()
+            // would fail because there would be no element to clone.
+            const templateRow = $('#productBody tr.product-row').first().clone();
+
             // clear existing rows
             $('#productBody').empty();
+
             items.forEach(function (it, i) {
-                const newRow = $('#productBody tr.product-row').first().clone();
+                // clone the saved template
+                const newRow = templateRow.clone();
                 // set display values (support camelCase or PascalCase)
                 const productName = it.ProductName || it.productName || '';
                 const productId = it.ProductId || it.productId || '';
@@ -547,12 +565,27 @@
                 row.find('.product-id').val(productId);
             }
 
-            if (productId && productsMap && productsMap[productId]) {
-                // prefer name fields from productsMap when available
-                if (productsMap[productId].categoryName) row.find('.category').val(productsMap[productId].categoryName);
-                if (productsMap[productId].productGroupName) row.find('.productgroup').val(productsMap[productId].productGroupName);
-                if (productsMap[productId].cost !== undefined) row.find('.cost').val(productsMap[productId].cost);
-                if (productsMap[productId].tax !== undefined) row.find('.taxpct').val(productsMap[productId].tax);
+            if (productId && (productsById[productId] || productsLegacy[productId])) {
+                const mapEntry = productsById[productId] || productsLegacy[productId];
+                if (mapEntry.categoryName) row.find('.category').val(mapEntry.categoryName);
+                if (mapEntry.productGroupName) row.find('.productgroup').val(mapEntry.productGroupName);
+                if (mapEntry.cost !== undefined) row.find('.cost').val(mapEntry.cost);
+                if (mapEntry.tax !== undefined) row.find('.taxpct').val(mapEntry.tax);
+                recalcRow(row);
+                recalcAll();
+                return;
+            }
+
+            // fallback: if selection matched by product name (and there may be duplicates), prefer grouped byName
+            if (!productId && productsByName[val]) {
+                const group = productsByName[val];
+                // if multiple products share the same name, pick the first for now but set product-id to its id
+                const pick = group[0];
+                row.find('.product-id').val(pick.id);
+                if (pick.categoryName) row.find('.category').val(pick.categoryName);
+                if (pick.productGroupName) row.find('.productgroup').val(pick.productGroupName);
+                if (pick.cost !== undefined) row.find('.cost').val(pick.cost);
+                if (pick.tax !== undefined) row.find('.taxpct').val(pick.tax);
                 recalcRow(row);
                 recalcAll();
                 return;
@@ -581,6 +614,19 @@
         // Trigger change on pre-selected company/status
         if ($('#companySelect').val()) $('#companySelect').trigger('change');
         if ($('#statusSelect').val()) $('#statusSelect').trigger('change');
+        
+        // if editing, pre-select contact / individual customer
+        if (window.leadsCreateConfig && window.leadsCreateConfig.initialContactId) {
+            // try to set corporate contact first
+            const corp = $('#corporateContactSelect');
+            const ind = $('#individualContactSelect');
+            if (corp.length && corp.find(`option[value="${window.leadsCreateConfig.initialContactId}"]`).length) {
+                corp.val(window.leadsCreateConfig.initialContactId);
+            }
+            if (ind.length && ind.find(`option[value="${window.leadsCreateConfig.initialIndividualCustomerId}"]`).length) {
+                ind.val(window.leadsCreateConfig.initialIndividualCustomerId);
+            }
+        }
 
         // initial totals
         recalcAll();

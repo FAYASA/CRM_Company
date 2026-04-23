@@ -13,6 +13,10 @@ namespace Seashore_CRM.ViewModels.Lead
             SubmitButtonText = "Update Lead";
         }
 
-        // Additional edit-specific properties can be added here if needed in future
+
+        //public SelectList CurrentContactForIndv { get; set; } = new SelectList(new List<SelectListItem>());
+
+        //public SelectList CurrentContactForCompany { get; set; } = new SelectList(new List<SelectListItem>());
+
     }
 }

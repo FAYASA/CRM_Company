@@ -12,6 +12,8 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
         //Task<List<Company>> GetAllAsync();
         IQueryable<Company> GetAllAsync();
 
+        IQueryable<Company> GetAllExceptInactive();
+
         //Task<List<Company>> SearchAsync(string? query);
         IQueryable<Company> SearchAsync(string? query);
 

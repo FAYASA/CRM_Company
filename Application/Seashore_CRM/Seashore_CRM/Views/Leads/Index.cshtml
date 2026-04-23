@@ -7,6 +7,10 @@
     var pageSize = Model.PageSize;
     var total = Model.TotalCount;
     var totalPages = Model.TotalPages;
+
+    var selectedStatus = Model.SelectedStatusId?.ToString();
+    var selectedAssigned = Model.SelectedAssignedId?.ToString();
+    var selectedCategory = Model.SelectedCategoryId?.ToString();
 }
 
 <div class="container-fluid px-3">
@@ -31,7 +35,7 @@
             </h1>
 
             <p class="small text-muted mb-0">
-                Showing @((page - 1) * pageSize + 1) – @(Math.Min(page * pageSize, total)) of @total leads
+                Showing @((page - 1) * pageSize + 1) - @(Math.Min(page * pageSize, total)) of @total leads
             </p>
         </div>
 
@@ -63,7 +67,7 @@
                 {
                     foreach (var s in Model.Statuses)
                     {
-                        <option value="@s.Value">@s.Text</option>
+                        <option value="@s.Value" selected="@(s.Value == selectedStatus ? "selected" : null)">@s.Text</option>
                     }
                 }
             </select>
@@ -76,7 +80,7 @@
                 {
                     foreach (var u in Model.Users)
                     {
-                        <option value="@u.Value">@u.Text</option>
+                        <option value="@u.Value" selected="@(u.Value == selectedAssigned ? "selected" : null)">@u.Text</option>
                     }
                 }
             </select>
@@ -89,7 +93,7 @@
                 {
                     foreach (var c in Model.Categories)
                     {
-                        <option value="@c.Value">@c.Text</option>
+                        <option value="@c.Value" selected="@(c.Value == selectedCategory ? "selected" : null)">@c.Text</option>
                     }
                 }
             </select>
@@ -126,28 +130,39 @@
                     <tr>
 
                         <td>
+                            @* <div class="fw-semibold">@l.LeadType</div> *@
                             <div class="fw-semibold">@l.LeadType</div>
-                            <div class="small text-muted">
+                            <div class="fw-semibold">@l.CustomerName</div>
+                            <div class="small text-muted">@(!string.IsNullOrWhiteSpace(l.CustomerLocation) ? l.CustomerLocation : "-")</div>
+                            @* <div class="small text-muted">
                                 @(l.ProductNames != null && l.ProductNames.Any()
                                                             ? string.Join(", ", l.ProductNames.Take(2))
                                                             : "-")
-                                                              </div>
-                                                          </td>
+                                                              </div> *@
+                         </td>
 
                         <td>
                             <div class="fw-semibold">@l.StatusName</div>
                             <div class="small text-muted">
+                                @if (l.StatusActivities != null && l.StatusActivities.Any())
+                                {
+                                    <div class="small text-muted mt-1">@string.Join(", ", l.StatusActivities)</div>
+                                }
                                 @(string.IsNullOrEmpty(l.LatestActivity) ? "-" : l.LatestActivity)
                             </div>
+
                         </td>
 
                         <td>
                             <div class="small text-muted">
-                                @(l.ProductNames != null && l.ProductNames.Any()
+                                @* @(l.ProductNames != null && l.ProductNames.Any()
                                                             ? l.ProductNames.First()
+                                                            : "-") *@
+                                @(l.ProductNames != null && l.ProductNames.Any()
+                                                            ? string.Join(", ", l.ProductNames.Take(2))
                                                             : "-")
-                        </div>
-                    </td>
+                             </div>
+                        </td>
 
                         <td class="text-end">
                         @if (l.GrossTotal > 0)

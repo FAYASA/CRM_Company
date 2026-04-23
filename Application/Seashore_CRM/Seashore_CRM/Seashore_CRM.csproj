@@ -25,4 +25,8 @@
     <ProjectReference Include="..\seashore_CRM.Models\seashore_CRM.DomainModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Leads\" />
+  </ItemGroup>
+
 </Project>

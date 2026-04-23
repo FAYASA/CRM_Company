@@ -1,15 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using seashore_CRM.Common.Constants;
-using seashore_CRM.DAL.Data;
 using seashore_CRM.DAL.Repositories.Repository_Interfaces;
 using seashore_CRM.DomainModelLayer.Entities;
 using Seashore_CRM.ViewModels.Lead;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using seashore_CRM.BLL.Services.Service_Interfaces;
 
 namespace Seashore_CRM.Controllers
 {
@@ -17,12 +16,12 @@ namespace Seashore_CRM.Controllers
     public class UserLeadRightsController : Controller
     {
         private readonly IUnitOfWork _uow;
-        private readonly AppDbContext _db;
+        private readonly IUserLeadRightsService _rightsService;
 
-        public UserLeadRightsController(IUnitOfWork uow, AppDbContext db)
+        public UserLeadRightsController(IUnitOfWork uow, IUserLeadRightsService rightsService)
         {
             _uow = uow;
-            _db = db;
+            _rightsService = rightsService;
         }
 
         // Master page that loads the SPA-like rights manager
@@ -41,44 +40,34 @@ namespace Seashore_CRM.Controllers
         [HttpGet]
         public async Task<IActionResult> List(int? leadId, int? userId)
         {
-            var q = _db.Set<UserLeadRights>().AsQueryable();
-            if (leadId.HasValue) q = q.Where(r => r.LeadId == leadId.Value);
-            if (userId.HasValue) q = q.Where(r => r.UserId == userId.Value);
+            var list = (await _rightsService.ListAsync(leadId, userId)).ToList();
 
-            var list = await q
-                .Include(r => r.User)
-                .Include(r => r.Lead)
-                .OrderBy(r => r.Id)
-                .Select(r => new UserLeadRightsViewModel
-                {
-                    Id = r.Id,
-                    UserId = r.UserId,
-                    LeadId = r.LeadId,
-                    UserName = r.User != null ? (r.User.FullName ?? r.User.Email) : r.UserId.ToString(),
-                    LeadName = r.Lead != null ? ($"#{r.Lead.Id} - {r.Lead.LeadType}") : r.LeadId.ToString(),
-                    CanView = r.CanView,
-                    CanEdit = r.CanEdit
-                }).ToListAsync();
+            var vm = list.Select(r => new UserLeadRightsViewModel
+            {
+                Id = r.Id,
+                UserId = r.UserId ?? 0,
+                LeadId = r.LeadId ?? 0,
+                UserName = r.User != null ? (r.User.FullName ?? r.User.Email) : r.UserId.ToString(),
+                LeadName = r.Lead != null ? ($"#{r.Lead.Id} - {r.Lead.LeadType}") : r.LeadId.ToString(),
+                CanView = r.CanView,
+                CanEdit = r.CanEdit
+            }).ToList();
 
-            return Json(list);
+            return Json(vm);
         }
 
         // Get single rights entry
         [HttpGet]
         public async Task<IActionResult> Get(int id)
         {
-            var r = await _db.Set<UserLeadRights>()
-                .Include(x => x.User)
-                .Include(x => x.Lead)
-                .FirstOrDefaultAsync(x => x.Id == id);
-
+            var r = await _rightsService.GetAsync(id);
             if (r == null) return NotFound();
 
             var vm = new UserLeadRightsViewModel
             {
                 Id = r.Id,
-                UserId = r.UserId,
-                LeadId = r.LeadId,
+                UserId = r.UserId ?? 0,
+                LeadId = r.LeadId ?? 0,
                 UserName = r.User != null ? (r.User.FullName ?? r.User.Email) : string.Empty,
                 LeadName = r.Lead != null ? ($"#{r.Lead.Id} - {r.Lead.LeadType}") : string.Empty,
                 CanView = r.CanView,
@@ -99,7 +88,7 @@ namespace Seashore_CRM.Controllers
             // Update
             if (model.Id > 0)
             {
-                var existing = await _db.Set<UserLeadRights>().FindAsync(model.Id);
+                var existing = await _rightsService.GetAsync(model.Id);
                 if (existing == null) return NotFound();
 
                 existing.UserId = model.UserId;
@@ -107,20 +96,18 @@ namespace Seashore_CRM.Controllers
                 existing.CanEdit = model.CanEdit;
                 existing.LeadId = model.LeadId;
 
-                _db.Set<UserLeadRights>().Update(existing);
-                await _db.SaveChangesAsync();
+                await _rightsService.SaveAsync(existing);
                 return Json(new { success = true, id = existing.Id });
             }
 
             // Prevent duplicates by (UserId, LeadId)
-            var dup = await _db.Set<UserLeadRights>().FirstOrDefaultAsync(x => x.UserId == model.UserId && x.LeadId == model.LeadId);
-
+            var dupList = (await _rightsService.ListAsync(model.LeadId, model.UserId)).ToList();
+            var dup = dupList.FirstOrDefault();
             if (dup != null)
             {
                 dup.CanView = model.CanView;
                 dup.CanEdit = model.CanEdit;
-                _db.Set<UserLeadRights>().Update(dup);
-                await _db.SaveChangesAsync();
+                await _rightsService.SaveAsync(dup);
                 return Json(new { success = true, id = dup.Id, updated = true });
             }
 
@@ -131,20 +118,17 @@ namespace Seashore_CRM.Controllers
                 CanView = model.CanView,
                 CanEdit = model.CanEdit
             };
-            await _db.Set<UserLeadRights>().AddAsync(entity);
-            await _db.SaveChangesAsync();
 
-            return Json(new { success = true, id = entity.Id });
+            var id = await _rightsService.SaveAsync(entity);
+            return Json(new { success = true, id = id });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var e = await _db.Set<UserLeadRights>().FindAsync(id);
-            if (e == null) return NotFound();
-            _db.Set<UserLeadRights>().Remove(e);
-            await _db.SaveChangesAsync();
+            var ok = await _rightsService.DeleteAsync(id);
+            if (!ok) return NotFound();
             return Json(new { success = true });
         }
     }

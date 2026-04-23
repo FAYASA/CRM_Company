@@ -14,6 +14,8 @@ namespace seashore_CRM.BLL.DTOs
 
         public int? CompanyId { get; set; }
         public int? ContactId { get; set; }
+        // For individual leads, reference the IndividualCustomer entity
+        public int? IndividualCustomerId { get; set; }
 
         public int? SourceId { get; set; }
         public int? StatusId { get; set; }
@@ -53,6 +55,12 @@ namespace seashore_CRM.BLL.DTOs
         // Product items entered on lead capture
         public List<LeadProductDto>? ProductItems { get; set; }
 
+        // Comments entered during lead capture
+        public List<CommentDto>? Comments { get; set; }
+
+        // User Rights for the leads
+        public List<UserLeadRightDto>? UserLeadRights { get; set; }
+
         // Attachments metadata (JSON of filenames)
         public string? AttachmentsJson { get; set; }
 
@@ -67,6 +75,14 @@ namespace seashore_CRM.BLL.DTOs
         public DateTime? UpdatedDate { get; set; }
         public DateTime? ClosureDate { get; set; }
         public List<string>? ProductNames { get; set; }
+
+        // New: display customer name (company or individual contact)
+        public string? CustomerName { get; set; }
+        // New: display customer location (company city or contact mobile/phone)
+        public string? CustomerLocation { get; set; }
+
+        // Status -> activities mapping for the lead's status
+        public List<string>? StatusActivities { get; set; }
 
         public int? CategoryId { get; set; }
 

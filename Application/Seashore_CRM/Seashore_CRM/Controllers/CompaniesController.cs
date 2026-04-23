@@ -6,6 +6,7 @@ using Seashore_CRM.ViewModels.Company;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 
 namespace Seashore_CRM.Controllers
 {
@@ -104,35 +105,34 @@ namespace Seashore_CRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CompanyCreateViewModel vm)
         {
-            if (await _service.IsCompanyNameTakenAsync(vm.CompanyName))
-                ModelState.AddModelError(nameof(vm.CompanyName), "Company name already exists.");
-
-            if (await _service.IsEmailTakenAsync(vm.Email))
-                ModelState.AddModelError(nameof(vm.Email), "Email already exists.");
-
-            if (await _service.IsCompanyPhoneTakenAsync(vm.Phone))
-                ModelState.AddModelError(nameof(vm.Phone), "Phone number already exists.");
-
-            if (!ModelState.IsValid)
-                return View(vm);
-
-            var dto = new CompanyCreateDto
+            try
             {
-                CompanyName = vm.CompanyName,
-                Address = vm.Address,
-                AddressPost = vm.AddressPost,
-                Pin = vm.Pin,
-                City = vm.City,
-                Phone = vm.Phone,
-                Email = vm.Email,
-                Website = vm.Website,
-                Industry = vm.Industry
-            };
+                var dto = new CompanyCreateDto
+                {
+                    CompanyName = vm.CompanyName,
+                    Address = vm.Address,
+                    AddressPost = vm.AddressPost,
+                    Pin = vm.Pin,
+                    City = vm.City,
+                    Phone = vm.Phone,
+                    Email = vm.Email,
+                    Website = vm.Website,
+                    Industry = vm.Industry
+                };
 
-            await _service.CreateAsync(dto);
-
-            TempData["Success"] = "Company created successfully.";
-            return RedirectToAction(nameof(Index));
+                await _service.CreateAsync(dto);
+                TempData["Success"] = "Company created successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ValidationException vex)
+            {
+                foreach (var err in vex.Errors)
+                {
+                    if (string.IsNullOrEmpty(err.PropertyName)) ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                    else ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+                }
+                return View(vm);
+            }
         }
 
         // ============================
@@ -169,39 +169,39 @@ namespace Seashore_CRM.Controllers
         {
             if (id != vm.Id) return BadRequest();
 
-            if (await _service.IsCompanyNameTakenAsync(vm.CompanyName, vm.Id))
-                ModelState.AddModelError(nameof(vm.CompanyName), "Company name already exists.");
-
-            if (await _service.IsEmailTakenAsync(vm.Email, vm.Id))
-                ModelState.AddModelError(nameof(vm.Email), "Email already exists.");
-
-            if (await _service.IsCompanyPhoneTakenAsync(vm.Phone, vm.Id))
-                ModelState.AddModelError(nameof(vm.Phone), "Phone number already exists.");
-
-            if (!ModelState.IsValid)
-                return View(vm);
-
-            var dto = new CompanyUpdateDto
+            try
             {
-                Id = vm.Id,
-                CompanyName = vm.CompanyName,
-                Address = vm.Address,
-                AddressPost = vm.AddressPost,
-                Pin = vm.Pin,
-                City = vm.City,
-                Phone = vm.Phone,
-                Email = vm.Email,
-                Website = vm.Website,
-                Industry = vm.Industry,
-                IsActive = vm.IsActive,
-                RowVersion = vm.RowVersion
-            };
+                var dto = new CompanyUpdateDto
+                {
+                    Id = vm.Id,
+                    CompanyName = vm.CompanyName,
+                    Address = vm.Address,
+                    AddressPost = vm.AddressPost,
+                    Pin = vm.Pin,
+                    City = vm.City,
+                    Phone = vm.Phone,
+                    Email = vm.Email,
+                    Website = vm.Website,
+                    Industry = vm.Industry,
+                    IsActive = vm.IsActive,
+                    RowVersion = vm.RowVersion
+                };
 
-            var updated = await _service.UpdateAsync(dto);
-            if (!updated) return NotFound();
+                var updated = await _service.UpdateAsync(dto);
+                if (!updated) return NotFound();
 
-            TempData["Success"] = "Company updated successfully.";
-            return RedirectToAction(nameof(Index));
+                TempData["Success"] = "Company updated successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ValidationException vex)
+            {
+                foreach (var err in vex.Errors)
+                {
+                    if (string.IsNullOrEmpty(err.PropertyName)) ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                    else ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+                }
+                return View(vm);
+            }
         }
 
         // ============================

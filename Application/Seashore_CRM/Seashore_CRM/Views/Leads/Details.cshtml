@@ -34,15 +34,6 @@
 
         <div class="mt-3 d-flex gap-2">
             <a asp-action="Qualify" asp-route-id="@Model.Id" class="btn btn-secondary">Qualify</a>
-            @* Convert button opens Razor Page for confirmation *@
-            @if (!Model.IsQualified && !Model.IsConverted)
-            {
-                <a asp-page="/Leads/Convert" asp-route-id="@Model.Id" class="btn btn-outline-primary">Convert</a>
-            }
-            else if (Model.IsQualified && !Model.IsConverted)
-            {
-                <a asp-page="/Leads/Convert" asp-route-id="@Model.Id" class="btn btn-primary">Convert to Opportunity</a>
-            }
             <a asp-action="Index" class="btn btn-link">Back to List</a>
         </div>
     </div>
@@ -59,6 +50,7 @@
                         @foreach (var a in (List<string>)ViewBag.SuggestedActivities)
                         {
                             <form asp-action="AddActivity" method="post" class="d-inline me-1">
+                                @Html.AntiForgeryToken()
                                 <input type="hidden" name="leadId" value="@Model.Id" />
                                 <input type="hidden" name="activityType" value="@a" />
                                 <button type="submit" class="btn btn-sm btn-outline-primary mb-2">@a</button>
@@ -78,7 +70,7 @@
         <div class="card h-100">
             <div class="card-body">
                 <h6 class="small text-uppercase text-muted mb-3">Recent Activities</h6>
-                @if (ViewBag.Activities != null && ((List<seashore_CRM.Models.Entities.Activity>)ViewBag.Activities).Any())
+                @if (ViewBag.Activities != null && ((List<seashore_CRM.Models.Entities.LeadStatusActivity>)ViewBag.Activities).Any())
                 {
                     <table class="table table-borderless mb-0">
                         <thead>
@@ -89,12 +81,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(var act in (List<seashore_CRM.Models.Entities.Activity>)ViewBag.Activities)
+                            @foreach(var act in (List<seashore_CRM.Models.Entities.LeadStatusActivity>)ViewBag.Activities)
                             {
                                 <tr>
-                                    <td>@act.ActivityType</td>
+                                    <td>@act.ActivityName</td>
                                     <td>@act.ActivityDate</td>
-                                    <td>@act.Description</td>
+                                    <td></td>
                                 </tr>
                             }
                         </tbody>
@@ -103,6 +95,51 @@
                 else
                 {
                     <p class="text-muted small mb-0">No activities recorded.</p>
+                }
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <h6 class="small text-uppercase text-muted mb-3">Lead History</h6>
+                @if (ViewBag.History != null && ((List<seashore_CRM.Models.Entities.LeadHistory>)ViewBag.History).Any())
+                {
+                    <table class="table table-borderless mb-0">
+                        <thead>
+                            <tr class="text-muted small">
+                                <th>Event</th>
+                                <th>Date</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var h in (List<seashore_CRM.Models.Entities.LeadHistory>)ViewBag.History)
+                            {
+                                <tr>
+                                    <td>@h.Type.ToString()</td>
+                                    <td>@h.ChangedAt</td>
+                                    <td>
+                                        @if (h.Type == seashore_CRM.Models.Entities.LeadHistoryType.StatusChange)
+                                        {
+                                            <text>@(h.OldStatusName ?? h.OldValue ?? "(none)") -> @(h.NewStatusName ?? h.NewValue ?? "(none)")</text>
+                                        }
+                                        else if (!string.IsNullOrWhiteSpace(h.Note))
+                                        {
+                                            <text>@h.Note</text>
+                                        }
+                                        else
+                                        {
+                                            <text>@(h.FieldName ?? h.NewValue ?? h.OldValue)</text>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-muted small mb-0">No history recorded.</p>
                 }
             </div>
         </div>

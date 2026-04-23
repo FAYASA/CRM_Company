@@ -11,13 +11,13 @@ namespace seashore_CRM.DomainModelLayer.Entities
     public class UserLeadRights
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public int LeadId { get; set; }
+        public int? UserId { get; set; }
+        public int? LeadId { get; set; }
 
         public bool CanView { get; set; }
         public bool CanEdit { get; set; }
 
-        public User User { get; set; }
-        public Lead Lead { get; set; }
+        public User? User { get; set; }
+        public Lead? Lead { get; set; }
     }
 }

@@ -34,10 +34,27 @@ namespace seashore_CRM.DAL.Repositories
             return await _context.Leads.ToListAsync();
         }
 
+        // Eager-load navigations commonly used by views to avoid missing fields and N+1 queries
         public async Task<Lead?> GetByIdAsync(int? id)
         {
             if (!id.HasValue) return null;
-            return await _context.Leads.FindAsync(id.Value);
+
+            return await _context.Leads
+                .IgnoreQueryFilters()
+                .Include(l => l.Company)
+                .Include(l => l.Contact)
+                .Include(l => l.IndividualCustomer)
+                .Include(l => l.AssignedUser)
+                .Include(l => l.Status)
+                .Include(l => l.LeadItems)
+                    .ThenInclude(li => li.Product)
+                        .ThenInclude(p => p.ProductGroup)
+                .Include(l => l.LeadItems)
+                    .ThenInclude(li => li.Product)
+                        .ThenInclude(p => p.Category)
+                .Include(l => l.LeadStatusActivities)
+                .Include(l => l.UserLeadRights)
+                .FirstOrDefaultAsync(l => l.Id == id.Value);
         }
 
         public void Remove(Lead entity)

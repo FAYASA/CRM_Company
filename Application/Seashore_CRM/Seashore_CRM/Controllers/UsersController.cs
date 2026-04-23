@@ -8,6 +8,9 @@ using seashore_CRM.BLL.DTOs;
 using Seashore_CRM.ViewModels.User;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
+using Seashore_CRM.Extensions;
+using Seashore_CRM.Models;
 
 namespace Seashore_CRM.Controllers
 {
@@ -46,6 +49,75 @@ namespace Seashore_CRM.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> GetUsers()
+        {
+            var request = new Seashore_CRM.Models.DataTableRequest
+            {
+                Draw = Request.Form["draw"].FirstOrDefault(),
+                Start = Convert.ToInt32(Request.Form["start"].FirstOrDefault() ?? "0"),
+                Length = Convert.ToInt32(Request.Form["length"].FirstOrDefault() ?? "10"),
+                SearchValue = Request.Form["search[value]"].FirstOrDefault(),
+                SortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][data]"].FirstOrDefault(),
+                SortDirection = Request.Form["order[0][dir]"].FirstOrDefault()
+            };
+
+            // Base query (unfiltered) to compute total records
+            var baseQuery = _userService.GetAllAsync(); // IQueryable<UserListDto>
+            var totalRecords = await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.CountAsync(baseQuery);
+
+            // Apply filtering (search)
+            var query = baseQuery;
+            if (!string.IsNullOrWhiteSpace(request.SearchValue))
+            {
+                var sval = request.SearchValue.Trim();
+                // case-insensitive search using Contains (translated to SQL by EF)
+                query = query.Where(u => (u.FullName != null && u.FullName.Contains(sval)) || (u.Email != null && u.Email.Contains(sval)));
+            }
+
+            // Count after filtering
+            var filteredRecords = await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.CountAsync(query);
+
+            // Sorting: map client column names to DTO property names
+            if (!string.IsNullOrWhiteSpace(request.SortColumn))
+            {
+                var col = request.SortColumn;
+                var mapped = col switch
+                {
+                    "userName" => "FullName",
+                    "email" => "Email",
+                    "role" => "Role",
+                    "region" => "Region",
+                    "isActive" => "IsActive",
+                    _ => col
+                };
+
+                bool asc = string.Equals(request.SortDirection, "asc", StringComparison.OrdinalIgnoreCase);
+                query = query.OrderByDynamic(mapped, asc);
+            }
+
+            // Paging
+            var paged = query.Skip(request.Start).Take(request.Length);
+
+            var data = await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync(paged.Select(u => new
+            {
+                id = u.Id,
+                userName = u.FullName,
+                email = u.Email,
+                role = u.Role,
+                region = u.Region,
+                isActive = u.IsActive
+            }));
+
+            return Json(new
+            {
+                draw = request.Draw,
+                recordsTotal = totalRecords,
+                recordsFiltered = filteredRecords,
+                data = data
+            });
+        }
+
         // ====================
         // CREATE
         // ====================
@@ -60,33 +132,9 @@ namespace Seashore_CRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UserCreateViewModel model)
         {
-            // uniqueness checks
-            if (await _userService.IsEmailTakenAsync(model.Email))
-                ModelState.AddModelError(nameof(model.Email), "Email already exists.");
-
-            if (await _userService.IsFullNameTakenAsync(model.FullName))
-                ModelState.AddModelError(nameof(model.FullName), "Full name already exists.");
-
-            if (!string.IsNullOrWhiteSpace(model.Contact) && await _userService.IsContactTakenAsync(model.Contact))
-                ModelState.AddModelError(nameof(model.Contact), "Contact already exists.");
-
-            // Password and email required
-            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
-                ModelState.AddModelError(string.Empty, "Email and password are required.");
-
-            // Password confirmation
-            if (!string.IsNullOrWhiteSpace(model.Password) && model.Password != model.ConfirmPassword)
-                ModelState.AddModelError(string.Empty, "Password and Confirm Password do not match.");
-
-            if (!ModelState.IsValid)
-            {
-                var vm = await PopulateCreateViewModel(model);
-                return View(vm);
-            }
-
+            // Keep client-side remote/inline checks but primary validation is in service now
             try
             {
-                // Map ViewModel → DTO
                 var dto = new UserCreateDto
                 {
                     FullName = model.FullName,
@@ -101,6 +149,18 @@ namespace Seashore_CRM.Controllers
                 };
 
                 await _userService.CreateAsync(dto);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ValidationException vex)
+            {
+                foreach (var err in vex.Errors)
+                {
+                    if (string.IsNullOrEmpty(err.PropertyName)) ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                    else ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+                }
+
+                var vm = await PopulateCreateViewModel(model);
+                return View(vm);
             }
             catch (System.Exception ex)
             {
@@ -108,8 +168,6 @@ namespace Seashore_CRM.Controllers
                 var vm = await PopulateCreateViewModel(model);
                 return View(vm);
             }
-
-            return RedirectToAction(nameof(Index));
         }
 
         // ====================
@@ -159,27 +217,6 @@ namespace Seashore_CRM.Controllers
                 return View(model);
             }
 
-            if (await _userService.IsEmailTakenAsync(model.Email, model.Id))
-                ModelState.AddModelError(nameof(model.Email), "Email already exists.");
-
-            if (await _userService.IsFullNameTakenAsync(model.FullName, model.Id))
-                ModelState.AddModelError(nameof(model.FullName), "Full name already exists.");
-
-            if (!string.IsNullOrWhiteSpace(model.Contact) && await _userService.IsContactTakenAsync(model.Contact, model.Id))
-                ModelState.AddModelError(nameof(model.Contact), "Contact already exists.");
-
-            if (!string.IsNullOrWhiteSpace(model.NewPassword) && model.NewPassword != model.ConfirmPassword)
-                ModelState.AddModelError(string.Empty, "Password and Confirm Password do not match.");
-
-            if (!ModelState.IsValid)
-            {
-                await PopulateEditViewModel(model);
-                return View(model);
-            }
-
-            var existing = await _userService.GetByIdAsync(model.Id);
-            if (existing == null) return NotFound();
-
             var updateDto = new UserUpdateDto
             {
                 Id = model.Id,
@@ -203,6 +240,17 @@ namespace Seashore_CRM.Controllers
             try
             {
                 await _userService.UpdateAsync(updateDto);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ValidationException vex)
+            {
+                foreach (var err in vex.Errors)
+                {
+                    if (string.IsNullOrEmpty(err.PropertyName)) ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                    else ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+                }
+                await PopulateEditViewModel(model);
+                return View(model);
             }
             catch (System.Exception ex)
             {
@@ -210,8 +258,6 @@ namespace Seashore_CRM.Controllers
                 await PopulateEditViewModel(model);
                 return View(model);
             }
-
-            return RedirectToAction(nameof(Index));
         }
 
         private async Task PopulateEditViewModel(UserUpdateViewModel model)

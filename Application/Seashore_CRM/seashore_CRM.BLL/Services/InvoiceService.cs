@@ -3,20 +3,28 @@ using seashore_CRM.DAL.Repositories.Repository_Interfaces;
 using seashore_CRM.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FluentValidation;
+using System;
 
 namespace seashore_CRM.BLL.Services
 {
     public class InvoiceService : IInvoiceService
     {
         private readonly IUnitOfWork _uow;
+        private readonly IValidator<Invoice> _validator;
 
-        public InvoiceService(IUnitOfWork uow)
+        public InvoiceService(IUnitOfWork uow, IValidator<Invoice> validator)
         {
             _uow = uow;
+            _validator = validator;
         }
 
         public async Task<int> AddAsync(Invoice entity)
         {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            var v = await _validator.ValidateAsync(entity);
+            if (!v.IsValid) throw new ValidationException(v.Errors);
+
             await _uow.Invoices.AddAsync(entity);
             await _uow.CommitAsync();
             return entity.Id;
@@ -47,6 +55,8 @@ namespace seashore_CRM.BLL.Services
 
         public async Task UpdateAsync(Invoice entity)
         {
+            var v = await _validator.ValidateAsync(entity);
+            if (!v.IsValid) throw new ValidationException(v.Errors);
             _uow.Invoices.Update(entity);
             await _uow.CommitAsync();
         }

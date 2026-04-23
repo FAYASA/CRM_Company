@@ -11,6 +11,8 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
         void Update(Product entity);
         void Remove(Product entity);
         IQueryable<Product> GetAllAsync();
+
+        IQueryable<Product> GetAllExceptInactive();
         Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId);
 
     }

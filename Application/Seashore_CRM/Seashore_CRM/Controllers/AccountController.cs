@@ -22,14 +22,16 @@ namespace Seashore_CRM.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserService _userService; // application users table service
         private readonly IRoleService _roleService; // service to read role names
+        private readonly IUserActivityService _activityService;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IUserService userService, IRoleService roleService)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IUserService userService, IRoleService roleService, IUserActivityService activityService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
             _userService = userService;
             _roleService = roleService;
+            _activityService = activityService;
         }
 
         [HttpGet]
@@ -95,6 +97,9 @@ namespace Seashore_CRM.Controllers
             var authProperties = new AuthenticationProperties { IsPersistent = model.RememberMe };
             await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal, authProperties);
 
+            // log login activity
+            await _activityService.LogLoginAsync(appUser.Id.ToString(), appUser.FullName ?? appUser.Email, HttpContext.TraceIdentifier);
+
             if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                 return Redirect(model.ReturnUrl);
 
@@ -106,7 +111,14 @@ namespace Seashore_CRM.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userName = User.Identity?.Name;
+
             await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+
+            // log logout activity
+            await _activityService.LogLogoutAsync(userId ?? "", userName ?? "", HttpContext.TraceIdentifier);
+
             return RedirectToAction("Login", "Account");
         }
 

@@ -8,7 +8,9 @@ using seashore_CRM.Models.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using FluentValidation;
+using FluentValidation.Results;
+using System;
 
 
 namespace seashore_CRM.BLL.Services
@@ -17,10 +19,14 @@ namespace seashore_CRM.BLL.Services
     {
         private readonly IUnitOfWork _uow;
         private readonly PasswordHasher<User> _passwordHasher = new PasswordHasher<User>();
+        private readonly IValidator<UserCreateDto> _createValidator;
+        private readonly IValidator<UserUpdateDto> _updateValidator;
 
-        public UserService(IUnitOfWork uow)
+        public UserService(IUnitOfWork uow, IValidator<UserCreateDto> createValidator, IValidator<UserUpdateDto> updateValidator)
         {
             _uow = uow;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         public async Task ToggleStatusAsync(int id)
@@ -33,6 +39,25 @@ namespace seashore_CRM.BLL.Services
         }
         public async Task<int> CreateAsync(UserCreateDto dto)
         {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            // validate DTO via FluentValidation
+            var vResult = await _createValidator.ValidateAsync(dto);
+            var failures = new List<ValidationFailure>();
+            if (!vResult.IsValid) failures.AddRange(vResult.Errors);
+
+            // uniqueness checks
+            if (await IsEmailTakenAsync(dto.Email))
+                failures.Add(new ValidationFailure(nameof(dto.Email), "Email already exists."));
+
+            if (await IsFullNameTakenAsync(dto.FullName))
+                failures.Add(new ValidationFailure(nameof(dto.FullName), "Full name already exists."));
+
+            if (!string.IsNullOrWhiteSpace(dto.Contact) && await IsContactTakenAsync(dto.Contact))
+                failures.Add(new ValidationFailure(nameof(dto.Contact), "Contact already exists."));
+
+            if (failures.Any()) throw new ValidationException(failures);
+
             var entity = new User
             {
                 Email = dto.Email,
@@ -106,6 +131,25 @@ namespace seashore_CRM.BLL.Services
 
         public async Task UpdateAsync(UserUpdateDto dto)
         {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            // validate via FluentValidation
+            var vResult = await _updateValidator.ValidateAsync(dto);
+            var failures = new List<ValidationFailure>();
+            if (!vResult.IsValid) failures.AddRange(vResult.Errors);
+
+            // uniqueness checks excluding current user
+            if (await IsEmailTakenAsync(dto.Email, dto.Id))
+                failures.Add(new ValidationFailure(nameof(dto.Email), "Email already exists."));
+
+            if (!string.IsNullOrWhiteSpace(dto.FullName) && await IsFullNameTakenAsync(dto.FullName, dto.Id))
+                failures.Add(new ValidationFailure(nameof(dto.FullName), "Full name already exists."));
+
+            if (!string.IsNullOrWhiteSpace(dto.Contact) && await IsContactTakenAsync(dto.Contact, dto.Id))
+                failures.Add(new ValidationFailure(nameof(dto.Contact), "Contact already exists."));
+
+            if (failures.Any()) throw new ValidationException(failures);
+
             var users = await _uow.Users.GetByIdAsync(dto.Id);
             if (users == null) return;
             users.Email = dto.Email;

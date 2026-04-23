@@ -12,9 +12,9 @@ using Microsoft.AspNetCore.Identity;
 using seashore_CRM.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Seashore_CRM.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 // Register IHttpContextAccessor // This is needed if any service (like UserService) needs to access HttpContext for user info.
 builder.Services.AddHttpContextAccessor();
@@ -100,23 +100,48 @@ builder.Services.AddScoped<ISaleService, SaleService>();
 builder.Services.AddScoped<ISaleItemService, SaleItemService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
-builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ILeadItemService, LeadItemService>();
 builder.Services.AddScoped<ILeadStatusActivityService, LeadStatusActivityService>();
 
+// Register system log service implementation
+builder.Services.AddScoped<ISystemLogService, SystemLogService>();
+
+// Register user activity service
+builder.Services.AddScoped<IUserActivityService, UserActivityService>();
+
 // Register user app service
 builder.Services.AddScoped<IUserAppService, UserAppService>();
+
+// Register user lead rights service
+builder.Services.AddScoped<IUserLeadRightsService, UserLeadRightsService>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(seashore_CRM.BLL.Mapping.AutoMapperProfile));
 
 // FluentValidation
+// Register FluentValidation validators explicitly
 builder.Services.AddTransient<IValidator<LeadDto>, LeadDtoValidator>();
 builder.Services.AddTransient<IValidator<seashore_CRM.BLL.DTOs.UserCreateDto>, seashore_CRM.BLL.Validators.UserCreateDtoValidator>();
 builder.Services.AddTransient<IValidator<seashore_CRM.BLL.DTOs.UserUpdateDto>, seashore_CRM.BLL.Validators.UserUpdateDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.Models.Entities.Comment>, seashore_CRM.BLL.Validators.CommentValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.Models.Entities.Sale>, seashore_CRM.BLL.Validators.SaleValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.Models.Entities.Invoice>, seashore_CRM.BLL.Validators.InvoiceValidator>();
+
+// Additional validators for DTOs
+builder.Services.AddTransient<IValidator<seashore_CRM.BLL.DTOs.CompanyCreateDto>, seashore_CRM.BLL.Validators.CompanyCreateDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.BLL.DTOs.CompanyUpdateDto>, seashore_CRM.BLL.Validators.CompanyUpdateDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.ApplicationLayer.DTOs.ProductCreateDto>, seashore_CRM.BLL.Validators.ProductCreateDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.ApplicationLayer.DTOs.ProductUpdateDto>, seashore_CRM.BLL.Validators.ProductUpdateDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.BLL.DTOs.ContactCreateDto>, seashore_CRM.BLL.Validators.ContactCreateDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.BLL.DTOs.ContactUpdateDto>, seashore_CRM.BLL.Validators.ContactUpdateDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.BLL.DTOs.CategoryCreateDto>, seashore_CRM.BLL.Validators.CategoryCreateDtoValidator>();
+builder.Services.AddTransient<IValidator<seashore_CRM.BLL.DTOs.CategoryUpdateDto>, seashore_CRM.BLL.Validators.CategoryUpdateDtoValidator>();
 
 var app = builder.Build();
+
+// Insert exception logging middleware early in pipeline
+app.UseMiddleware<ExceptionLoggingMiddleware>();
 
 // Initialize DB and seed data
 using (var scope = app.Services.CreateScope())
@@ -170,6 +195,10 @@ using (var scope = app.Services.CreateScope())
     {
         // swallowing exceptions prevents startup crash; log in real app
     }
+
+    // Optionally: write a startup info log
+    var sysLog = scope.ServiceProvider.GetRequiredService<ISystemLogService>();
+    await sysLog.LogMessageAsync("Info", "Application started", "Startup", null);
 }
 
 // Configure the HTTP request pipeline.

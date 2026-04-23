@@ -44,10 +44,17 @@ public class ContactRepository : IContactRepository
     .Include(c => c.Company);
     }
 
-    public IQueryable<Contact> GetAllIndAsync()
+    public IQueryable<Contact> GetAllActive()
     {
-        return _context.Contacts.IgnoreQueryFilters().Where(c => c.CompanyId == null);
+        return _context.Contacts.Include(c => c.Company);
     }
+
+
+    //public IQueryable<Contact> GetAllIndAsync()
+    //{
+    //    return _context.Contacts.IgnoreQueryFilters().Where(c => c.CompanyId == null);
+    //}
+
     public async Task<IEnumerable<Contact>> FindAsync(Expression<Func<Contact, bool>> predicate)
     {
         return await _context.Contacts.IgnoreQueryFilters().Where(predicate).ToListAsync();
@@ -71,6 +78,13 @@ public class ContactRepository : IContactRepository
     {
         return await _context.Contacts
             .IgnoreQueryFilters()
+            .Where(c => c.CompanyId == companyId)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Contact>> GetActiveByCompanyIdAsync(int? companyId)
+    {
+        return await _context.Contacts
             .Where(c => c.CompanyId == companyId)
             .ToListAsync();
     }

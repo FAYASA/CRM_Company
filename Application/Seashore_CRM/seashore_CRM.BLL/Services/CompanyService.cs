@@ -4,16 +4,47 @@ using seashore_CRM.BLL.DTOs;
 using seashore_CRM.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.Results;
+using System;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
+using System.Security.Claims;
 
 namespace seashore_CRM.BLL.Services
 {
     public class CompanyService : ICompanyService
     {
         private readonly IUnitOfWork _uow;
+        private readonly IValidator<CompanyCreateDto> _createValidator;
+        private readonly IValidator<CompanyUpdateDto> _updateValidator;
+        private readonly IUserActivityService _activityService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CompanyService(IUnitOfWork uow)
+        public CompanyService(IUnitOfWork uow, IValidator<CompanyCreateDto> createValidator, IValidator<CompanyUpdateDto> updateValidator, IUserActivityService activityService, IHttpContextAccessor httpContextAccessor)
         {
             _uow = uow;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
+            _activityService = activityService;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        public IQueryable <CompanyListDto> GetAllExceptInactive()
+        {
+            var companies = _uow.Companies.GetAllExceptInactive();
+            return companies.Select(c => new CompanyListDto
+            {
+                Id = c.Id,
+                CompanyName = c.CompanyName,
+                Email = c.Email!,
+                City = c.City!,
+                //Country = c.Country!,
+                Industry = c.Industry,
+                IsActive = c.IsActive,
+                Address = c.Address,
+                AddressPost = c.AddressPost
+            });
         }
 
         public IQueryable <CompanyListDto> GetAllAsync()
@@ -58,6 +89,23 @@ namespace seashore_CRM.BLL.Services
 
         public async Task<int> CreateAsync(CompanyCreateDto dto)
         {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            var vResult = await _createValidator.ValidateAsync(dto);
+            var failures = new List<ValidationFailure>();
+            if (!vResult.IsValid) failures.AddRange(vResult.Errors);
+
+            if (await IsCompanyNameTakenAsync(dto.CompanyName))
+                failures.Add(new ValidationFailure(nameof(dto.CompanyName), "Company name already exists."));
+
+            if (!string.IsNullOrWhiteSpace(dto.Email) && await IsEmailTakenAsync(dto.Email))
+                failures.Add(new ValidationFailure(nameof(dto.Email), "Email already exists."));
+
+            if (!string.IsNullOrWhiteSpace(dto.Phone) && await IsCompanyPhoneTakenAsync(dto.Phone))
+                failures.Add(new ValidationFailure(nameof(dto.Phone), "Phone number already exists."));
+
+            if (failures.Any()) throw new ValidationException(failures);
+
             var entity = new Company
             {
                 CompanyName = dto.CompanyName,
@@ -81,6 +129,23 @@ namespace seashore_CRM.BLL.Services
 
         public async Task<bool> UpdateAsync(CompanyUpdateDto dto)
         {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            var vResult = await _updateValidator.ValidateAsync(dto);
+            var failures = new List<ValidationFailure>();
+            if (!vResult.IsValid) failures.AddRange(vResult.Errors);
+
+            if (await IsCompanyNameTakenAsync(dto.CompanyName, dto.Id))
+                failures.Add(new ValidationFailure(nameof(dto.CompanyName), "Company name already exists."));
+
+            if (!string.IsNullOrWhiteSpace(dto.Email) && await IsEmailTakenAsync(dto.Email, dto.Id))
+                failures.Add(new ValidationFailure(nameof(dto.Email), "Email already exists."));
+
+            if (!string.IsNullOrWhiteSpace(dto.Phone) && await IsCompanyPhoneTakenAsync(dto.Phone, dto.Id))
+                failures.Add(new ValidationFailure(nameof(dto.Phone), "Phone number already exists."));
+
+            if (failures.Any()) throw new ValidationException(failures);
+
             var entity = await _uow.Companies.GetByIdAsync(dto.Id);
             if (entity == null) return false;
 
@@ -98,6 +163,11 @@ namespace seashore_CRM.BLL.Services
 
             _uow.Companies.Update(entity);
             await _uow.CommitAsync();
+
+            // log user activity : Updated Company
+            var userId = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            var userName = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? string.Empty;
+            await _activityService.LogEntityActionAsync(userId, userName, "Updated", "Company", entity.Id.ToString(), JsonSerializer.Serialize(dto), _httpContextAccessor?.HttpContext?.TraceIdentifier);
 
             return true;
         }

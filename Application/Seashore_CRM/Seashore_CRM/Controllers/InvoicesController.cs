@@ -5,6 +5,7 @@ using seashore_CRM.Models.Entities;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using FluentValidation;
 
 namespace Seashore_CRM.Controllers
 {
@@ -71,10 +72,20 @@ namespace Seashore_CRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Invoice invoice)
         {
-            if (!ModelState.IsValid) return View(invoice);
-
-            await _invoiceService.AddAsync(invoice);
-            return RedirectToAction(nameof(Details), new { id = invoice.Id });
+            try
+            {
+                await _invoiceService.AddAsync(invoice);
+                return RedirectToAction(nameof(Details), new { id = invoice.Id });
+            }
+            catch (ValidationException vex)
+            {
+                foreach (var err in vex.Errors)
+                {
+                    if (string.IsNullOrEmpty(err.PropertyName)) ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                    else ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+                }
+                return View(invoice);
+            }
         }
 
         public async Task<IActionResult> RecordPayment(int invoiceId)
@@ -90,23 +101,30 @@ namespace Seashore_CRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RecordPayment(Payment payment)
         {
-            if (!ModelState.IsValid)
+            try
             {
+                await _paymentService.AddAsync(payment);
+
+                // Optionally update invoice status
+                var inv = await _invoiceService.GetByIdAsync(payment.InvoiceId);
+                if (inv != null)
+                {
+                    inv.Status = "Partially Paid"; // simple approach; real logic would sum payments
+                    await _invoiceService.UpdateAsync(inv);
+                }
+
+                return RedirectToAction(nameof(Details), new { id = payment.InvoiceId });
+            }
+            catch (ValidationException vex)
+            {
+                foreach (var err in vex.Errors)
+                {
+                    if (string.IsNullOrEmpty(err.PropertyName)) ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                    else ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+                }
                 ViewBag.Invoice = await _invoiceService.GetByIdAsync(payment.InvoiceId);
                 return View(payment);
             }
-
-            await _paymentService.AddAsync(payment);
-
-            // Optionally update invoice status
-            var inv = await _invoiceService.GetByIdAsync(payment.InvoiceId);
-            if (inv != null)
-            {
-                inv.Status = "Partially Paid"; // simple approach; real logic would sum payments
-                await _invoiceService.UpdateAsync(inv);
-            }
-
-            return RedirectToAction(nameof(Details), new { id = payment.InvoiceId });
         }
 
         public async Task<IActionResult> Delete(int id)

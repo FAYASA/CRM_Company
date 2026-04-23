@@ -25,8 +25,8 @@ namespace seashore_CRM.DAL.Repositories
         public ILeadStatusRepository LeadStatuses { get; }
         public ILeadSourceRepository LeadSources { get; }
         public ILeadStatusActivityRepository LeadStatusActivities { get; }
+        public ILeadHistoryRepository LeadHistories { get; }
 
-        public IActivityRepository Activities { get; }
         public ICommentRepository Comments { get; }
 
         public IUserRepository Users { get; }
@@ -35,6 +35,10 @@ namespace seashore_CRM.DAL.Repositories
 
         public IProductGroupRepository ProductGroups { get; }
         public IUserLeadRightsRepository UserLeadRights { get; }
+        public IUserActivityRepository UserActivities { get; }
+
+        // Individual customers
+        public IIndividualCustomerRepository IndividualCustomers { get; }
 
         public UnitOfWork(AppDbContext context)
         {
@@ -55,19 +59,41 @@ namespace seashore_CRM.DAL.Repositories
             LeadStatuses = new LeadStatusRepository(context);
             LeadSources = new LeadSourceRepository(context);
             LeadStatusActivities = new LeadStatusActivityRepository(context);
+            LeadHistories = new LeadHistoryRepository(context);
 
-            Activities = new ActivityRepository(context);
             Comments = new CommentRepository(context);
 
             Users = new UserRepository(context);
             Opportunities = new OpportunityRepository(context);
             Roles = new RoleRepository(context);
             UserLeadRights = new UserLeadRightsRepository(context);
+
+            IndividualCustomers = new IndividualCustomerRepository(context);
+
+            // wire user activity
+            UserActivities = new UserActivityRepository(context);
         }
 
         public async Task<int> CommitAsync()
         {
             return await _context.SaveChangesAsync();
+        }
+
+        public async Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _context.Database.BeginTransactionAsync();
+        }
+
+        public async Task CommitTransactionAsync(Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction)
+        {
+            if (transaction == null) return;
+            await transaction.CommitAsync();
+        }
+
+        public async Task RollbackTransactionAsync(Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction)
+        {
+            if (transaction == null) return;
+            await transaction.RollbackAsync();
         }
     }
 }

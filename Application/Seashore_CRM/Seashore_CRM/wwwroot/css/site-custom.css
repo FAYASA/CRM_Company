@@ -1,8 +1,270 @@
-﻿.form-container {
-    max-width: 850px;
+﻿/* --- 1. Modernized Variables --- */
+:root {
+    --primary-color: #2563eb;
+    --primary-soft: rgba(37, 99, 235, 0.1);
+    --accent-teal: #06b6d4;
+    --bg-main: #f8fafc;
+    --sidebar-bg: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+    --premium-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --text-main: #0f172a;
+    --text-muted: #64748b;
 }
 
-label.required::after {
-    content: " *";
-    color: #dc3545;
+body {
+    background-color: var(--bg-main);
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.01em; /* Tighter modern typography */
+}
+
+/* --- 2. Layout & Sidebar Refinement --- */
+.app-sidebar {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+}
+
+    .app-sidebar .nav-link {
+        margin: 0.25rem 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        color: #94a3b8 !important;
+        transition: var(--transition-smooth);
+    }
+
+        .app-sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #f1f5f9 !important;
+            transform: translateX(4px);
+        }
+
+        .app-sidebar .nav-link.active {
+            background: var(--primary-color) !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+/* --- 3. Glassmorphism Header --- */
+.app-header {
+    backdrop-filter: blur(12px);
+    background-color: var(--glass-bg);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+/* --- 4. Card & Component Design --- */
+.card {
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    box-shadow: var(--card-shadow);
+    transition: var(--transition-smooth);
+    overflow: hidden;
+}
+
+    .card:hover {
+        box-shadow: var(--premium-shadow);
+        transform: translateY(-2px);
+    }
+
+.card-header {
+    background: white;
+    border-bottom: 1px solid #f1f5f9;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+/* --- 5. Inputs & Interactive Elements --- */
+.form-control {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    transition: var(--transition-smooth);
+}
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px var(--primary-soft);
+        background-color: #fff;
+    }
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
+    border: none;
+    padding: 0.7rem 1.5rem;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+}
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+    }
+
+/* --- 6. Auth Page Polish --- */
+.auth-card {
+    border: none;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+}
+
+/* --- 7. Modern Dashboard Utilities --- */
+.icon-shape {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.25rem;
+}
+
+.bg-primary-soft {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.bg-success-soft {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.bg-warning-soft {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.bg-info-soft {
+    background-color: rgba(6, 182, 212, 0.1);
+    color: #06b6d4;
+}
+
+/* Soft Badges for Table Statuses */
+.badge-soft-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.badge-soft-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.badge-soft-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Modern Table Styling */
+.table-modern {
+    vertical-align: middle;
+}
+
+    .table-modern thead th {
+        border-bottom: 1px solid #e2e8f0;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        padding-bottom: 1rem;
+    }
+
+    .table-modern tbody tr {
+        transition: var(--transition-smooth);
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+        .table-modern tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+    .table-modern tbody td {
+        padding: 1rem 0.5rem;
+        color: var(--text-main);
+    }
+
+
+/* Sidebar Scrollbar Styling */
+.sidebar-inner {
+    height: 100%;
+}
+
+.sidebar-inner::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-inner::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.sidebar-inner:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- App Layout Fix --- */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar width */
+:root {
+    --sidebar-width: 260px;
+}
+
+/* Sidebar */
+.app-sidebar {
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+/* Main content */
+.app-main {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    padding-top: 70px; /* header height */
+}
+
+/* Header fix */
+.app-header {
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-width);
+    right: 0;
+    height: 70px;
+    z-index: 1000;
+    padding: 0 1.5rem;
+}
+
+/* Content spacing */
+.app-content {
+    padding: 1.5rem;
+}
+
+@media (max-width: 992px) {
+    .app-sidebar {
+        display: none;
+    }
+
+    .app-header {
+        left: 0;
+    }
+
+    .app-main {
+        margin-left: 0;
+        width: 100%;
+    }
 }

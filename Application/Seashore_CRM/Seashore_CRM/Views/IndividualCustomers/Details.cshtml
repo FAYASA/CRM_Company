@@ -1,0 +1,95 @@
+@model Seashore_CRM.ViewModels.IndividualCustomer.IndividualCustomerDetailsViewModel
+
+@{
+    ViewData["Title"] = "Individual Customer Details";
+}
+
+@await Html.PartialAsync("_PageHeader")
+
+<div class="container my-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 900px;">
+
+        <!-- Header -->
+        <div class="card-header bg-light">
+            <h5 class="mb-0 fw-semibold">
+                <i class="bi bi-person me-2"></i>
+                Individual Customer Details
+            </h5>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+
+            <!-- Name -->
+            <h4 class="fw-bold mb-4">
+                @Model.Name
+            </h4>
+
+            <dl class="row">
+
+                <!-- Location -->
+                <dt class="col-sm-3 text-muted">
+                    <i class="bi bi-geo-alt me-1"></i> Location
+                </dt>
+                <dd class="col-sm-9">
+                    @if (string.IsNullOrWhiteSpace(Model.Location))
+                    {
+                        <span class="text-muted">N/A</span>
+                    }
+                    else
+                    {
+                        @Model.Location
+                    }
+                </dd>
+
+                <!-- Phone -->
+                <dt class="col-sm-3 text-muted">
+                    <i class="bi bi-telephone me-1"></i> Phone
+                </dt>
+                <dd class="col-sm-9">
+                    @if (string.IsNullOrWhiteSpace(Model.Phone))
+                    {
+                        <span class="text-muted">N/A</span>
+                    }
+                    else
+                    {
+                        @Model.Phone
+                    }
+                </dd>
+
+                <!-- Email -->
+                <dt class="col-sm-3 text-muted">
+                    <i class="bi bi-envelope me-1"></i> Email
+                </dt>
+                <dd class="col-sm-9">
+                    @if (string.IsNullOrWhiteSpace(Model.Email))
+                    {
+                        <span class="text-muted">N/A</span>
+                    }
+                    else
+                    {
+                        @Model.Email
+                    }
+                </dd>
+
+            </dl>
+
+            <!-- Buttons -->
+            <div class="d-flex gap-2 mt-4 justify-content-end">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-primary px-4">
+                    <i class="bi bi-pencil me-1"></i> Edit
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary px-4">
+                    <i class="bi bi-arrow-left me-1"></i> Back to List
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>

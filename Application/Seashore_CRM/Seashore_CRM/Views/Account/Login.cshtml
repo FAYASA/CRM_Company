@@ -5,62 +5,137 @@
     ViewData["Title"] = "Login";
 }
 
-@await Html.PartialAsync("_PageHeader")
+<style>
+    .auth-wrapper {
+        min-height: calc(100vh - 150px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+    }
 
-<div class="container my-5">
-    <div class="card shadow-sm mx-auto" style="max-width:500px;">
-        <!-- Header -->
-        <div class="card-header bg-light">
-            <h5 class="mb-0 fw-semibold">
-                <i class="bi bi-box-arrow-in-right me-2"></i>
-                Login
-            </h5>
+    .auth-card {
+        background: var(--surface-solid, #ffffff);
+        border: 1px solid var(--border-color, rgba(148, 163, 184, 0.2));
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+        width: 100%;
+        max-width: 440px;
+        overflow: hidden;
+    }
+
+    .auth-header {
+        text-align: center;
+        padding: 40px 30px 20px;
+    }
+
+    .auth-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary, #2563eb), #06b6d4);
+        color: white;
+        border-radius: 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+    }
+
+    .auth-body {
+        padding: 0 30px 40px;
+    }
+
+    .input-group-text {
+        background: transparent;
+        border-color: #dbe3ef;
+        color: #64748b;
+    }
+
+    .form-control {
+        border-left: none;
+    }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #dbe3ef;
+        }
+
+    .input-group:focus-within {
+        border-radius: 12px;
+        box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.12);
+    }
+
+        .input-group:focus-within .input-group-text,
+        .input-group:focus-within .form-control {
+            border-color: #93c5fd;
+        }
+
+    .toggle-password {
+        cursor: pointer;
+        border-left: none;
+        background: transparent;
+    }
+</style>
+
+@* @await Html.PartialAsync("_PageHeader") *@
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <div class="auth-header">
+            <div class="auth-icon">
+                <i class="bi bi-shield-lock"></i>
+            </div>
+            <h3 class="fw-bold mb-1 text-dark">Welcome Back</h3>
+            <p class="text-muted small">Please sign in to access your Seashore CRM</p>
         </div>
 
-        <!-- Body -->
-        <div class="card-body">
+        <div class="auth-body">
             <form asp-action="Login" method="post" id="loginForm">
                 @Html.AntiForgeryToken()
                 <input type="hidden" asp-for="ReturnUrl" />
 
-                <!-- Validation Summary -->
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 small"></div>
 
-                <!-- Email -->
-                <div class="mb-3">
-                    <label asp-for="Email" class="form-label fw-semibold required"></label>
-                    <div class="input-group">
-                        <span class="input-group-text">
+                <div class="mb-4">
+                    <label asp-for="Email" class="form-label fw-semibold text-dark small"></label>
+                    <div class="input-group rounded-3 overflow-hidden">
+                        <span class="input-group-text border-end-0">
                             <i class="bi bi-envelope"></i>
                         </span>
-                        <input asp-for="Email" class="form-control" placeholder="Enter email address" />
+                        <input asp-for="Email" class="form-control" placeholder="name@company.com" autocomplete="email" />
                     </div>
-                    <span asp-validation-for="Email" class="text-danger small"></span>
+                    <span asp-validation-for="Email" class="text-danger small mt-1 d-block"></span>
                 </div>
 
-                <!-- Password -->
-                <div class="mb-3">
-                    <label asp-for="Password" class="form-label fw-semibold required"></label>
-                    <div class="input-group">
-                        <span class="input-group-text">
-                            <i class="bi bi-lock"></i>
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label asp-for="Password" class="form-label fw-semibold text-dark small mb-0"></label>
+                        <a href="#" class="text-decoration-none small text-primary">Forgot password?</a>
+                    </div>
+                    <div class="input-group rounded-3 overflow-hidden mt-2">
+                        <span class="input-group-text border-end-0">
+                            <i class="bi bi-key"></i>
                         </span>
-                        <input asp-for="Password" type="password" class="form-control" placeholder="Enter password" />
+                        <input asp-for="Password" type="password" class="form-control border-end-0" placeholder="••••••••" autocomplete="current-password" id="passwordInput" />
+                        <span class="input-group-text toggle-password border-start-0" id="togglePasswordBtn">
+                            <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                        </span>
                     </div>
-                    <span asp-validation-for="Password" class="text-danger small"></span>
+                    <span asp-validation-for="Password" class="text-danger small mt-1 d-block"></span>
                 </div>
 
-                <!-- Remember Me -->
-                <div class="form-check mb-3">
-                    <input asp-for="RememberMe" class="form-check-input" />
-                    <label asp-for="RememberMe" class="form-check-label"></label>
+                <div class="form-check mb-4">
+                    <input asp-for="RememberMe" class="form-check-input shadow-sm" />
+                    <label asp-for="RememberMe" class="form-check-label small text-muted user-select-none"></label>
                 </div>
 
-                <!-- Buttons -->
-                <div class="d-flex justify-content-end gap-2">
-                    <button type="submit" class="btn btn-primary px-4" id="submitBtn">
-                        <span class="spinner-border spinner-border-sm d-none me-2" id="submitSpinner"></span>
-                        Login
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary py-2 fw-semibold rounded-3 d-flex align-items-center justify-content-center gap-2" id="submitBtn">
+                        <span class="spinner-border spinner-border-sm d-none" id="submitSpinner" role="status" aria-hidden="true"></span>
+                        <span id="submitText">Sign In</span>
                     </button>
                 </div>
             </form>
@@ -72,20 +147,55 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        const form = document.getElementById("loginForm");
-        const btn = document.getElementById("submitBtn");
-        const spinner = document.getElementById("submitSpinner");
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("loginForm");
+            const btn = document.getElementById("submitBtn");
+            const spinner = document.getElementById("submitSpinner");
+            const submitText = document.getElementById("submitText");
 
-        form.addEventListener("submit", function () {
-            if (document.querySelectorAll(".validation-summary-errors").length === 0) {
-                spinner.classList.remove("d-none");
-                btn.setAttribute("disabled", "disabled");
-            }
-        });
+            const passwordInput = document.getElementById("passwordInput");
+            const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+            const togglePasswordIcon = document.getElementById("togglePasswordIcon");
 
-        window.addEventListener("load", function () {
-            btn.removeAttribute("disabled");
-            spinner.classList.add("d-none");
+            // Toggle Password Visibility
+            togglePasswordBtn.addEventListener("click", function () {
+                const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                passwordInput.setAttribute("type", type);
+
+                // Toggle Icon
+                if (type === "text") {
+                    togglePasswordIcon.classList.remove("bi-eye");
+                    togglePasswordIcon.classList.add("bi-eye-slash");
+                } else {
+                    togglePasswordIcon.classList.remove("bi-eye-slash");
+                    togglePasswordIcon.classList.add("bi-eye");
+                }
+            });
+
+            // Form Submit Loading State
+            form.addEventListener("submit", function (e) {
+                // Check if jQuery validation says the form is valid before spinning
+                if ($(form).valid()) {
+                    spinner.classList.remove("d-none");
+                    submitText.innerText = "Signing in...";
+                    btn.classList.add("disabled");
+
+                    // Prevent double submission
+                    if (form.dataset.submitted === 'true') {
+                        e.preventDefault();
+                    } else {
+                        form.dataset.submitted = 'true';
+                    }
+                }
+            });
+
+            // Re-enable on page pageshow (handles browser back button caching issues)
+            window.addEventListener("pageshow", function () {
+                btn.classList.remove("disabled");
+                spinner.classList.add("d-none");
+                submitText.innerText = "Sign In";
+                form.dataset.submitted = 'false';
+            });
         });
     </script>
 }

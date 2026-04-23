@@ -10,6 +10,7 @@ namespace seashore_CRM.BLL.Services.Service_Interfaces
     {
 
         IQueryable<ProductListDto> GetAllAsync();
+        IQueryable<ProductListDto> GetAllExceptInactive();
         IQueryable<ProductListDto> SearchAsync(string? query);
         Task<ProductDetailDto?> GetByIdAsync(int id);
         Task<int> CreateAsync(ProductCreateDto dto);
