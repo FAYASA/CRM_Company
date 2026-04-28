@@ -1,7 +1,9 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using seashore_CRM.Application.DTOs;
 using seashore_CRM.BLL.DTOs;
 using seashore_CRM.BLL.Services.Service_Interfaces;
 using seashore_CRM.Models.Entities;
@@ -12,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using FluentValidation;
 
 namespace Seashore_CRM.Controllers
 {
@@ -148,13 +149,17 @@ namespace Seashore_CRM.Controllers
             return Json(new { success = true, mapping = mapping });
         }
 
+
+        #region Lead Create
+        ///////////////////////////////////////////////////////////////////////////////
+        /// Lead create
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var vm = await PrepareLeadCreateViewModelAsync();
+            // Build empty form with all dropdown data
+            var vm = await BuildLeadCreateViewModel();
 
-            vm.Mode = "create";
-            vm.SubmitButtonText = "Save Lead";
-            return View(vm);
+            return View("Create", vm);
         }
 
         [HttpPost]
@@ -162,261 +167,371 @@ namespace Seashore_CRM.Controllers
         public async Task<IActionResult> Create(LeadCreateViewModel vm)
         {
             if (!ModelState.IsValid)
+                return await RebuildView(vm, isEdit: false);
+
+            var dto = new LeadCreateDataDto
             {
-                var data = await _leadService.BuildLeadCreateDataAsync(vm?.Lead?.CategoryId, vm?.Lead?.CompanyId, vm?.Lead?.StatusId);
+                Lead = vm.Lead,
+                CommentsText = vm.CommentsText,
+                Files = vm.Files
+            };
 
-                var repop = new LeadCreateViewModel();
-                repop.Companies = new SelectList(data.Companies, "Id", "Name", vm?.Lead?.CompanyId);
-                repop.Contacts = new SelectList(data.Contacts, "Id", "Name", vm?.Lead?.ContactId);
-                repop.ContactForIndv = new SelectList(data.ContactForIndv, "Id", "Name", vm?.Lead?.IndividualCustomerId ?? vm?.Lead?.ContactId);
-                repop.Sources = new SelectList(data.Sources, "Id", "Name", vm?.Lead?.SourceId);
-                repop.Statuses = new SelectList(data.Statuses, "Id", "Name", vm?.Lead?.StatusId);
-                repop.Users = new SelectList(data.Users, "Id", "Name", vm?.Lead?.AssignedUserId);
+            var result = await _leadService.CreateLeadAsync(dto);
 
-                repop.ProductList = data.ProductList.Select(p => new ProductOptionViewModel
-                { 
-                    Text = p.ProductName, 
-                    Value = p.Id.ToString(), 
-                    Category = p.CategoryName, 
-                    ProGroup = p.ProductGroupName 
-                }).ToList();
-
-                repop.Categories = new SelectList(data.Categories, "Id", "Name", vm?.Lead?.CategoryId);
-                repop.Pro_Groups = new SelectList(data.ProductGroups, "Id", "Name");
-                repop.ProductsJson = data.ProductsJson;
-                repop.CommentTemplates = new SelectList(data.CommentTemplates);
-                repop.StatusActivitiesJson = JsonSerializer.Serialize(data.StatusActivitiesMapping);
-                repop.Lead = vm?.Lead;
-                repop.Mode = "create";
-                repop.SubmitButtonText = "Save Lead";
-                return View(repop);
-            }
-
-            try
+            if (!result.Success)
             {
-
-                var dtoLead = new LeadDto
-                {
-                    LeadType = vm.Lead.LeadType,
-                    CompanyId = vm.Lead.CompanyId,
-                    ContactId = vm.Lead.ContactId,
-                    IndividualCustomerId = vm.Lead.IndividualCustomerId,
-                    ActivityId = vm.Lead.ActivityId,
-                    SourceId = vm.Lead.SourceId,
-                    StatusId = vm.Lead.StatusId,
-                    ActivityType = vm.Lead.ActivityType,
-                    FollowUpDate = vm.Lead.FollowUpDate,
-                    FollowUpTime = vm.Lead.FollowUpTime,
-                    ExpectedClosureDate = vm.Lead.ExpectedClosureDate,
-                    Priority = vm.Lead.Priority,
-                    AssignedUserId = vm.Lead.AssignedUserId,
-                    IsQualified = vm.Lead.IsQualified,
-                    QualifiedOn = vm.Lead.QualifiedOn,
-                    QualifiedById = vm.Lead.QualifiedById,
-                    QualificationNotes = vm.Lead.QualificationNotes,
-                    IsConverted = vm.Lead.IsConverted,
-                    Budget = vm.Lead.Budget,
-                    DecisionDate = vm.Lead.DecisionDate,
-                    Probability = vm.Lead.Probability,
-                    ProductItems = vm.Lead.ProductItems,
-                    AttachmentsJson = vm.Lead.AttachmentsJson,
-                    UserLeadRights = vm.Lead.UserLeadRights,
-                    Comments = vm.Lead.Comments ?? new System.Collections.Generic.List<seashore_CRM.BLL.DTOs.CommentDto>()
-                };
-
-                // If user provided the comments textarea, convert into a single CommentDto and include
-                var commentsText = Request.Form["Comments"].FirstOrDefault();
-                if (!string.IsNullOrWhiteSpace(commentsText))
-                {
-                    dtoLead.Comments.Add(new seashore_CRM.BLL.DTOs.CommentDto { LeadId = 0, UserId = 0, Content = commentsText, CreatedAt = DateTime.UtcNow });
-                }
-
-                // Capture uploaded attachments and store filenames in AttachmentsJson
-                if (Request.Form.Files != null && Request.Form.Files.Count > 0)
-                {
-                    var files = Request.Form.Files; // IFormFileCollection
-                    var savedNames = new List<string>();
-                    var uploadPath = Path.Combine(_env.WebRootPath ?? string.Empty, "uploads", "leads");
-                    Directory.CreateDirectory(uploadPath);
-                    foreach (var f in files)
-                    {
-                        try
-                        {
-                            var fileName = Path.GetFileName(f.FileName);
-                            var savePath = Path.Combine(uploadPath, fileName);
-                            using (var fs = new FileStream(savePath, FileMode.Create)) { await f.CopyToAsync(fs); }
-                            savedNames.Add(Path.Combine("/uploads/leads", fileName));
-                        }
-                        catch { /* ignore single file failure */ }
-                    }
-
-                    // merge with existing attachments if any
-                    var existing = new List<string>();
-                    if (!string.IsNullOrWhiteSpace(dtoLead.AttachmentsJson))
-                    {
-                        try { existing = JsonSerializer.Deserialize<List<string>>(dtoLead.AttachmentsJson) ?? new List<string>(); } catch { }
-                    }
-                    existing.AddRange(savedNames);
-                    dtoLead.AttachmentsJson = JsonSerializer.Serialize(existing);
-                }
-
-                var (result, leadId) = await _leadService.CreateLeadAsync(dtoLead);
-
-                if (result != "Success")
-                {
-                    ModelState.AddModelError(string.Empty, result);
-                    var data2 = await _leadService.BuildLeadCreateDataAsync(dtoLead?.CategoryId, dtoLead?.CompanyId, dtoLead?.StatusId);
-                    var newVm = new LeadCreateViewModel();
-                    newVm.Companies = new SelectList(data2.Companies, "Id", "Name", dtoLead?.CompanyId);
-                    newVm.Contacts = new SelectList(data2.Contacts, "Id", "Name", dtoLead?.ContactId);
-                    newVm.ContactForIndv = new SelectList(data2.ContactForIndv, "Id", "Name", dtoLead?.IndividualCustomerId ?? dtoLead?.ContactId);
-                    newVm.Sources = new SelectList(data2.Sources, "Id", "Name", dtoLead?.SourceId);
-                    newVm.Statuses = new SelectList(data2.Statuses, "Id", "Name", dtoLead?.StatusId);
-                    newVm.Users = new SelectList(data2.Users, "Id", "Name", dtoLead?.AssignedUserId);
-                    newVm.ProductList = data2.ProductList.Select(p => new ProductOptionViewModel { Text = p.ProductName, Value = p.Id.ToString(), Category = p.CategoryName, ProGroup = p.ProductGroupName }).ToList();
-                    newVm.Categories = new SelectList(data2.Categories, "Id", "Name", dtoLead?.CategoryId);
-                    newVm.Pro_Groups = new SelectList(data2.ProductGroups, "Id", "Name");
-                    newVm.ProductsJson = data2.ProductsJson;
-                    newVm.CommentTemplates = new SelectList(data2.CommentTemplates);
-                    newVm.StatusActivitiesJson = JsonSerializer.Serialize(data2.StatusActivitiesMapping);
-                    newVm.Lead = dtoLead;
-                    newVm.Mode = "create";
-                    newVm.SubmitButtonText = "Save Lead";
-                    return View(newVm);
-                }
-
-            }
-            catch (ValidationException vex)
-            {
-                foreach (var err in vex.Errors)
-                {
-                    if (string.IsNullOrEmpty(err.PropertyName))
-                        ModelState.AddModelError(string.Empty, err.ErrorMessage);
-                    else
-                        ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
-                }
-
-                var newVm = await BuildLeadCreateViewModel();
-                newVm.Mode = "create";
-                newVm.SubmitButtonText = "Save Lead";
-                return View(newVm);
-            }
-
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "An unexpected error occurred: " + ex.Message);
-                var newVm = await BuildLeadCreateViewModel();
-                newVm.Mode = "create";
-                newVm.SubmitButtonText = "Save Lead";
-                return View(newVm);
+                ModelState.AddModelError("", result.Error);
+                return await RebuildView(vm, isEdit: false);
             }
 
             return RedirectToAction(nameof(Index));
         }
 
+        // if model state is invalid,
+        // we need to rebuild the select lists and return the view so user can correct
+        private async Task<IActionResult> RebuildView(LeadCreateViewModel vm, bool isEdit = false)
+        {
+            var data = await _leadService.BuildLeadCreateDataAsync(
+                vm?.Lead?.CategoryId,
+                vm?.Lead?.CompanyId,
+                vm?.Lead?.StatusId);
+
+            vm.Companies = new SelectList(data.Companies, "Id", "Name", vm?.Lead?.CompanyId);
+            vm.Contacts = new SelectList(data.Contacts, "Id", "Name", vm?.Lead?.ContactId);
+            vm.Sources = new SelectList(data.Sources, "Id", "Name", vm?.Lead?.SourceId);
+            vm.Statuses = new SelectList(data.Statuses, "Id", "Name", vm?.Lead?.StatusId);
+            vm.Users = new SelectList(data.Users, "Id", "Name", vm?.Lead?.AssignedUserId);
+
+            vm.ProductList = data.ProductList.Select(p => new ProductOptionViewModel
+            {
+                Text = p.ProductName,
+                Value = p.Id.ToString()
+            }).ToList();
+
+            return View("Create", vm);
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////////////
+        /// Lead create
+
+        #endregion lead create
+
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(LeadCreateViewModel vm)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        var data = await _leadService.BuildLeadCreateDataAsync(vm?.Lead?.CategoryId, vm?.Lead?.CompanyId, 
+        //            vm?.Lead?.StatusId);
+
+        //        await _leadService.CreateLeadAsync(vm, Request.Form.Files);
+
+
+
+        //        var repop = new LeadCreateViewModel();
+        //        repop.Companies = new SelectList(data.Companies, "Id", "Name", vm?.Lead?.CompanyId);
+        //        repop.Contacts = new SelectList(data.Contacts, "Id", "Name", vm?.Lead?.ContactId);
+        //        repop.ContactForIndv = new SelectList(data.ContactForIndv, "Id", "Name", vm?.Lead?.IndividualCustomerId ?? vm?.Lead?.ContactId);
+        //        repop.Sources = new SelectList(data.Sources, "Id", "Name", vm?.Lead?.SourceId);
+        //        repop.Statuses = new SelectList(data.Statuses, "Id", "Name", vm?.Lead?.StatusId);
+        //        repop.Users = new SelectList(data.Users, "Id", "Name", vm?.Lead?.AssignedUserId);
+
+        //        repop.ProductList = data.ProductList.Select(p => new ProductOptionViewModel
+        //        { 
+        //            Text = p.ProductName, 
+        //            Value = p.Id.ToString(), 
+        //            Category = p.CategoryName, 
+        //            ProGroup = p.ProductGroupName 
+        //        }).ToList();
+
+        //        repop.Categories = new SelectList(data.Categories, "Id", "Name", vm?.Lead?.CategoryId);
+        //        repop.Pro_Groups = new SelectList(data.ProductGroups, "Id", "Name");
+        //        repop.ProductsJson = data.ProductsJson;
+        //        repop.CommentTemplates = new SelectList(data.CommentTemplates);
+        //        repop.StatusActivitiesJson = JsonSerializer.Serialize(data.StatusActivitiesMapping);
+        //        repop.Lead = vm?.Lead;
+        //        repop.Mode = "create";
+        //        repop.SubmitButtonText = "Save Lead";
+        //        return View(repop);
+        //    }
+
+        //    try
+        //    {
+
+        //        var dtoLead = new LeadDto
+        //        {
+        //            LeadType = vm.Lead.LeadType,
+        //            CompanyId = vm.Lead.CompanyId,
+        //            ContactId = vm.Lead.ContactId,
+        //            IndividualCustomerId = vm.Lead.IndividualCustomerId,
+        //            ActivityId = vm.Lead.ActivityId,
+        //            SourceId = vm.Lead.SourceId,
+        //            StatusId = vm.Lead.StatusId,
+        //            ActivityType = vm.Lead.ActivityType,
+        //            FollowUpDate = vm.Lead.FollowUpDate,
+        //            FollowUpTime = vm.Lead.FollowUpTime,
+        //            ExpectedClosureDate = vm.Lead.ExpectedClosureDate,
+        //            Priority = vm.Lead.Priority,
+        //            AssignedUserId = vm.Lead.AssignedUserId,
+        //            IsQualified = vm.Lead.IsQualified,
+        //            QualifiedOn = vm.Lead.QualifiedOn,
+        //            QualifiedById = vm.Lead.QualifiedById,
+        //            QualificationNotes = vm.Lead.QualificationNotes,
+        //            IsConverted = vm.Lead.IsConverted,
+        //            Budget = vm.Lead.Budget,
+        //            DecisionDate = vm.Lead.DecisionDate,
+        //            Probability = vm.Lead.Probability,
+        //            ProductItems = vm.Lead.ProductItems,
+        //            AttachmentsJson = vm.Lead.AttachmentsJson,
+        //            UserLeadRights = vm.Lead.UserLeadRights,
+        //            Comments = vm.Lead.Comments ?? new System.Collections.Generic.List<seashore_CRM.BLL.DTOs.CommentDto>()
+        //        };
+
+        //        // If user provided the comments textarea, convert into a single CommentDto and include
+        //        var commentsText = Request.Form["Comments"].FirstOrDefault();
+        //        if (!string.IsNullOrWhiteSpace(commentsText))
+        //        {
+        //            dtoLead.Comments.Add(new seashore_CRM.BLL.DTOs.CommentDto { LeadId = 0, UserId = 0, Content = commentsText, CreatedAt = DateTime.UtcNow });
+        //        }
+
+        //        // Capture uploaded attachments and store filenames in AttachmentsJson
+        //        if (Request.Form.Files != null && Request.Form.Files.Count > 0)
+        //        {
+        //            var files = Request.Form.Files; // IFormFileCollection
+        //            var savedNames = new List<string>();
+        //            var uploadPath = Path.Combine(_env.WebRootPath ?? string.Empty, "uploads", "leads");
+        //            Directory.CreateDirectory(uploadPath);
+        //            foreach (var f in files)
+        //            {
+        //                try
+        //                {
+        //                    var fileName = Path.GetFileName(f.FileName);
+        //                    var savePath = Path.Combine(uploadPath, fileName);
+        //                    using (var fs = new FileStream(savePath, FileMode.Create)) { await f.CopyToAsync(fs); }
+        //                    savedNames.Add(Path.Combine("/uploads/leads", fileName));
+        //                }
+        //                catch { /* ignore single file failure */ }
+        //            }
+
+        //            // merge with existing attachments if any
+        //            var existing = new List<string>();
+        //            if (!string.IsNullOrWhiteSpace(dtoLead.AttachmentsJson))
+        //            {
+        //                try { existing = JsonSerializer.Deserialize<List<string>>(dtoLead.AttachmentsJson) ?? new List<string>(); } catch { }
+        //            }
+        //            existing.AddRange(savedNames);
+        //            dtoLead.AttachmentsJson = JsonSerializer.Serialize(existing);
+        //        }
+
+        //        var (result, leadId) = await _leadService.CreateLeadAsync(dtoLead);
+
+        //        if (result != "Success")
+        //        {
+        //            ModelState.AddModelError(string.Empty, result);
+        //            var data2 = await _leadService.BuildLeadCreateDataAsync(dtoLead?.CategoryId, dtoLead?.CompanyId, dtoLead?.StatusId);
+        //            var newVm = new LeadCreateViewModel();
+        //            newVm.Companies = new SelectList(data2.Companies, "Id", "Name", dtoLead?.CompanyId);
+        //            newVm.Contacts = new SelectList(data2.Contacts, "Id", "Name", dtoLead?.ContactId);
+        //            newVm.ContactForIndv = new SelectList(data2.ContactForIndv, "Id", "Name", dtoLead?.IndividualCustomerId ?? dtoLead?.ContactId);
+        //            newVm.Sources = new SelectList(data2.Sources, "Id", "Name", dtoLead?.SourceId);
+        //            newVm.Statuses = new SelectList(data2.Statuses, "Id", "Name", dtoLead?.StatusId);
+        //            newVm.Users = new SelectList(data2.Users, "Id", "Name", dtoLead?.AssignedUserId);
+        //            newVm.ProductList = data2.ProductList.Select(p => new ProductOptionViewModel { Text = p.ProductName, Value = p.Id.ToString(), Category = p.CategoryName, ProGroup = p.ProductGroupName }).ToList();
+        //            newVm.Categories = new SelectList(data2.Categories, "Id", "Name", dtoLead?.CategoryId);
+        //            newVm.Pro_Groups = new SelectList(data2.ProductGroups, "Id", "Name");
+        //            newVm.ProductsJson = data2.ProductsJson;
+        //            newVm.CommentTemplates = new SelectList(data2.CommentTemplates);
+        //            newVm.StatusActivitiesJson = JsonSerializer.Serialize(data2.StatusActivitiesMapping);
+        //            newVm.Lead = dtoLead;
+        //            newVm.Mode = "create";
+        //            newVm.SubmitButtonText = "Save Lead";
+        //            return View(newVm);
+        //        }
+
+        //    }
+        //    catch (ValidationException vex)
+        //    {
+        //        foreach (var err in vex.Errors)
+        //        {
+        //            if (string.IsNullOrEmpty(err.PropertyName))
+        //                ModelState.AddModelError(string.Empty, err.ErrorMessage);
+        //            else
+        //                ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+        //        }
+
+        //        var newVm = await BuildLeadCreateViewModel();
+        //        newVm.Mode = "create";
+        //        newVm.SubmitButtonText = "Save Lead";
+        //        return View(newVm);
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        ModelState.AddModelError(string.Empty, "An unexpected error occurred: " + ex.Message);
+        //        var newVm = await BuildLeadCreateViewModel();
+        //        newVm.Mode = "create";
+        //        newVm.SubmitButtonText = "Save Lead";
+        //        return View(newVm);
+        //    }
+
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+        #region Lead Edit
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var lead = await _leadService.GetLeadByIdAsync(id);
-            if (lead == null) return NotFound();
+            if (id <= 0)
+                return BadRequest();
 
-            // Use the factory to ensure contacts (including inactive selected) and user-rights are populated correctly
+            // Get existing lead
+            var lead = await _leadService.GetLeadByIdAsync(id);
+
+            if (lead == null)
+                return NotFound();
+
+            // Build a LeadEditViewModel which the Edit view expects
             var vm = await BuildLeadEditViewModel(lead);
+
             return View("Edit", vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, LeadEditViewModel vm)
+        public async Task<IActionResult> Edit(LeadEditViewModel vm)
         {
-            var lead = vm?.Lead ?? new LeadDto();
+            // LeadEditViewModel inherits LeadCreateViewModel so it can be passed to RebuildView
+            if (!ModelState.IsValid)
+                return await RebuildView(vm, isEdit: true);
 
-            var rv = Request.Form["Lead.RowVersion"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(rv))
+            var dto = new LeadEditDataDto
             {
-                try { lead.RowVersion = Convert.FromBase64String(rv); } catch { }
-            }
+                Id = vm.Lead.Id,
+               //Lead = vm.Lead,
+                CommentsText = vm.CommentsText,
+                Files = vm.Files
+            };
 
-            if (id != lead.Id) return BadRequest();
+            var result = await _leadService.UpdateLeadAsync(dto);
 
-            try
+            if (!result.Success)
             {
-                // Handle uploaded attachments during edit
-                if (Request.Form.Files != null && Request.Form.Files.Count > 0)
-                {
-                    var files = Request.Form.Files;
-                    var savedNames = new List<string>();
-                    var uploadPath = Path.Combine(_env.WebRootPath ?? string.Empty, "uploads", "leads");
-                    Directory.CreateDirectory(uploadPath);
-                    foreach (var f in files)
-                    {
-                        try
-                        {
-                            var fileName = Path.GetFileName(f.FileName);
-                            var savePath = Path.Combine(uploadPath, fileName);
-                            using (var fs = new FileStream(savePath, FileMode.Create)) { await f.CopyToAsync(fs); }
-                            savedNames.Add(Path.Combine("/uploads/leads", fileName));
-                        }
-                        catch { }
-                    }
-
-                    var existing = new List<string>();
-                    if (!string.IsNullOrWhiteSpace(lead.AttachmentsJson))
-                    {
-                        try { existing = JsonSerializer.Deserialize<List<string>>(lead.AttachmentsJson) ?? new List<string>(); } catch { }
-                    }
-                    existing.AddRange(savedNames);
-                    lead.AttachmentsJson = JsonSerializer.Serialize(existing);
-                }
-
-                // Capture comments textarea on edit and append as a CommentDto so service persists it
-                var commentsText = Request.Form["Comments"].FirstOrDefault();
-                if (!string.IsNullOrWhiteSpace(commentsText))
-                {
-                    lead.Comments = lead.Comments ?? new List<seashore_CRM.BLL.DTOs.CommentDto>();
-                    lead.Comments.Add(new seashore_CRM.BLL.DTOs.CommentDto { LeadId = lead.Id, UserId = 0, Content = commentsText, CreatedAt = DateTime.UtcNow });
-                }
-
-                await _leadService.UpdateLeadAsync(lead);
-                // persisted by service
-            }
-            catch (ValidationException vex)
-            {
-                foreach (var err in vex.Errors)
-                {
-                    if (string.IsNullOrEmpty(err.PropertyName))
-                        ModelState.AddModelError(string.Empty, err.ErrorMessage);
-                    else
-                        ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
-                }
-
-                // Rebuild edit view model and return Edit view so user can correct values
-                var editVm = await BuildLeadEditViewModel(lead);
-                return View("Edit", editVm);
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                var editVm = await BuildLeadEditViewModel(lead);
-                return View("Edit", editVm);
-            }
-            catch (Exception ex)
-            {
-                // General exception handling - surface message and repopulate edit form
-                ModelState.AddModelError(string.Empty, ex.Message);
-                var editVm = await BuildLeadEditViewModel(lead);
-                return View("Edit", editVm);
-            }
-
-            var selectedActivities = Request.Form["SelectedActivities"].ToList();
-            if (selectedActivities != null && selectedActivities.Any())
-            {
-                await _leadService.AddActivitiesToLeadAsync(lead.Id, selectedActivities);
+                ModelState.AddModelError("", result.Error);
+                return await RebuildView(vm, isEdit: true);
             }
 
             return RedirectToAction(nameof(Index));
         }
 
+
+        #endregion Lead Edit
+
+        //[HttpGet]
+        //public async Task<IActionResult> Edit(int id)
+        //{
+        //    var lead = await _leadService.GetLeadByIdAsync(id);
+        //    if (lead == null) return NotFound();
+
+        //    // Use the factory to ensure contacts (including inactive selected) and user-rights are populated correctly
+        //    var vm = await BuildLeadEditViewModel(lead);
+        //    return View("Edit", vm);
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, LeadEditViewModel vm)
+        //{
+        //    var lead = vm?.Lead ?? new LeadDto();
+
+        //    var rv = Request.Form["Lead.RowVersion"].FirstOrDefault();
+        //    if (!string.IsNullOrEmpty(rv))
+        //    {
+        //        try { lead.RowVersion = Convert.FromBase64String(rv); } catch { }
+        //    }
+
+        //    if (id != lead.Id) return BadRequest();
+
+        //    try
+        //    {
+        //        // Handle uploaded attachments during edit
+        //        if (Request.Form.Files != null && Request.Form.Files.Count > 0)
+        //        {
+        //            var files = Request.Form.Files;
+        //            var savedNames = new List<string>();
+        //            var uploadPath = Path.Combine(_env.WebRootPath ?? string.Empty, "uploads", "leads");
+        //            Directory.CreateDirectory(uploadPath);
+        //            foreach (var f in files)
+        //            {
+        //                try
+        //                {
+        //                    var fileName = Path.GetFileName(f.FileName);
+        //                    var savePath = Path.Combine(uploadPath, fileName);
+        //                    using (var fs = new FileStream(savePath, FileMode.Create)) { await f.CopyToAsync(fs); }
+        //                    savedNames.Add(Path.Combine("/uploads/leads", fileName));
+        //                }
+        //                catch { }
+        //            }
+
+        //            var existing = new List<string>();
+        //            if (!string.IsNullOrWhiteSpace(lead.AttachmentsJson))
+        //            {
+        //                try { existing = JsonSerializer.Deserialize<List<string>>(lead.AttachmentsJson) ?? new List<string>(); } catch { }
+        //            }
+        //            existing.AddRange(savedNames);
+        //            lead.AttachmentsJson = JsonSerializer.Serialize(existing);
+        //        }
+
+        //        // Capture comments textarea on edit and append as a CommentDto so service persists it
+        //        var commentsText = Request.Form["Comments"].FirstOrDefault();
+        //        if (!string.IsNullOrWhiteSpace(commentsText))
+        //        {
+        //            lead.Comments = lead.Comments ?? new List<seashore_CRM.BLL.DTOs.CommentDto>();
+        //            lead.Comments.Add(new seashore_CRM.BLL.DTOs.CommentDto { LeadId = lead.Id, UserId = 0, Content = commentsText, CreatedAt = DateTime.UtcNow });
+        //        }
+
+        //        await _leadService.UpdateLeadAsync(lead);
+        //        // persisted by service
+        //    }
+        //    catch (ValidationException vex)
+        //    {
+        //        foreach (var err in vex.Errors)
+        //        {
+        //            if (string.IsNullOrEmpty(err.PropertyName))
+        //                ModelState.AddModelError(string.Empty, err.ErrorMessage);
+        //            else
+        //                ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+        //        }
+
+        //        // Rebuild edit view model and return Edit view so user can correct values
+        //        var editVm = await BuildLeadEditViewModel(lead);
+        //        return View("Edit", editVm);
+        //    }
+        //    catch (DbUpdateConcurrencyException ex)
+        //    {
+        //        ModelState.AddModelError(string.Empty, ex.Message);
+        //        var editVm = await BuildLeadEditViewModel(lead);
+        //        return View("Edit", editVm);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // General exception handling - surface message and repopulate edit form
+        //        ModelState.AddModelError(string.Empty, ex.Message);
+        //        var editVm = await BuildLeadEditViewModel(lead);
+        //        return View("Edit", editVm);
+        //    }
+
+        //    var selectedActivities = Request.Form["SelectedActivities"].ToList();
+        //    if (selectedActivities != null && selectedActivities.Any())
+        //    {
+        //        await _leadService.AddActivitiesToLeadAsync(lead.Id, selectedActivities);
+        //    }
+
+        //    return RedirectToAction(nameof(Index));
+        //}
         public async Task<IActionResult> Delete(int id)
         {
             var lead = await _leadService.GetLeadByIdAsync(id);
@@ -440,44 +555,44 @@ namespace Seashore_CRM.Controllers
             return View(lead);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Qualify(LeadDto lead)
-        {
-            try
-            {
-                // Persist qualification updates using existing UpdateLeadAsync
-                await _leadService.UpdateLeadAsync(lead);
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Qualify(LeadEditDataDto lead)
+        //{
+        //    try
+        //    {
+        //        // Persist qualification updates using existing UpdateLeadAsync
+        //        await _leadService.UpdateLeadAsync(lead);
 
-                var isAjax = string.Equals(Request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.OrdinalIgnoreCase);
-                if (isAjax)
-                {
-                    return Json(new { success = true, leadId = lead.Id });
-                }
+        //        var isAjax = string.Equals(Request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.OrdinalIgnoreCase);
+        //        if (isAjax)
+        //        {
+        //            return Json(new { success = true, leadId = lead.Id });
+        //        }
 
-                return RedirectToAction("Details", new { id = lead.Id });
-            }
-            catch (ValidationException vex)
-            {
-                foreach (var err in vex.Errors)
-                {
-                    if (string.IsNullOrEmpty(err.PropertyName))
-                        ModelState.AddModelError(string.Empty, err.ErrorMessage);
-                    else
-                        ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
-                }
+        //        return RedirectToAction("Details", new { id = lead.Id });
+        //    }
+        //    catch (ValidationException vex)
+        //    {
+        //        foreach (var err in vex.Errors)
+        //        {
+        //            if (string.IsNullOrEmpty(err.PropertyName))
+        //                ModelState.AddModelError(string.Empty, err.ErrorMessage);
+        //            else
+        //                ModelState.AddModelError(err.PropertyName, err.ErrorMessage);
+        //        }
 
-                await PopulateSelectListsAsync(lead);
-                return View(lead);
-            }
-            catch (Exception ex)
-            {
-                // Validation is handled in service; surface error and repopulate select lists
-                ModelState.AddModelError(string.Empty, ex.Message);
-                await PopulateSelectListsAsync(lead);
-                return View(lead);
-            }
-        }
+        //        await PopulateSelectListsAsync(lead);
+        //        return View(lead);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Validation is handled in service; surface error and repopulate select lists
+        //        ModelState.AddModelError(string.Empty, ex.Message);
+        //        await PopulateSelectListsAsync(lead);
+        //        return View(lead);
+        //    }
+        //}
 
         [HttpGet]
         public async Task<IActionResult> ContactsByCompany(int companyId, int? selectedContactId = null)
@@ -621,7 +736,7 @@ namespace Seashore_CRM.Controllers
             return vm;
         }
 
-        // prepare model
+        // prepare model (helper)
 
         [HttpGet]
         private async Task<LeadCreateViewModel> PrepareLeadCreateViewModelAsync(LeadCreateViewModel vm = null)
@@ -647,8 +762,6 @@ namespace Seashore_CRM.Controllers
         private async Task<LeadEditViewModel> BuildLeadEditViewModel(LeadDto model)
         {
             var vm = new LeadEditViewModel();
-            vm.Mode = "edit";
-            vm.SubmitButtonText = "Update Lead";
 
             var createVm = await BuildLeadCreateViewModel(model);
             vm.Companies = createVm.Companies;

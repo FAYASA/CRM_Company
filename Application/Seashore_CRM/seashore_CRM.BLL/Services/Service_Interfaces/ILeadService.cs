@@ -1,5 +1,7 @@
-using seashore_CRM.Models.Entities;
+using seashore_CRM.Application.DTOs;
+using seashore_CRM.Application.Helper_;
 using seashore_CRM.BLL.DTOs;
+using seashore_CRM.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,8 +9,11 @@ namespace seashore_CRM.BLL.Services.Service_Interfaces
 {
     public interface ILeadService
     {
-        Task<(string result, int? leadId)> CreateLeadAsync(LeadDto dto);
-        Task UpdateLeadAsync(LeadDto dto);
+        // Task<(string result, int? leadId)> CreateLeadAsync(LeadDto dto);
+        Task<ServiceResult<int>> CreateLeadAsync(LeadCreateDataDto vm);
+        Task<ServiceResult<int>> UpdateLeadAsync(LeadEditDataDto dto);
+
+        //Task UpdateLeadAsync(LeadDto dto);
         Task<IEnumerable<LeadDto>> GetAllLeadsAsync();
         Task<LeadDto?> GetLeadByIdAsync(int id);
         Task DeleteLeadAsync(int id);

@@ -4,5 +4,6 @@ namespace seashore_CRM.DAL.Repositories.Repository_Interfaces
 {
     public interface ILeadItemRepository : IRepository<LeadItem>
     {
+        void RemoveRange(IEnumerable<LeadItem> items);
     }
 }

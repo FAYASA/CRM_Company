@@ -9,8 +9,7 @@ namespace Seashore_CRM.ViewModels.Lead
     {
         public LeadEditViewModel()
         {
-            Mode = "edit";
-            SubmitButtonText = "Update Lead";
+
         }
 
 

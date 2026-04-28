@@ -9,5 +9,10 @@ namespace seashore_CRM.DAL.Repositories
         public LeadItemRepository(AppDbContext context) : base(context)
         {
         }
+
+        public void RemoveRange(IEnumerable<LeadItem> items)
+        {
+            _dbSet.RemoveRange(items);
+        }
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using seashore_CRM.BLL.DTOs;
 using System.Collections.Generic;
@@ -34,8 +35,10 @@ namespace Seashore_CRM.ViewModels.Lead
 
         public List<UserLeadRightsViewModel>? UserLeadRights { get; set; }
 
-        // UI hints for the shared view
-        public string Mode { get; set; } = "create"; // "create" or "edit"
-        public string SubmitButtonText { get; set; } = "Save Lead";
+        // optional comment text from UI
+        public string? CommentsText { get; set; }
+
+        // file uploads from the form (optional)
+        public List<IFormFile> Files { get; set; } = new List<IFormFile>();
     }
 }
